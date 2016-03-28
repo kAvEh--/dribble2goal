@@ -249,9 +249,13 @@ public class CoachScreen implements Screen {
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                back.setSize(Constants.HUD_SCREEN_WIDTH * .133f * .8f, Constants.HUD_SCREEN_HEIGHT * .186f * .8f);
+                back.setPosition(Constants.HUD_SCREEN_WIDTH * .863f, Constants.HUD_SCREEN_HEIGHT * .06f);
             }
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                back.setSize(Constants.HUD_SCREEN_WIDTH * .133f, Constants.HUD_SCREEN_HEIGHT * .186f);
+                back.setPosition(Constants.HUD_SCREEN_WIDTH * .85f, Constants.HUD_SCREEN_HEIGHT * .04f);
             }
         });
 

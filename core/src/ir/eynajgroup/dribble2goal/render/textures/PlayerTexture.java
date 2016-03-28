@@ -38,8 +38,8 @@ public class PlayerTexture implements ITexture<Player> {
 
         Util util = new Util();
         keeperStable = util.getKeeperPiece(stat.matchLevel);
-        p1Sprite = new Sprite(util.getShirt(stat.p1Shirt));
-        p2Sprite = new Sprite(util.getShirt(stat.p2Shirt));
+        p1Sprite = new Sprite(util.getShirt(stat.myShirt));
+        p2Sprite = new Sprite(util.getShirt(stat.oppShirt));
         goalerSprite = new Sprite(util.getKeeperShirt(stat.matchLevel));
 
         shapeRenderer = new ShapeRenderer();

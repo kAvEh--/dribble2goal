@@ -37,8 +37,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	username: { font: number16, fontColor: white }
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-	default: { selection: selection, font: english , fontColor: gray, cursor: cursor },
-	english:{ selection: selection, background: textfield, font: english , fontColor: white, cursor: cursor}
+	default: { selection: selection, font: english , fontColor: gray, cursor: cursor }
 },
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: { checkboxOn: check-on, checkboxOff: check-off, font: default-font, fontColor: white }

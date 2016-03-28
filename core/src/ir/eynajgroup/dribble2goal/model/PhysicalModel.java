@@ -19,6 +19,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import ir.eynajgroup.dribble2goal.Constants;
 import ir.eynajgroup.dribble2goal.MatchStats;
+import ir.eynajgroup.dribble2goal.Util.Util;
 import ir.eynajgroup.dribble2goal.screens.GameScreen;
 import ir.eynajgroup.dribble2goal.template.Ball;
 import ir.eynajgroup.dribble2goal.template.Field;
@@ -61,6 +62,8 @@ public class PhysicalModel implements IModel {
     TweenManager mTweenManager;
     public GameScreen screen;
 
+    Util util;
+
     public PhysicalModel(MatchStats stat, TweenManager tmanager) {
         this.matchStat = stat;
         matchStat.GAME_STATE = Constants.GAME_PRE;
@@ -69,6 +72,16 @@ public class PhysicalModel implements IModel {
         mWorld.setVelocityThreshold(0.0F);
 
         Box2dWalls.create(mWorld);
+
+        util = new Util();
+
+        if (stat.isMeFirst) {
+            stat.myStartPosition = util.getAbovePlayerPosition(stat.myFormation);
+            stat.oppStartPosition = util.getBelowPlayerPosition(stat.oppFormation);
+        } else {
+            stat.myStartPosition = util.getBelowPlayerPosition(stat.myFormation);
+            stat.oppStartPosition = util.getAbovePlayerPosition(stat.oppFormation);
+        }
 
         ball_body = new Box2dBall(this.mWorld,
                 -Constants.SCREEN_WIDTH / 2 + starting_pos_x + Box2dPlayer.RADIUS, 0);
@@ -80,33 +93,33 @@ public class PhysicalModel implements IModel {
         bodyT1Player1 = new Box2dPlayer(mWorld,
                 -Constants.SCREEN_WIDTH / 2 + starting_pos_x + Box2dPlayer.RADIUS,
                 Constants.SCREEN_HEIGHT / 2 - starting_pos_y - Box2dPlayer.RADIUS,
-                1 + (matchStat.T1players[matchStat.p1formation[0]][1] - 1f) / 20f, "T1P1",
-                matchStat.T1players[matchStat.p1formation[0]][0]);
+                1 + (matchStat.myPlayers[matchStat.myLineup[0]][1] - 1f) / 20f, "T1P1",
+                matchStat.myPlayers[matchStat.myLineup[0]][0]);
         bodyT1Player2 = new Box2dPlayer(mWorld,
                 -Constants.SCREEN_WIDTH / 2 + starting_pos_x + Box2dPlayer.RADIUS,
                 Constants.SCREEN_HEIGHT / 2 - starting_pos_y - Box2dPlayer.RADIUS,
-                1 + (matchStat.T1players[matchStat.p1formation[1]][1] - 1f) / 20f, "T1P2",
-                matchStat.T1players[matchStat.p1formation[1]][0]);
+                1 + (matchStat.myPlayers[matchStat.myLineup[1]][1] - 1f) / 20f, "T1P2",
+                matchStat.myPlayers[matchStat.myLineup[1]][0]);
         bodyT1Player3 = new Box2dPlayer(mWorld,
                 -Constants.SCREEN_WIDTH / 2 + starting_pos_x + Box2dPlayer.RADIUS,
                 Constants.SCREEN_HEIGHT / 2 - starting_pos_y - Box2dPlayer.RADIUS,
-                1 + (matchStat.T1players[matchStat.p1formation[2]][1] - 1f) / 20f, "T1P3",
-                matchStat.T1players[matchStat.p1formation[2]][0]);
+                1 + (matchStat.myPlayers[matchStat.myLineup[2]][1] - 1f) / 20f, "T1P3",
+                matchStat.myPlayers[matchStat.myLineup[2]][0]);
         bodyT2Player1 = new Box2dPlayer(mWorld,
                 -Constants.SCREEN_WIDTH / 2 + starting_pos_x + Box2dPlayer.RADIUS,
                 -Constants.SCREEN_HEIGHT / 2 + starting_pos_y + Box2dPlayer.RADIUS,
-                1 + (matchStat.T2players[matchStat.p2formation[0]][1] - 1f) / 20f, "T2P1",
-                matchStat.T2players[matchStat.p2formation[0]][0]);
+                1 + (matchStat.oppPlayers[matchStat.oppLineup[0]][1] - 1f) / 20f, "T2P1",
+                matchStat.oppPlayers[matchStat.oppLineup[0]][0]);
         bodyT2Player2 = new Box2dPlayer(mWorld,
                 -Constants.SCREEN_WIDTH / 2 + starting_pos_x + Box2dPlayer.RADIUS,
                 -Constants.SCREEN_HEIGHT / 2 + starting_pos_y + Box2dPlayer.RADIUS,
-                1 + (matchStat.T2players[matchStat.p2formation[1]][1] - 1f) / 20f, "T2P2",
-                matchStat.T2players[matchStat.p2formation[1]][0]);
+                1 + (matchStat.oppPlayers[matchStat.oppLineup[1]][1] - 1f) / 20f, "T2P2",
+                matchStat.oppPlayers[matchStat.oppLineup[1]][0]);
         bodyT2Player3 = new Box2dPlayer(mWorld,
                 -Constants.SCREEN_WIDTH / 2 + starting_pos_x + Box2dPlayer.RADIUS,
                 -Constants.SCREEN_HEIGHT / 2 + starting_pos_y + Box2dPlayer.RADIUS,
-                1 + (matchStat.T2players[matchStat.p2formation[2]][1] - 1f) / 20f, "T2P3",
-                matchStat.T2players[matchStat.p2formation[2]][0]);
+                1 + (matchStat.oppPlayers[matchStat.oppLineup[2]][1] - 1f) / 20f, "T2P3",
+                matchStat.oppPlayers[matchStat.oppLineup[2]][0]);
 
         mModelListeners = new ArrayList<IModelListener>();
 
@@ -258,27 +271,27 @@ public class PhysicalModel implements IModel {
 
         }
         bodyT1Player1.fix();
-        Tween.to(bodyT1Player1, 1, .4F).target(matchStat.p1StartPosition[0].x, matchStat.p1StartPosition[0].y)
+        Tween.to(bodyT1Player1, 1, .4F).target(matchStat.myStartPosition[0].x, matchStat.myStartPosition[0].y)
                 .ease(TweenEquations.easeInBack)
                 .start(mTweenManager).delay(.001F);
         bodyT1Player2.fix();
-        Tween.to(bodyT1Player2, 1, .4F).target(matchStat.p1StartPosition[1].x, matchStat.p1StartPosition[1].y)
+        Tween.to(bodyT1Player2, 1, .4F).target(matchStat.myStartPosition[1].x, matchStat.myStartPosition[1].y)
                 .ease(TweenEquations.easeInBack)
                 .start(mTweenManager).delay(.001F);
         bodyT1Player3.fix();
-        Tween.to(bodyT1Player3, 1, .4F).target(matchStat.p1StartPosition[2].x, matchStat.p1StartPosition[2].y)
+        Tween.to(bodyT1Player3, 1, .4F).target(matchStat.myStartPosition[2].x, matchStat.myStartPosition[2].y)
                 .ease(TweenEquations.easeInBack)
                 .start(mTweenManager).delay(.001F);
         bodyT2Player1.fix();
-        Tween.to(bodyT2Player1, 1, .4F).target(matchStat.p2StartPosition[0].x, matchStat.p2StartPosition[0].y)
+        Tween.to(bodyT2Player1, 1, .4F).target(matchStat.oppStartPosition[0].x, matchStat.oppStartPosition[0].y)
                 .ease(TweenEquations.easeInBack)
                 .start(mTweenManager).delay(.001F);
         bodyT2Player2.fix();
-        Tween.to(bodyT2Player2, 1, .4F).target(matchStat.p2StartPosition[1].x, matchStat.p2StartPosition[1].y)
+        Tween.to(bodyT2Player2, 1, .4F).target(matchStat.oppStartPosition[1].x, matchStat.oppStartPosition[1].y)
                 .ease(TweenEquations.easeInBack)
                 .start(mTweenManager).delay(.001F);
         bodyT2Player3.fix();
-        Tween.to(bodyT2Player3, 1, .4F).target(matchStat.p2StartPosition[2].x, matchStat.p2StartPosition[2].y)
+        Tween.to(bodyT2Player3, 1, .4F).target(matchStat.oppStartPosition[2].x, matchStat.oppStartPosition[2].y)
                 .ease(TweenEquations.easeInBack)
                 .start(mTweenManager).delay(.001F);
         mGoaler.fix();
@@ -338,14 +351,14 @@ public class PhysicalModel implements IModel {
     }
 
     private boolean checkWin() {
-        if (matchStat.Team1Goals >= matchStat.goaltoWin) {
+        if (matchStat.myGoals >= matchStat.goaltoWin) {
             matchStat.GAME_STATE = Constants.GAME_END;
             for (IModelListener modelListener : mModelListeners) {
                 modelListener.winEvent();
             }
             screen.winGame(true);
             return true;
-        } else if (matchStat.Team1Goals >= matchStat.goaltoWin) {
+        } else if (matchStat.myGoals >= matchStat.goaltoWin) {
             matchStat.GAME_STATE = Constants.GAME_END;
             for (IModelListener modelListener : mModelListeners) {
                 modelListener.winEvent();
@@ -382,8 +395,8 @@ public class PhysicalModel implements IModel {
                     y1 = (float) (y1 * (1.5 / dia));
                 }
                 if (dia > .1f)
-                    bodyT1Player1.applyImpulse(x1 * (3f + ((matchStat.T1players[matchStat.p1formation[0]][2] - 1f)) * .75f),
-                            y1 * (3f + ((matchStat.T1players[matchStat.p1formation[0]][2] - 1f)) * .75f));
+                    bodyT1Player1.applyImpulse(x1 * (3f + ((matchStat.myPlayers[matchStat.myLineup[0]][2] - 1f)) * .75f),
+                            y1 * (3f + ((matchStat.myPlayers[matchStat.myLineup[0]][2] - 1f)) * .75f));
             }
 
             if (mField.getT1p2Arrow() != null) {
@@ -395,8 +408,8 @@ public class PhysicalModel implements IModel {
                     y1 = (float) (y1 * (1.5 / dia));
                 }
                 if (dia > .1f)
-                    bodyT1Player2.applyImpulse(x1 * (3f + ((matchStat.T1players[matchStat.p1formation[1]][2] - 1f)) * .75f),
-                            y1 * (3f + ((matchStat.T1players[matchStat.p1formation[1]][2] - 1f)) * .75f));
+                    bodyT1Player2.applyImpulse(x1 * (3f + ((matchStat.myPlayers[matchStat.myLineup[1]][2] - 1f)) * .75f),
+                            y1 * (3f + ((matchStat.myPlayers[matchStat.myLineup[1]][2] - 1f)) * .75f));
             }
 
             if (mField.getT1p3Arrow() != null) {
@@ -408,8 +421,8 @@ public class PhysicalModel implements IModel {
                     y1 = (float) (y1 * (1.5 / dia));
                 }
                 if (dia > .1f)
-                    bodyT1Player3.applyImpulse(x1 * (3f + ((matchStat.T1players[matchStat.p1formation[2]][2] - 1f)) * .75f),
-                            y1 * (3f + ((matchStat.T1players[matchStat.p1formation[2]][2] - 1f)) * .75f));
+                    bodyT1Player3.applyImpulse(x1 * (3f + ((matchStat.myPlayers[matchStat.myLineup[2]][2] - 1f)) * .75f),
+                            y1 * (3f + ((matchStat.myPlayers[matchStat.myLineup[2]][2] - 1f)) * .75f));
             }
 
             if (mField.getT2p1Arrow() != null) {
@@ -421,8 +434,8 @@ public class PhysicalModel implements IModel {
                     y1 = (float) (y1 * (1.5 / dia));
                 }
                 if (dia > .1f)
-                    bodyT2Player1.applyImpulse(x1 * (3f + ((matchStat.T2players[matchStat.p2formation[0]][2] - 1f)) * .75f),
-                            y1 * (3f + ((matchStat.T2players[matchStat.p2formation[0]][2] - 1f)) * .75f));
+                    bodyT2Player1.applyImpulse(x1 * (3f + ((matchStat.oppPlayers[matchStat.oppLineup[0]][2] - 1f)) * .75f),
+                            y1 * (3f + ((matchStat.oppPlayers[matchStat.oppLineup[0]][2] - 1f)) * .75f));
             }
 
             if (mField.getT2p2Arrow() != null) {
@@ -434,8 +447,8 @@ public class PhysicalModel implements IModel {
                     y1 = (float) (y1 * (1.5 / dia));
                 }
                 if (dia > .1f)
-                    bodyT2Player2.applyImpulse(x1 * (3f + ((matchStat.T2players[matchStat.p2formation[1]][2] - 1f)) * .75f),
-                            y1 * (3f + ((matchStat.T2players[matchStat.p2formation[1]][2] - 1f)) * .75f));
+                    bodyT2Player2.applyImpulse(x1 * (3f + ((matchStat.oppPlayers[matchStat.oppLineup[1]][2] - 1f)) * .75f),
+                            y1 * (3f + ((matchStat.oppPlayers[matchStat.oppLineup[1]][2] - 1f)) * .75f));
             }
 
             if (mField.getT2p3Arrow() != null) {
@@ -447,8 +460,8 @@ public class PhysicalModel implements IModel {
                     y1 = (float) (y1 * (1.5 / dia));
                 }
                 if (dia > .1f)
-                    bodyT2Player3.applyImpulse(x1 * (3f + ((matchStat.T2players[matchStat.p2formation[2]][2] - 1f)) * .75f),
-                            y1 * (3f + ((matchStat.T2players[matchStat.p2formation[2]][2] - 1f)) * .75f));
+                    bodyT2Player3.applyImpulse(x1 * (3f + ((matchStat.oppPlayers[matchStat.oppLineup[2]][2] - 1f)) * .75f),
+                            y1 * (3f + ((matchStat.oppPlayers[matchStat.oppLineup[2]][2] - 1f)) * .75f));
             }
 
             matchStat.roundNum = matchStat.roundNum + 1;

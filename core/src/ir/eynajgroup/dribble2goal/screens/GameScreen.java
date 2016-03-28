@@ -207,26 +207,26 @@ public class GameScreen implements Screen, IModelListener {
         p_speed.setPosition(Constants.HUD_SCREEN_WIDTH * .122f, Constants.HUD_SCREEN_HEIGHT * .22f);
 
         mSkin.getFont("english").getData().scale(-.42f);
-        t_stamina = new Label(matchStat.T1players[selected_player][0] + "", mSkin);
+        t_stamina = new Label(matchStat.myPlayers[selected_player][0] + "", mSkin);
         t_stamina.setPosition(Constants.HUD_SCREEN_WIDTH * .17f, Constants.HUD_SCREEN_HEIGHT * .392f);
 
-        t_size = new Label(matchStat.T1players[selected_player][1] + "", mSkin);
+        t_size = new Label(matchStat.myPlayers[selected_player][1] + "", mSkin);
         t_size.setPosition(Constants.HUD_SCREEN_WIDTH * .17f, Constants.HUD_SCREEN_HEIGHT * .312f);
 
-        t_speed = new Label(matchStat.T1players[selected_player][2] + "", mSkin);
+        t_speed = new Label(matchStat.myPlayers[selected_player][2] + "", mSkin);
         t_speed.setPosition(Constants.HUD_SCREEN_WIDTH * .17f, Constants.HUD_SCREEN_HEIGHT * .232f);
 
 //        mSkin.getFont("english").getData().scale(.2f);
-        left_name = new Label(matchStat.p1Name + "", mSkin);
+        left_name = new Label(matchStat.myName + "", mSkin);
         left_name.setPosition(Constants.HUD_SCREEN_WIDTH * .25f - left_name.getWidth(), Constants.HUD_SCREEN_HEIGHT * .09f);
 
-        left_score = new Label(matchStat.Team1Goals + "", mSkin);
+        left_score = new Label(matchStat.myGoals + "", mSkin);
         left_score.setPosition(Constants.HUD_SCREEN_WIDTH * .06f, Constants.HUD_SCREEN_HEIGHT * .07f);
 
-        right_name = new Label(matchStat.p2Name + "", mSkin);
+        right_name = new Label(matchStat.oppName + "", mSkin);
         right_name.setPosition(Constants.HUD_SCREEN_WIDTH * .34f, Constants.HUD_SCREEN_HEIGHT * .09f);
 
-        right_score = new Label(matchStat.Team2Goals + "", mSkin);
+        right_score = new Label(matchStat.oppGoals + "", mSkin);
         right_score.setPosition(Constants.HUD_SCREEN_WIDTH * .53f - right_score.getWidth(), Constants.HUD_SCREEN_HEIGHT * .07f);
 
         TextureRegion region = new TextureRegion(Assets.getInstance().setting_item_bg);
@@ -254,9 +254,6 @@ public class GameScreen implements Screen, IModelListener {
 
         selected = new Image(Assets.getInstance().selected_player);
         selected.setSize(Constants.HUD_SCREEN_WIDTH * .06f, Constants.HUD_SCREEN_HEIGHT * .107f);
-
-        Vector2[] position = util.getInGamePosition(matchStat.p1Arrange, matchStat.p1formation);
-        setPosition(position);
 
         players[0].setSize(Constants.HUD_SCREEN_WIDTH * .08f, Constants.HUD_SCREEN_HEIGHT * .142f);
         players[1].setSize(Constants.HUD_SCREEN_WIDTH * .08f, Constants.HUD_SCREEN_HEIGHT * .142f);
@@ -339,16 +336,21 @@ public class GameScreen implements Screen, IModelListener {
 
         prev_icon.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (matchStat.p1Arrange == 1) {
-                    matchStat.p1Arrange = GamePrefs.getInstance().position_num;
+                if (matchStat.myFormation == 1) {
+                    matchStat.myFormation = GamePrefs.getInstance().position_num;
                 } else {
-                    matchStat.p1Arrange = matchStat.p1Arrange - 1;
+                    matchStat.myFormation = matchStat.myFormation - 1;
                 }
-                Vector2[] position = util.getInGamePosition(matchStat.p1Arrange, matchStat.p1formation);
+                Vector2[] position = util.getInGameSettingPosition(matchStat.myFormation, matchStat.myLineup);
                 setPosition(position);
 
-                matchStat.p1StartPosition = matchConstants.getP1Arrange(matchStat.p1Arrange);
-                matchStat.p2StartPosition = matchConstants.getP2Arrange(matchStat.p2Arrange);
+                if (matchStat.isMeFirst) {
+                    matchStat.myStartPosition = util.getAbovePlayerPosition(matchStat.myFormation);
+                    matchStat.oppStartPosition = util.getBelowPlayerPosition(matchStat.oppFormation);
+                } else {
+                    matchStat.myStartPosition = util.getBelowPlayerPosition(matchStat.myFormation);
+                    matchStat.oppStartPosition = util.getAbovePlayerPosition(matchStat.oppFormation);
+                }
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -364,16 +366,21 @@ public class GameScreen implements Screen, IModelListener {
 
         next_icon.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (matchStat.p1Arrange == GamePrefs.getInstance().position_num) {
-                    matchStat.p1Arrange = 1;
+                if (matchStat.myFormation == GamePrefs.getInstance().position_num) {
+                    matchStat.myFormation = 1;
                 } else {
-                    matchStat.p1Arrange = matchStat.p1Arrange + 1;
+                    matchStat.myFormation = matchStat.myFormation + 1;
                 }
-                Vector2[] position = util.getInGamePosition(matchStat.p1Arrange, matchStat.p1formation);
+                Vector2[] position = util.getInGameSettingPosition(matchStat.myFormation, matchStat.myLineup);
                 setPosition(position);
 
-                matchStat.p1StartPosition = matchConstants.getP1Arrange(matchStat.p1Arrange);
-                matchStat.p2StartPosition = matchConstants.getP2Arrange(matchStat.p2Arrange);
+                if (matchStat.isMeFirst) {
+                    matchStat.myStartPosition = util.getAbovePlayerPosition(matchStat.myFormation);
+                    matchStat.oppStartPosition = util.getBelowPlayerPosition(matchStat.oppFormation);
+                } else {
+                    matchStat.myStartPosition = util.getBelowPlayerPosition(matchStat.myFormation);
+                    matchStat.oppStartPosition = util.getAbovePlayerPosition(matchStat.oppFormation);
+                }
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -392,10 +399,10 @@ public class GameScreen implements Screen, IModelListener {
                 if (selected_player != 0) {
                     boolean isSelectedonBench;
                     boolean isClickedonBench;
-                    isSelectedonBench = matchStat.p1formation[3] == selected_player ||
-                            matchStat.p1formation[4] == selected_player;
-                    isClickedonBench = matchStat.p1formation[3] == 0 ||
-                            matchStat.p1formation[4] == 0;
+                    isSelectedonBench = matchStat.myLineup[3] == selected_player ||
+                            matchStat.myLineup[4] == selected_player;
+                    isClickedonBench = matchStat.myLineup[3] == 0 ||
+                            matchStat.myLineup[4] == 0;
                     if (isSelectedonBench) {
                         if (isClickedonBench) {
                             return false;
@@ -422,9 +429,9 @@ public class GameScreen implements Screen, IModelListener {
 
                 selected_player = 0;
 
-                t_stamina.setText(matchStat.T1players[selected_player][0] + "");
-                t_size.setText(matchStat.T1players[selected_player][1] + "");
-                t_speed.setText(matchStat.T1players[selected_player][2] + "");
+                t_stamina.setText(matchStat.myPlayers[selected_player][0] + "");
+                t_size.setText(matchStat.myPlayers[selected_player][1] + "");
+                t_speed.setText(matchStat.myPlayers[selected_player][2] + "");
             }
         });
 
@@ -433,10 +440,10 @@ public class GameScreen implements Screen, IModelListener {
                 if (selected_player != 1) {
                     boolean isSelectedonBench;
                     boolean isClickedonBench;
-                    isSelectedonBench = matchStat.p1formation[3] == selected_player ||
-                            matchStat.p1formation[4] == selected_player;
-                    isClickedonBench = matchStat.p1formation[3] == 1 ||
-                            matchStat.p1formation[4] == 1;
+                    isSelectedonBench = matchStat.myLineup[3] == selected_player ||
+                            matchStat.myLineup[4] == selected_player;
+                    isClickedonBench = matchStat.myLineup[3] == 1 ||
+                            matchStat.myLineup[4] == 1;
                     if (isSelectedonBench) {
                         if (isClickedonBench) {
                             return false;
@@ -463,9 +470,9 @@ public class GameScreen implements Screen, IModelListener {
 
                 selected_player = 1;
 
-                t_stamina.setText(matchStat.T1players[selected_player][0] + "");
-                t_size.setText(matchStat.T1players[selected_player][1] + "");
-                t_speed.setText(matchStat.T1players[selected_player][2] + "");
+                t_stamina.setText(matchStat.myPlayers[selected_player][0] + "");
+                t_size.setText(matchStat.myPlayers[selected_player][1] + "");
+                t_speed.setText(matchStat.myPlayers[selected_player][2] + "");
             }
         });
 
@@ -474,10 +481,10 @@ public class GameScreen implements Screen, IModelListener {
                 if (selected_player != 2) {
                     boolean isSelectedonBench;
                     boolean isClickedonBench;
-                    isSelectedonBench = matchStat.p1formation[3] == selected_player ||
-                            matchStat.p1formation[4] == selected_player;
-                    isClickedonBench = matchStat.p1formation[3] == 2 ||
-                            matchStat.p1formation[4] == 2;
+                    isSelectedonBench = matchStat.myLineup[3] == selected_player ||
+                            matchStat.myLineup[4] == selected_player;
+                    isClickedonBench = matchStat.myLineup[3] == 2 ||
+                            matchStat.myLineup[4] == 2;
                     if (isSelectedonBench) {
                         if (isClickedonBench) {
                             return false;
@@ -504,9 +511,9 @@ public class GameScreen implements Screen, IModelListener {
 
                 selected_player = 2;
 
-                t_stamina.setText(matchStat.T1players[selected_player][0] + "");
-                t_size.setText(matchStat.T1players[selected_player][1] + "");
-                t_speed.setText(matchStat.T1players[selected_player][2] + "");
+                t_stamina.setText(matchStat.myPlayers[selected_player][0] + "");
+                t_size.setText(matchStat.myPlayers[selected_player][1] + "");
+                t_speed.setText(matchStat.myPlayers[selected_player][2] + "");
             }
         });
 
@@ -515,10 +522,10 @@ public class GameScreen implements Screen, IModelListener {
                 if (selected_player != 3) {
                     boolean isSelectedonBench;
                     boolean isClickedonBench;
-                    isSelectedonBench = matchStat.p1formation[3] == selected_player ||
-                            matchStat.p1formation[4] == selected_player;
-                    isClickedonBench = matchStat.p1formation[3] == 3 ||
-                            matchStat.p1formation[4] == 3;
+                    isSelectedonBench = matchStat.myLineup[3] == selected_player ||
+                            matchStat.myLineup[4] == selected_player;
+                    isClickedonBench = matchStat.myLineup[3] == 3 ||
+                            matchStat.myLineup[4] == 3;
                     if (isSelectedonBench) {
                         if (isClickedonBench) {
                             return false;
@@ -545,9 +552,9 @@ public class GameScreen implements Screen, IModelListener {
 
                 selected_player = 3;
 
-                t_stamina.setText(matchStat.T1players[selected_player][0] + "");
-                t_size.setText(matchStat.T1players[selected_player][1] + "");
-                t_speed.setText(matchStat.T1players[selected_player][2] + "");
+                t_stamina.setText(matchStat.myPlayers[selected_player][0] + "");
+                t_size.setText(matchStat.myPlayers[selected_player][1] + "");
+                t_speed.setText(matchStat.myPlayers[selected_player][2] + "");
             }
         });
 
@@ -556,10 +563,10 @@ public class GameScreen implements Screen, IModelListener {
                 if (selected_player != 4) {
                     boolean isSelectedonBench;
                     boolean isClickedonBench;
-                    isSelectedonBench = matchStat.p1formation[3] == selected_player ||
-                            matchStat.p1formation[4] == selected_player;
-                    isClickedonBench = matchStat.p1formation[3] == 4 ||
-                            matchStat.p1formation[4] == 4;
+                    isSelectedonBench = matchStat.myLineup[3] == selected_player ||
+                            matchStat.myLineup[4] == selected_player;
+                    isClickedonBench = matchStat.myLineup[3] == 4 ||
+                            matchStat.myLineup[4] == 4;
                     if (isSelectedonBench) {
                         if (isClickedonBench) {
                             return false;
@@ -586,28 +593,28 @@ public class GameScreen implements Screen, IModelListener {
 
                 selected_player = 4;
 
-                t_stamina.setText(matchStat.T1players[selected_player][0] + "");
-                t_size.setText(matchStat.T1players[selected_player][1] + "");
-                t_speed.setText(matchStat.T1players[selected_player][2] + "");
+                t_stamina.setText(matchStat.myPlayers[selected_player][0] + "");
+                t_size.setText(matchStat.myPlayers[selected_player][1] + "");
+                t_speed.setText(matchStat.myPlayers[selected_player][2] + "");
             }
         });
     }
 
     private void substitution(int out, int in) {
         int out_index, in_index;
-        if (matchStat.p1formation[0] == out)
+        if (matchStat.myLineup[0] == out)
             out_index = 0;
-        else if (matchStat.p1formation[1] == out)
+        else if (matchStat.myLineup[1] == out)
             out_index = 1;
         else
             out_index = 2;
-        if (matchStat.p1formation[3] == in)
+        if (matchStat.myLineup[3] == in)
             in_index = 3;
         else
             in_index = 4;
 
-        matchStat.p1formation[out_index] = in;
-        matchStat.p1formation[in_index] = out;
+        matchStat.myLineup[out_index] = in;
+        matchStat.myLineup[in_index] = out;
 
         Vector2 p_out = new Vector2(players[out].getX(), players[out].getY());
         Vector2 p_in = new Vector2(players[in].getX(), players[in].getY());
@@ -635,6 +642,8 @@ public class GameScreen implements Screen, IModelListener {
     }
 
     void setPosition(Vector2[] position) {
+        System.out.println(selected_player + "=====");
+        System.out.println(position[selected_player] + "=====");
         Tween.to(selected, 1, .3f)
                 .target(position[selected_player].x + Constants.HUD_SCREEN_WIDTH * .0097f,
                         position[selected_player].y + Constants.HUD_SCREEN_HEIGHT * .022f)
@@ -685,6 +694,9 @@ public class GameScreen implements Screen, IModelListener {
         inputMultiplexer.addProcessor(mStage2);
         inputMultiplexer.addProcessor(mControls);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        Vector2[] position = util.getInGameSettingPosition(matchStat.myFormation, matchStat.myLineup);
+        setPosition(position);
 
 //        this.mainTable.setPosition(0f, 0f);
 //        this.mainTable.setVisible(true);
@@ -746,13 +758,13 @@ public class GameScreen implements Screen, IModelListener {
 
     public void goalScored() {
         if (matchStat.lastTouch == 1) {
-            matchStat.Team1Goals += 1;
+            matchStat.myGoals += 1;
         } else {
-            matchStat.Team2Goals += 1;
+            matchStat.oppGoals += 1;
         }
 
-        left_score.setText(matchStat.Team1Goals + "");
-        right_score.setText(matchStat.Team2Goals + "");
+        left_score.setText(matchStat.myGoals + "");
+        right_score.setText(matchStat.oppGoals + "");
     }
 
     @Override

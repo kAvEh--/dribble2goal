@@ -23,7 +23,7 @@ import ir.eynajgroup.dribble2goal.MyGame;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressLine;
 
 /**
- * Created by kAvEh on 3/16/2016.
+ * Created by kAvEh on 3/27/2016.
  */
 public class LoadingScreen implements Screen {
 

@@ -25,6 +25,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
+import ir.eynajgroup.dribble2goal.GamePrefs;
 import ir.eynajgroup.dribble2goal.MyGame;
 import ir.eynajgroup.dribble2goal.Util.MyScrollPane;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressCircle;
@@ -40,7 +41,7 @@ public class SelectGameScreen implements Screen {
     Image bg;
     Image back;
     TextField coins_txt;
-    Image stadium;
+    Image stadiums[];
     Image arc;
 
     Image[] scrollImg;
@@ -69,13 +70,29 @@ public class SelectGameScreen implements Screen {
         bg = new Image(Assets.getInstance().main_bg);
         bg.setSize(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
 
-        stadium = new Image(Assets.getInstance().select_game_1);
-        stadium.setSize(Constants.HUD_SCREEN_WIDTH * .309f, Constants.HUD_SCREEN_HEIGHT);
+        stadiums = new Image[6];
+        stadiums[0] = new Image(Assets.getInstance().select_game[0]);
+        stadiums[0].setSize(Constants.HUD_SCREEN_WIDTH * .309f, Constants.HUD_SCREEN_HEIGHT);
+        stadiums[1] = new Image(Assets.getInstance().select_game[1]);
+        stadiums[1].setSize(Constants.HUD_SCREEN_WIDTH * .309f, Constants.HUD_SCREEN_HEIGHT);
+        stadiums[1].setColor(1f, 1f, 1f, 0f);
+        stadiums[2] = new Image(Assets.getInstance().select_game[2]);
+        stadiums[2].setSize(Constants.HUD_SCREEN_WIDTH * .309f, Constants.HUD_SCREEN_HEIGHT);
+        stadiums[2].setColor(1f, 1f, 1f, 0f);
+        stadiums[3] = new Image(Assets.getInstance().select_game[3]);
+        stadiums[3].setSize(Constants.HUD_SCREEN_WIDTH * .309f, Constants.HUD_SCREEN_HEIGHT);
+        stadiums[3].setColor(1f, 1f, 1f, 0f);
+        stadiums[4] = new Image(Assets.getInstance().select_game[4]);
+        stadiums[4].setSize(Constants.HUD_SCREEN_WIDTH * .309f, Constants.HUD_SCREEN_HEIGHT);
+        stadiums[4].setColor(1f, 1f, 1f, 0f);
+        stadiums[5] = new Image(Assets.getInstance().select_game[5]);
+        stadiums[5].setSize(Constants.HUD_SCREEN_WIDTH * .309f, Constants.HUD_SCREEN_HEIGHT);
+        stadiums[5].setColor(1f, 1f, 1f, 0f);
         arc = new Image(Assets.getInstance().select_game_arc);
         arc.setSize(Constants.HUD_SCREEN_WIDTH * .184f, Constants.HUD_SCREEN_HEIGHT);
         arc.setPosition(Constants.HUD_SCREEN_WIDTH * .203f, 0);
 
-        coins_txt = new TextField("120077", mSkin);
+        coins_txt = new TextField(GamePrefs.getInstance().coins_num + "", mSkin);
         coins_txt.setColor(.6f, .3f, .5f, 1f);
         coins_txt.setDisabled(true);
 //        coins_txt.setSize(Constants.HUD_SCREEN_WIDTH * .15f, Constants.HUD_SCREEN_HEIGHT * .186f);
@@ -91,9 +108,13 @@ public class SelectGameScreen implements Screen {
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                back.setSize(Constants.HUD_SCREEN_WIDTH * .133f * .8f, Constants.HUD_SCREEN_HEIGHT * .186f * .8f);
+                back.setPosition(Constants.HUD_SCREEN_WIDTH * .863f, Constants.HUD_SCREEN_HEIGHT * .06f);
             }
 
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                back.setSize(Constants.HUD_SCREEN_WIDTH * .133f, Constants.HUD_SCREEN_HEIGHT * .186f);
+                back.setPosition(Constants.HUD_SCREEN_WIDTH * .85f, Constants.HUD_SCREEN_HEIGHT * .04f);
             }
         });
 
@@ -113,26 +134,32 @@ public class SelectGameScreen implements Screen {
 
         scrollImg[0].addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+                MyGame.mainInstance.setFindMatchScreen(1);
             }
         });
         scrollImg[1].addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+                MyGame.mainInstance.setFindMatchScreen(2);
             }
         });
         scrollImg[2].addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+                MyGame.mainInstance.setFindMatchScreen(3);
             }
         });
         scrollImg[3].addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+                MyGame.mainInstance.setFindMatchScreen(4);
             }
         });
         scrollImg[4].addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+                MyGame.mainInstance.setFindMatchScreen(5);
             }
         });
         scrollImg[5].addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+                MyGame.mainInstance.setFindMatchScreen(6);
             }
         });
 
@@ -140,7 +167,7 @@ public class SelectGameScreen implements Screen {
                 Constants.HUD_SCREEN_WIDTH, (int) Constants.HUD_SCREEN_HEIGHT,
                 (int) (Constants.HUD_SCREEN_WIDTH * .07f), 0,
                 Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f,
-                Constants.HUD_SCREEN_HEIGHT * .12f);
+                Constants.HUD_SCREEN_HEIGHT * .12f, stadiums);
         mainmenuScroll.setVisible(true);
 
         region = new TextureRegion(Assets.getInstance().progress_circle);
@@ -151,7 +178,12 @@ public class SelectGameScreen implements Screen {
 
         mainTable.addActor(bg);
         mainTable.addActor(back);
-        mainTable.addActor(stadium);
+        mainTable.addActor(stadiums[0]);
+        mainTable.addActor(stadiums[1]);
+        mainTable.addActor(stadiums[2]);
+        mainTable.addActor(stadiums[3]);
+        mainTable.addActor(stadiums[4]);
+        mainTable.addActor(stadiums[5]);
         mainTable.addActor(arc);
         mainTable.addActor(coins_txt);
         mainTable.addActor(mainmenuScroll);

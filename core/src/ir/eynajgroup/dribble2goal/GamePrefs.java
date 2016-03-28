@@ -3,8 +3,6 @@ package ir.eynajgroup.dribble2goal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-import ir.eynajgroup.dribble2goal.model.Box2dRect;
-
 /**
  * Created by kAvEh on 2/19/2016.
  */
@@ -15,10 +13,13 @@ public class GamePrefs {
     private final String key_music = "setting_music";
     private final String key_effect = "setting_effect";
     private final String key_vibrate = "setting_vibrate";
+    private final String key_username = "login_username";
+    private final String key_password = "login_password";
 
     private static GamePrefs sInstance;
     private Preferences mPreferences;
     public String name = "kAvEh";
+    public int playerId = 0;
     public int position = 1;
     public int position_num = 3;
     public int shirt = 1;
@@ -28,11 +29,18 @@ public class GamePrefs {
     public int xp = 105;
     public int game_played = 0;
     public int game_won = 0;
+    public int goals = 0;
+    public int winInaRaw = 0;
     public int win_percent = 100;
     public int last5 = 100;
     public boolean[] achievements = new boolean[26];
-
-    public Box2dRect tt;
+    public int achieve_goal = 0;
+    public int achieve_cleanSheet = 0;
+    public int achieve_win = 0;
+    public int achieve_winInaRow = 0;
+    public boolean isDailyAvailable = false;
+    public int winRate = 0;
+    public int cleanSheet = 0;
 
     private GamePrefs() {}
 
@@ -68,6 +76,24 @@ public class GamePrefs {
 
     public void setVibrateState(int state) {
         mPreferences.putInteger(key_vibrate, state);
+        mPreferences.flush();
+    }
+
+    public String getUserName() {
+        return mPreferences.getString(key_username);
+    }
+
+    public void setUserName(String username) {
+        mPreferences.putString(key_username, username);
+        mPreferences.flush();
+    }
+
+    public String getPassword() {
+        return mPreferences.getString(key_password);
+    }
+
+    public void setPassword(String password) {
+        mPreferences.putString(key_username, password);
         mPreferences.flush();
     }
 

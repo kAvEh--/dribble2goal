@@ -78,12 +78,7 @@ public class Assets implements Disposable {
     public Texture stadium_button_6;
     public Texture progress_circle;
     public Texture select_game_arc;
-    public Texture select_game_1;
-    public Texture select_game_2;
-    public Texture select_game_3;
-    public Texture select_game_4;
-    public Texture select_game_5;
-    public Texture select_game_6;
+    public Texture[] select_game = new Texture[6];
     public Texture shadow;
     public Texture logo;
     public Texture loading_bar_bg;
@@ -171,6 +166,11 @@ public class Assets implements Disposable {
     public Texture formation_speed;
     public Texture time_bar;
 
+    public Texture login_username;
+    public Texture login_pass;
+    public Texture login_pass_re;
+    public Texture login_email;
+
     public void init() {
 //        Texture.setEnforcePotImages(false);
         player = new Texture(Gdx.files.internal("img/piece_stable.png"));
@@ -223,12 +223,12 @@ public class Assets implements Disposable {
         stadium_button_6 = new Texture(Gdx.files.internal("img/stadium_button_6.png"));
         progress_circle = new Texture(Gdx.files.internal("img/progress_circle.png"));
         select_game_arc = new Texture(Gdx.files.internal("img/select_game_arc.png"));
-        select_game_1 = new Texture(Gdx.files.internal("img/select_game_1.png"));
-        select_game_2 = new Texture(Gdx.files.internal("img/select_game_2.png"));
-        select_game_3 = new Texture(Gdx.files.internal("img/select_game_3.png"));
-        select_game_4 = new Texture(Gdx.files.internal("img/select_game_4.png"));
-        select_game_5 = new Texture(Gdx.files.internal("img/select_game_5.png"));
-        select_game_6 = new Texture(Gdx.files.internal("img/select_game_6.png"));
+        select_game[0] = new Texture(Gdx.files.internal("img/select_game_1.png"));
+        select_game[1] = new Texture(Gdx.files.internal("img/select_game_2.png"));
+        select_game[2] = new Texture(Gdx.files.internal("img/select_game_3.png"));
+        select_game[3] = new Texture(Gdx.files.internal("img/select_game_4.png"));
+        select_game[4] = new Texture(Gdx.files.internal("img/select_game_5.png"));
+        select_game[5] = new Texture(Gdx.files.internal("img/select_game_6.png"));
         shadow = new Texture(Gdx.files.internal("img/shadow.png"));
         logo = new Texture(Gdx.files.internal("img/logo.png"));
         loading_bar_bg = new Texture(Gdx.files.internal("img/loading_bar_bg.png"));
@@ -321,6 +321,11 @@ public class Assets implements Disposable {
         court_arc_6  = new Texture(Gdx.files.internal("img/court_arc_6.png"));
 
         time_bar  = new Texture(Gdx.files.internal("img/time_bar.png"));
+
+        login_email  = new Texture(Gdx.files.internal("img/login_email.png"));
+        login_pass  = new Texture(Gdx.files.internal("img/login_pass.png"));
+        login_pass_re  = new Texture(Gdx.files.internal("img/login_pass_re.png"));
+        login_username  = new Texture(Gdx.files.internal("img/login_username.png"));
 
         player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         shirt1.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

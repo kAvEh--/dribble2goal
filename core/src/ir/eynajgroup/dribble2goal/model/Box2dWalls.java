@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
-import ir.eynajgroup.dribble2goal.GamePrefs;
 
 /**
  * Created by kAvEh on 2/19/2016.
@@ -33,12 +32,10 @@ public class Box2dWalls {
                 BodyDef.BodyType.StaticBody, DENSITY, FRICTION, RESTITUTION);
 
         // ---- Top Horizontal Line
-        GamePrefs.getInstance().tt = new Box2dRect(world,
+        new Box2dRect(world,
                 -Constants.SCREEN_WIDTH / 2 + HORIZONTAL_GAP, Constants.SCREEN_HEIGHT / 2 - VERTICAL_GAP,
                 Constants.SCREEN_WIDTH - HORIZONTAL_GAP * 2f, WALL_WIDTH,
                 BodyDef.BodyType.StaticBody, DENSITY, FRICTION, RESTITUTION);
-
-//        System.out.println((Constants.SCREEN_HEIGHT / 2 - VERTICAL_GAP - WALL_WIDTH) + "=====");
 
         // ---- LEFT Vertical Line
         new Box2dRect(world,

@@ -35,12 +35,14 @@ public class MyScrollPane extends Table {
 
     private float constant;
     private int focusedItem;
-    private float lastScroll;
+    private int lastFocusedItem = 0;
     private boolean flingFlag = false;
+
+    private Image stadium[];
 
     public MyScrollPane(Image[] buttons, int itemCount, float scrollWidth,
                         float scrollHeight, float posX, float posY, float itemWidth,
-                        float itemHeight, float itemPad) {
+                        float itemHeight, float itemPad, Image[] s) {
         mTweenManager = MyGame.mTweenManager;
         this._itemPad = itemPad;
         this._itemWidth = itemWidth;
@@ -60,7 +62,7 @@ public class MyScrollPane extends Table {
         this.mainScroll.setFlingTime(0.0F);
         this.mainScroll.setForceScroll(false, true);
         this.mainScroll.setSmoothScrolling(false);
-        lastScroll = 0f;
+        this.stadium = s;
         this.mainScroll.addListener(new DragListener() {
             public void drag(InputEvent event, float x, float y, int pointer) {
                 MyScrollPane.this.setItemSizeByScrollValue();
@@ -123,7 +125,24 @@ public class MyScrollPane extends Table {
     public void step() {
         Tween.to(this, 1, .5f)
                 .target(focusedItem * constant)
-                .ease(TweenEquations.easeNone).start(mTweenManager);
+                .ease(TweenEquations.easeNone).start(mTweenManager)
+                .setCallback(new TweenCallback() {
+                    public void onEvent(int paramAnonymousInt, BaseTween<?> paramAnonymousBaseTween) {
+                        if (lastFocusedItem != focusedItem) {
+                            Tween.to(stadium[lastFocusedItem], 3, .3f)
+                                    .target(0f).ease(TweenEquations.easeOutSine)
+                                    .start(mTweenManager);
+                            Tween.to(stadium[focusedItem], 3, .3f)
+                                    .target(1f).ease(TweenEquations.easeOutSine)
+                                    .start(mTweenManager)
+                                    .setCallback(new TweenCallback() {
+                                        public void onEvent(int paramAnonymousInt, BaseTween<?> paramAnonymousBaseTween) {
+                                            lastFocusedItem = focusedItem;
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 
     public void setItemSizeByScrollValue() {

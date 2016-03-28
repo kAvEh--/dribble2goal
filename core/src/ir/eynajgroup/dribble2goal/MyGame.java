@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
-import ir.eynajgroup.dribble2goal.Server.ServerTool;
-import ir.eynajgroup.dribble2goal.Util.MatchConstants;
 import ir.eynajgroup.dribble2goal.Util.MyScrollPane;
 import ir.eynajgroup.dribble2goal.model.Box2dBall;
 import ir.eynajgroup.dribble2goal.model.Box2dPlayer;
@@ -25,6 +23,7 @@ import ir.eynajgroup.dribble2goal.screens.CoachScreen;
 import ir.eynajgroup.dribble2goal.screens.FindMatchScreen;
 import ir.eynajgroup.dribble2goal.screens.GameScreen;
 import ir.eynajgroup.dribble2goal.screens.LoadingScreen;
+import ir.eynajgroup.dribble2goal.screens.LoginScreen;
 import ir.eynajgroup.dribble2goal.screens.MainMenuScreen;
 import ir.eynajgroup.dribble2goal.screens.ProfileScreen;
 import ir.eynajgroup.dribble2goal.screens.SelectGameScreen;
@@ -68,21 +67,23 @@ public class MyGame extends Game {
 //        setLoadingScreen();
 //        setMainScreen();
 //        setFindMatchScreen();
-        createGame();
-
-        ServerTool server = new ServerTool();
-        server.connectSocket();
+//        createGame();
+        setLoginScreen();
 
 //        createGame();
         Gdx.app.setLogLevel(Application.LOG_ERROR);
+    }
+
+    public void setLoginScreen() {
+        setScreen(new LoginScreen());
     }
 
     public void setLoadingScreen() {
         setScreen(new LoadingScreen());
     }
 
-    public void setFindMatchScreen() {
-        setScreen(new FindMatchScreen());
+    public void setFindMatchScreen(int stadium) {
+        setScreen(new FindMatchScreen(stadium));
     }
 
     public void setMainScreen() {
@@ -109,17 +110,16 @@ public class MyGame extends Game {
         setScreen(new SelectGameScreen());
     }
 
-    public void createGame() {
-        MatchStats matchStat = new MatchStats();
+    public void createGame(MatchStats matchStat) {
+//        MatchStats matchStat = new MatchStats();
 
         //TODO : get data from server
-        matchStat.reset(3, true, 1, 1);
+//        matchStat.reset(3, true, 1, 1);
 
-        MatchConstants temp = new MatchConstants();
-        matchStat.p1StartPosition = temp.getP1Arrange(matchStat.p1Arrange);
-        matchStat.p2StartPosition = temp.getP2Arrange(matchStat.p2Arrange);
+//        MatchConstants temp = new MatchConstants();
+//        matchStat.myStartPosition = temp.getP1Arrange(matchStat.p1Arrange);
+//        matchStat.oppStartPosition = temp.getP2Arrange(matchStat.p2Arrange);
         mModel = new PhysicalModel(matchStat, mTweenManager);
-//        setScreen(new Game2Screen(matchStat, mModel, mTweenManager));
         setScreen(new GameScreen(matchStat, mModel));
     }
 
