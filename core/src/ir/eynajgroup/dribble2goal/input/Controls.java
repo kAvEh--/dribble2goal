@@ -45,7 +45,6 @@ public class Controls extends InputAdapter {
 
     @Override
     public boolean touchDown(final int screenX, final int screenY, final int pointer, int button) {
-        System.out.println("touched");
         final Vector3 vec = new Vector3(screenX, screenY, 0);
         mCamera.unproject(vec);
         mModel.sendTouchDown(vec.x, vec.y, pointer);

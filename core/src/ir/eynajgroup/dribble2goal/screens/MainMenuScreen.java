@@ -112,9 +112,9 @@ public class MainMenuScreen implements Screen {
         region = new TextureRegion(Assets.getInstance().progress_circle);
         pbatch = new PolygonSpriteBatch();
         sprite = new ProgressCircle(region, pbatch, new Vector2(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_HEIGHT * .158f));
-        sprite.setSize(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_WIDTH * .158f);
-        sprite.setPosition(Constants.HUD_SCREEN_WIDTH * .03f,
-                Constants.HUD_SCREEN_HEIGHT * .97f - Constants.HUD_SCREEN_WIDTH * .158f);
+        sprite.setSize(Gdx.graphics.getWidth() * .158f, Gdx.graphics.getWidth() * .158f);
+        sprite.setPosition(Gdx.graphics.getWidth() * .03f,
+                Gdx.graphics.getHeight() * .97f - Gdx.graphics.getWidth() * .158f);
 
         avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().avatar));
         avatar.setSize(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_WIDTH * .158f);
@@ -230,7 +230,7 @@ public class MainMenuScreen implements Screen {
                 });
 
         int percent = (int) ((float) GamePrefs.getInstance().xp / ((float) GamePrefs.getInstance().level * 1000f) * 100f);
-        Tween.to(sprite, 1, 1f)
+        Tween.to(sprite, 1, 10f)
                 .target(percent).ease(TweenEquations.easeInExpo)
                 .start(mTweenManager).delay(0.3F)
                 .setCallback(new TweenCallback() {

@@ -1,63 +1,71 @@
 package ir.eynajgroup.dribble2goal.render.effects;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
-import ir.eynajgroup.dribble2goal.template.Team;
+import ir.eynajgroup.dribble2goal.MatchStats;
 
 /**
  * Created by kAvEh on 2/19/2016.
  */
-public class WinEffect implements IEffect<Team> {
-    private static final float TOP_MARGIN = 100;
-    private final BitmapFont mBitmapFont;
-    private final OrthographicCamera mHudCamera;
+public class WinEffect {
+    Sprite mSprite1;
+    Sprite mSprite2;
+    TweenManager mTweenManager;
+    MatchStats matchStat;
+    boolean flag = true;
 
-    private boolean mPlaying;
-    GlyphLayout layout = new GlyphLayout();
+    public WinEffect(TweenManager manager, MatchStats stat) {
+        mSprite1 = new Sprite(Assets.getInstance().win_image);
+        mSprite1.setPosition(Constants.SCREEN_WIDTH / 2, -mSprite1.getHeight() / 2);
+        mSprite1.setSize(3f, 2f);
 
-    public WinEffect(OrthographicCamera hudCamera) {
-        mHudCamera = hudCamera;
-        mBitmapFont = Assets.getInstance().fontDroidSans17;
+        mSprite2 = new Sprite(Assets.getInstance().win_image);
+        mSprite2.setPosition(Constants.SCREEN_WIDTH / 2, -mSprite2.getHeight() / 2);
+        mSprite2.setSize(3f, 2f);
+        mTweenManager = manager;
+        matchStat = stat;
     }
 
-    @Override
-    public void draw(SpriteBatch batch, Team team) {
-        if (mPlaying) {
-            batch.setProjectionMatrix(mHudCamera.combined);
-            batch.begin();
-
-            if (team == Team.PLAYER1) {
-                String str = "Left player WIN!";
-                layout.setText(mBitmapFont, str);
-                float length = layout.width;
-                mBitmapFont.draw(batch, str, 0 - length / 2, Constants.HUD_SCREEN_HEIGHT / 2 - TOP_MARGIN);
-            } else {
-                String str = "Right player WIN!";
-                layout.setText(mBitmapFont, str);
-                float length = layout.width;
-                mBitmapFont.draw(batch, str, 0 - length / 2, Constants.HUD_SCREEN_HEIGHT / 2 - TOP_MARGIN);
-            }
-            batch.end();
+    public void draw(SpriteBatch batch) {
+        if (flag) {
+            flag = false;
+            startTween();
         }
+        mSprite1.draw(batch);
+        mSprite2.draw(batch);
     }
 
-    @Override
-    public void play() {
-        mPlaying = true;
-    }
+    private void startTween() {
+        mSprite1.setPosition(Constants.SCREEN_WIDTH / 2, -mSprite1.getHeight() / 2);
+        Tween.to(mSprite1, 1, 2F).target(-mSprite1.getWidth() / 2, -mSprite1.getHeight() / 2)
+                .ease(TweenEquations.easeInBack)
+                .start(mTweenManager).delay(.01F);
 
-    @Override
-    public void stop() {
-        mPlaying = false;
-    }
+        mSprite2.setPosition(-Constants.SCREEN_WIDTH / 2 - mSprite2.getWidth(), -mSprite2.getHeight() / 2);
+        ((Tween) ((Tween) Tween.to(mSprite2, 1, 2F).target(-mSprite2.getWidth() / 2, -mSprite2.getHeight() / 2)
+                .ease(TweenEquations.easeInBack)
+                .start(mTweenManager)).delay(.01F))
+                .setCallback(new TweenCallback() {
+                    public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
 
-    @Override
-    public void dispose() {
+                        Tween.to(mSprite2, 1, 3F).target(-mSprite2.getWidth() / 2, -mSprite2.getHeight() / 2)
+                                .ease(TweenEquations.easeInBack)
+                                .start(mTweenManager).setCallback(new TweenCallback() {
+                            public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
+                                matchStat.GAME_STATE = Constants.GAME_END;
+                                flag = true;
+                            }
+                        });
 
+                    }
+                });
     }
 }

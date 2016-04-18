@@ -27,19 +27,20 @@ public class MatchStats {
     public String oppName;
     public double myWinRate;
     public double oppWinRate;
-    public boolean p1SubReady;
-    public boolean p2SubReady;
     public int myFormation;
     public int oppFormation;
-
-    public int[] p1subs;
-    public int[] p2subs;
+    public boolean isOppReady = false;
+    public int oppPlayerShooting;
+    public Vector2 oppShootDirection;
+    public int myPlayerShooting;
+    public Vector2 myShootDirection;
+    public boolean isOppDataRecieved;
+    public boolean isMatchReady = false;
 
     public int[] myLineup;
-    public int[] oppLineup;
+//    public int[] oppLineup;
 
     public Vector2[] myStartPosition;
-    public Vector2[] oppStartPosition;
 
     public int[][] myPlayers;
     public int[][] oppPlayers;
@@ -51,16 +52,12 @@ public class MatchStats {
         myGoals = 0;
         oppGoals = 0;
         roundNum = 0;
-        GAME_STATE = 0;
+        isOppDataRecieved = false;
+        GAME_STATE = Constants.GAME_PRE;
         myStartPosition = new Vector2[3];
-        oppStartPosition = new Vector2[3];
         myLineup = new int[5];
-        oppLineup = new int[5];
+//        oppLineup = new int[5];
         isMeFirst = is;
-        p1SubReady = false;
-        p1subs = new int[2];
-        p2SubReady = false;
-        p2subs = new int[2];
         myPlayers = new int[5][3];
         oppPlayers = new int[5][3];
     }

@@ -93,19 +93,16 @@ public class ProgressCircle extends Image {
     }
 
     public void setPercentage(float p) {
-        //100 % = 360 degree
-        //==> percent % => (percent * 360 / 100) degree
         percent = p;
 
         if (percent < 2f)
             percent = 2f;
 
-        float angle = convertToRadians(90); //percent = 0 => angle = -90
-        angle -= convertToRadians(percent * 360 / 100);
+        double angle = Math.toRadians(percent * 360d / 100d);
 
         float len = this.getWidth() > this.getHeight() ? this.getWidth() : this.getHeight();
-        float dy = (float) (Math.sin(angle) * len);
-        float dx = (float) (Math.cos(angle) * len);
+        float dy = (float) (Math.cos(angle) * len);
+        float dx = (float) (Math.sin(angle) * len);
 
         Vector2 line = new Vector2(center.x + dx, center.y + dy);
 

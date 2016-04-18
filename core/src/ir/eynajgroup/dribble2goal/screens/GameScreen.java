@@ -3,6 +3,7 @@ package ir.eynajgroup.dribble2goal.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +18,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Random;
 
@@ -26,11 +32,13 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
+import io.socket.emitter.Emitter;
 import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
 import ir.eynajgroup.dribble2goal.GamePrefs;
 import ir.eynajgroup.dribble2goal.MatchStats;
 import ir.eynajgroup.dribble2goal.MyGame;
+import ir.eynajgroup.dribble2goal.Server.ServerTool;
 import ir.eynajgroup.dribble2goal.Util.MatchConstants;
 import ir.eynajgroup.dribble2goal.Util.Util;
 import ir.eynajgroup.dribble2goal.input.Controls;
@@ -38,6 +46,7 @@ import ir.eynajgroup.dribble2goal.input.State;
 import ir.eynajgroup.dribble2goal.model.IModel;
 import ir.eynajgroup.dribble2goal.model.IModelListener;
 import ir.eynajgroup.dribble2goal.model.IRenderer;
+import ir.eynajgroup.dribble2goal.model.PhysicalModel;
 import ir.eynajgroup.dribble2goal.render.GameRenderer;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressCircle;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressLine;
@@ -95,12 +104,7 @@ public class GameScreen implements Screen, IModelListener {
     MatchStats matchStat;
     MatchConstants matchConstants;
 
-    public int frameCount = 0;
-    private final static int FPSupdateIntervall = 1;
-    private long lastRender;
-    public int lastFPS = 0;
-
-    float dt;
+    float dt = 1 / 60f;
     float accumulator;
 
     private final static int logic_FPSupdateIntervall = 1;  //--- display FPS alle x sekunden
@@ -117,21 +121,24 @@ public class GameScreen implements Screen, IModelListener {
     private Json mJson;
     ProgressCircle sprite;
 
-    public GameScreen(MatchStats stat, IModel model) {
+    public GameScreen(MatchStats stat) {
+        ServerTool.getInstance().socket.on("startTheFuckinMatch", onReadyListener);
+        ServerTool.getInstance().socket.on("before", onBeforeListener);
+        ServerTool.getInstance().socket.on("after", onAfterListener);
+        ServerTool.getInstance().socket.on("finalResult", onFinalListener);
+
         mTweenManager = MyGame.mTweenManager;
         mMainBatch = new SpriteBatch();
 
         random = new Random();
 
-        mModel = model;
+        matchStat = stat;
+        mModel = new PhysicalModel(matchStat, mTweenManager);
         mModel.setScreen(this);
         mModel.addModelListener(this);
 
         matchConstants = new MatchConstants();
 
-        dt = 0.0133f;
-
-        matchStat = stat;
         players = new Image[5];
 
         mStage = new Stage(new FitViewport(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT), mMainBatch);
@@ -345,11 +352,9 @@ public class GameScreen implements Screen, IModelListener {
                 setPosition(position);
 
                 if (matchStat.isMeFirst) {
-                    matchStat.myStartPosition = util.getAbovePlayerPosition(matchStat.myFormation);
-                    matchStat.oppStartPosition = util.getBelowPlayerPosition(matchStat.oppFormation);
+                    matchStat.myStartPosition = util.getAbovePlayerPosition(matchStat.myFormation, matchStat.myLineup);
                 } else {
-                    matchStat.myStartPosition = util.getBelowPlayerPosition(matchStat.myFormation);
-                    matchStat.oppStartPosition = util.getAbovePlayerPosition(matchStat.oppFormation);
+                    matchStat.myStartPosition = util.getBelowPlayerPosition(matchStat.myFormation, matchStat.myLineup);
                 }
             }
 
@@ -375,11 +380,9 @@ public class GameScreen implements Screen, IModelListener {
                 setPosition(position);
 
                 if (matchStat.isMeFirst) {
-                    matchStat.myStartPosition = util.getAbovePlayerPosition(matchStat.myFormation);
-                    matchStat.oppStartPosition = util.getBelowPlayerPosition(matchStat.oppFormation);
+                    matchStat.myStartPosition = util.getAbovePlayerPosition(matchStat.myFormation, matchStat.myLineup);
                 } else {
-                    matchStat.myStartPosition = util.getBelowPlayerPosition(matchStat.myFormation);
-                    matchStat.oppStartPosition = util.getAbovePlayerPosition(matchStat.oppFormation);
+                    matchStat.myStartPosition = util.getBelowPlayerPosition(matchStat.myFormation, matchStat.myLineup);
                 }
             }
 
@@ -600,7 +603,116 @@ public class GameScreen implements Screen, IModelListener {
         });
     }
 
-    private void substitution(int out, int in) {
+    private Emitter.Listener onReadyListener = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            matchStat.isMatchReady = true;
+            mModel.sendAfter();
+        }
+
+    };
+
+    private Emitter.Listener onBeforeListener = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            JSONObject response = (JSONObject) args[0];
+            JSONObject tmp;
+            JSONArray array;
+            System.out.println("before ------ " + response);
+            try {
+                if (response.getInt("playerId") != GamePrefs.getInstance().playerId) {
+                    matchStat.isOppReady = true;
+                    tmp = response.getJSONObject("direction");
+                    matchStat.oppPlayerShooting = tmp.getInt("player");
+                    array = tmp.getJSONArray("arrow");
+                    matchStat.oppShootDirection = new Vector2(Float.parseFloat(array.getString(0)), Float.parseFloat(array.getString(1)));
+                } else {
+                    tmp = response.getJSONObject("direction");
+                    matchStat.myPlayerShooting = tmp.getInt("player");
+                    array = tmp.getJSONArray("arrow");
+                    matchStat.myShootDirection = new Vector2(Float.parseFloat(array.getString(0)), Float.parseFloat(array.getString(1)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    };
+
+    private Emitter.Listener onAfterListener = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            System.out.println("after------------" + args[0]);
+            JSONObject response = (JSONObject) args[0];
+            try {
+                int playerId = response.getInt("playerId");
+                if (playerId != GamePrefs.getInstance().playerId) {
+                    JSONArray keeper = response.getJSONArray("keeperPosition");
+                    JSONArray ball = response.getJSONArray("ballPosition");
+                    JSONObject players = response.getJSONObject("playersPosition");
+                    mModel.checkPositions(new Vector2((float) keeper.getDouble(0), (float) keeper.getDouble(1)),
+                            new Vector2((float) ball.getDouble(0), (float) ball.getDouble(1)),
+                            new Vector2((float) players.getJSONArray("1").getDouble(0), (float) players.getJSONArray("1").getDouble(1)),
+                            new Vector2((float) players.getJSONArray("2").getDouble(0), (float) players.getJSONArray("2").getDouble(1)),
+                            new Vector2((float) players.getJSONArray("3").getDouble(0), (float) players.getJSONArray("3").getDouble(1)),
+                            new Vector2((float) players.getJSONArray("4").getDouble(0), (float) players.getJSONArray("4").getDouble(1)),
+                            new Vector2((float) players.getJSONArray("5").getDouble(0), (float) players.getJSONArray("5").getDouble(1)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    };
+
+    private Emitter.Listener onFinalListener = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            System.out.println("Final Result Recieved ........");
+        }
+
+    };
+
+//    private Emitter.Listener onSubListener = new Emitter.Listener() {
+//
+//        @Override
+//        public void call(Object... args) {
+//            System.out.println("sub------------" + args[0]);
+//            JSONObject response = (JSONObject) args[0];
+//            try {
+//                int playerId = response.getInt("playerId");
+//                if (playerId != GamePrefs.getInstance().playerId) {
+//                    changeOppPlayer(response.getInt("playerOut"), response.getInt("playerIn"));
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    };
+
+//    private void changeOppPlayer(int out, int in) {
+//        int out_index, in_index;
+//        if (matchStat.oppLineup[0] == out)
+//            out_index = 0;
+//        else if (matchStat.oppLineup[1] == out)
+//            out_index = 1;
+//        else
+//            out_index = 2;
+//        if (matchStat.oppLineup[3] == in)
+//            in_index = 3;
+//        else
+//            in_index = 4;
+//
+//        matchStat.oppLineup[out_index] = in;
+//        matchStat.oppLineup[in_index] = out;
+//    }
+
+    private void changeMyPlayer(int out, int in) {
         int out_index, in_index;
         if (matchStat.myLineup[0] == out)
             out_index = 0;
@@ -615,6 +727,10 @@ public class GameScreen implements Screen, IModelListener {
 
         matchStat.myLineup[out_index] = in;
         matchStat.myLineup[in_index] = out;
+    }
+
+    private void substitution(int out, int in) {
+        changeMyPlayer(out, in);
 
         Vector2 p_out = new Vector2(players[out].getX(), players[out].getY());
         Vector2 p_in = new Vector2(players[in].getX(), players[in].getY());
@@ -642,38 +758,18 @@ public class GameScreen implements Screen, IModelListener {
     }
 
     void setPosition(Vector2[] position) {
-        System.out.println(selected_player + "=====");
-        System.out.println(position[selected_player] + "=====");
         Tween.to(selected, 1, .3f)
                 .target(position[selected_player].x + Constants.HUD_SCREEN_WIDTH * .0097f,
                         position[selected_player].y + Constants.HUD_SCREEN_HEIGHT * .022f)
                 .ease(TweenEquations.easeInBack)
                 .start(mTweenManager).delay(0.0F);
 
-        Tween.to(players[0], 1, .3f)
-                .target(position[0].x, position[0].y)
-                .ease(TweenEquations.easeInBack)
-                .start(mTweenManager).delay(0.0F);
-
-        Tween.to(players[1], 1, .3f)
-                .target(position[1].x, position[1].y)
-                .ease(TweenEquations.easeInBack)
-                .start(mTweenManager).delay(0.0F);
-
-        Tween.to(players[2], 1, .3f)
-                .target(position[2].x, position[2].y)
-                .ease(TweenEquations.easeInBack)
-                .start(mTweenManager).delay(0.0F);
-
-        Tween.to(players[3], 1, .3f)
-                .target(position[3].x, position[3].y)
-                .ease(TweenEquations.easeInBack)
-                .start(mTweenManager).delay(0.0F);
-
-        Tween.to(players[4], 1, .3f)
-                .target(position[4].x, position[4].y)
-                .ease(TweenEquations.easeInBack)
-                .start(mTweenManager).delay(0.0F);
+        for (int i = 0; i < 5; i++) {
+            Tween.to(players[i], 1, .3f)
+                    .target(position[i].x, position[i].y)
+                    .ease(TweenEquations.easeInBack)
+                    .start(mTweenManager).delay(0.0F);
+        }
     }
 
     @Override
@@ -697,68 +793,52 @@ public class GameScreen implements Screen, IModelListener {
 
         Vector2[] position = util.getInGameSettingPosition(matchStat.myFormation, matchStat.myLineup);
         setPosition(position);
-
-//        this.mainTable.setPosition(0f, 0f);
-//        this.mainTable.setVisible(true);
-//        this.mainTable.setColor(1.0F, 1.0F, 1.0F, 0F);
-//        Tween.to(this.mainTable, 5, .3f)
-//                .target(1f).ease(TweenEquations.easeInBack)
-//                .start(mTweenManager).delay(0.0F)
-//                .setCallback(new TweenCallback() {
-//                    public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
-//                        Tween.to(arc, 3, 1.1f)
-//                                .target(1f).ease(TweenEquations.easeOutQuad)
-//                                .start(mTweenManager).delay(0.0F);
-//                    }
-//                });
-//
-        Tween.to(progress, 1, 30f)
-                .target(0).ease(TweenEquations.easeInCubic)
-                .start(mTweenManager).delay(0F)
-                .setCallback(new TweenCallback() {
-                    public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
-                        mModel.startRendering();
-                    }
-                });
-//
-//        profile_coin.setWidth(0f);
-//        coins_txt.setText("0");
-//        coins_txt.setColor(1f, 1f, 1f, 0f);
-//        Tween.to(profile_coin, 4, 1.3f)
-//                .target(profile_coin.getX(), profile_coin.getY(),
-//                        Constants.HUD_SCREEN_WIDTH * .228f, Constants.HUD_SCREEN_HEIGHT * .175f)
-//                .ease(TweenEquations.easeInExpo)
-//                .start(mTweenManager).delay(0.0F)
-//                .setCallback(new TweenCallback() {
-//                    public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
-//                        coins_txt.setColor(1f, 1f, 1f, 1f);
-//                        Tween.to(coins_txt, 1, 1.1f)
-//                                .target(GamePrefs.getInstance().coins_num).ease(TweenEquations.easeOutQuad)
-//                                .start(mTweenManager).delay(0.0F);
-//                    }
-//                });
     }
 
     public void endofRound() {
         matchStat.roundNum += 1;
+        matchStat.myShootDirection = null;
         progress.setPercentage(1f);
         Tween.to(progress, 1, 30f)
                 .target(0).ease(TweenEquations.easeInCubic)
-                .start(mTweenManager).delay(0F)
-                .setCallback(new TweenCallback() {
-                    public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
-                        mModel.startRendering();
-                    }
-                });
+                .start(mTweenManager).delay(0F);
+//                .setCallback(new TweenCallback() {
+//                    public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
+//                        System.out.println("end of tween-----------------");
+//                    }
+//                });
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                mModel.sendBefore();
+                if (matchStat.isOppReady) {
+                    mModel.startRendering();
+                } else {
+                    matchStat.GAME_STATE = Constants.GAME_WAITING;
+                }
+            }
+        }, 15f, 0f, 0);
     }
 
-    public void winGame(boolean isMine) {
-
+    public void winGame(boolean isWinner) {
+        if (isWinner) {
+            matchStat.GAME_STATE = Constants.GAME_WINNER;
+        } else {
+            matchStat.GAME_STATE = Constants.GAME_LOSER;
+        }
     }
 
     public void goalScored() {
         if (matchStat.lastTouch == 1) {
             matchStat.myGoals += 1;
+            JSONObject data = new JSONObject();
+            try {
+                data.put("playerId", GamePrefs.getInstance().playerId);
+
+                ServerTool.getInstance().socket.emit("goal", data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } else {
             matchStat.oppGoals += 1;
         }
@@ -770,7 +850,34 @@ public class GameScreen implements Screen, IModelListener {
     @Override
     public void render(float delta) {
 
-        //---------- FPS check ----------------------------
+        float frameTime = Math.min(delta, 0.25f);
+        accumulator += frameTime;
+        while (accumulator >= dt) {
+            mModel.update(dt);
+            accumulator -= dt;
+        }
+
+        //Clear the screen
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Restore the stage's viewport.
+        mStage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+        mStage.act(dt);
+        mStage.draw();
+
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        mGameRenderer.render();
+        mModel.debugRender(mMainCamera);
+
+        // Restore the stage's viewport.
+        mStage2.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+        mStage2.act(dt);
+        mStage2.draw();
+
+        /*---------- FPS check ----------------------------
         frameCount++;
         long now = System.nanoTime();
 
@@ -782,7 +889,7 @@ public class GameScreen implements Screen, IModelListener {
             lastRender = System.nanoTime();
         }
         //--------------------------------------------------------------
-        renderFIXEDTIMESTEP(delta);
+        renderFIXEDTIMESTEP(delta);*/
     }
 
     //====================================================================================
@@ -826,22 +933,6 @@ public class GameScreen implements Screen, IModelListener {
 
     //====================================================================================
     public void rendering(float delta) {
-        // Restore the stage's viewport.
-        mStage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-
-        mStage.act(delta);
-        mStage.draw();
-
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        mGameRenderer.render();
-        mModel.debugRender(mMainCamera);
-
-        // Restore the stage's viewport.
-        mStage2.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-
-        mStage2.act(delta);
-        mStage2.draw();
 
         //------------- to limit fps ------------------------
         if (RENDERER_SLEEP_MS > 0) {
@@ -903,5 +994,8 @@ public class GameScreen implements Screen, IModelListener {
     @Override
     public void dispose() {
         mStage.dispose();
+        if (mModel != null) {
+            mModel.dispose();
+        }
     }
 }

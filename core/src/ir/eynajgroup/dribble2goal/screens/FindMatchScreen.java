@@ -210,20 +210,20 @@ public class FindMatchScreen implements Screen {
                     }
                 }
 
-                tmp = data.getJSONObject("lineup2");
-                flag = true;
-                for (int i = 1; i < 6; i++) {
-                    if (tmp.getInt(i + "") == -1) {
-                        if (flag) {
-                            stat.oppLineup[3] = (i-1);
-                            flag = false;
-                        } else {
-                            stat.oppLineup[4] = (i-1);
-                        }
-                    } else {
-                        stat.oppLineup[tmp.getInt(i + "") - 1] = (i-1);
-                    }
-                }
+//                tmp = data.getJSONObject("lineup2");
+//                flag = true;
+//                for (int i = 1; i < 6; i++) {
+//                    if (tmp.getInt(i + "") == -1) {
+//                        if (flag) {
+//                            stat.oppLineup[3] = (i-1);
+//                            flag = false;
+//                        } else {
+//                            stat.oppLineup[4] = (i-1);
+//                        }
+//                    } else {
+//                        stat.oppLineup[tmp.getInt(i + "") - 1] = (i-1);
+//                    }
+//                }
 
                 tmp = data.getJSONObject("players1");
                 JSONObject t1 = tmp.getJSONObject("1");
@@ -299,20 +299,20 @@ public class FindMatchScreen implements Screen {
                     }
                 }
 
-                tmp = data.getJSONObject("lineup1");
-                flag = true;
-                for (int i = 1; i < 6; i++) {
-                    if (tmp.getInt(i + "") == -1) {
-                        if (flag) {
-                            stat.oppLineup[3] = (i-1);
-                            flag = false;
-                        } else {
-                            stat.oppLineup[4] = (i-1);
-                        }
-                    } else {
-                        stat.oppLineup[tmp.getInt(i + "") - 1] = (i-1);
-                    }
-                }
+//                tmp = data.getJSONObject("lineup1");
+//                flag = true;
+//                for (int i = 1; i < 6; i++) {
+//                    if (tmp.getInt(i + "") == -1) {
+//                        if (flag) {
+//                            stat.oppLineup[3] = (i-1);
+//                            flag = false;
+//                        } else {
+//                            stat.oppLineup[4] = (i-1);
+//                        }
+//                    } else {
+//                        stat.oppLineup[tmp.getInt(i + "") - 1] = (i-1);
+//                    }
+//                }
 
                 tmp = data.getJSONObject("players2");
                 JSONObject t1 = tmp.getJSONObject("1");
@@ -356,6 +356,15 @@ public class FindMatchScreen implements Screen {
                 stat.oppPlayers[4][0] = t1.getInt("stamina");
                 stat.oppPlayers[4][1] = t1.getInt("size");
                 stat.oppPlayers[4][2] = t1.getInt("speed");
+            }
+            if (stat.myShirt == stat.oppShirt) {
+                if (stat.myShirt == 1) {
+                    stat.oppShirt = 2;
+                } else if (stat.myShirt == 2) {
+                    stat.oppShirt = 1;
+                } else {
+                    stat.oppShirt = 2;
+                }
             }
 
             return true;

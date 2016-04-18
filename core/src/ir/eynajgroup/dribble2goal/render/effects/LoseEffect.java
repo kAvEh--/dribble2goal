@@ -11,42 +11,36 @@ import aurelienribon.tweenengine.TweenManager;
 import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
 import ir.eynajgroup.dribble2goal.MatchStats;
-import ir.eynajgroup.dribble2goal.template.Team;
 
 /**
- * Created by kAvEh on 2/26/2016.
+ * Created by kAvEh on 4/13/2016.
  */
-public class GoalEffect {
-
+public class LoseEffect {
     Sprite mSprite1;
     Sprite mSprite2;
     TweenManager mTweenManager;
     MatchStats matchStat;
     boolean flag = true;
 
-    public GoalEffect(TweenManager manager, MatchStats stat) {
-        mSprite1 = new Sprite(Assets.getInstance().goalImage);
+    public LoseEffect(TweenManager manager, MatchStats stat) {
+        mSprite1 = new Sprite(Assets.getInstance().lose_image);
         mSprite1.setPosition(Constants.SCREEN_WIDTH / 2, -mSprite1.getHeight() / 2);
         mSprite1.setSize(3f, 2f);
 
-        mSprite2 = new Sprite(Assets.getInstance().goalImage);
+        mSprite2 = new Sprite(Assets.getInstance().lose_image);
         mSprite2.setPosition(Constants.SCREEN_WIDTH / 2, -mSprite2.getHeight() / 2);
         mSprite2.setSize(3f, 2f);
         mTweenManager = manager;
         matchStat = stat;
     }
 
-    public void draw(SpriteBatch batch, Team team) {
+    public void draw(SpriteBatch batch) {
         if (flag) {
             flag = false;
             startTween();
         }
         mSprite1.draw(batch);
         mSprite2.draw(batch);
-
-        if (team == Team.PLAYER1) {
-        } else {
-        }
     }
 
     private void startTween() {
@@ -66,7 +60,7 @@ public class GoalEffect {
                                 .ease(TweenEquations.easeInBack)
                                 .start(mTweenManager).setCallback(new TweenCallback() {
                             public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
-                                matchStat.GAME_STATE = Constants.GAME_PRE;
+                                matchStat.GAME_STATE = Constants.GAME_END;
                                 flag = true;
                             }
                         });

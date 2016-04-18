@@ -18,10 +18,6 @@ public class PlayerTexture implements ITexture<Player> {
 
     private Texture playerStable;
     private Texture keeperStable;
-    private Texture stamina;
-    private Texture mTexture;
-    private Texture mTexture2;
-
     private Sprite p1Sprite;
     private Sprite p2Sprite;
     private Sprite goalerSprite;
@@ -32,9 +28,6 @@ public class PlayerTexture implements ITexture<Player> {
     public PlayerTexture(MatchStats stat) {
 
         playerStable = Assets.getInstance().player;
-        mTexture = Assets.getInstance().shirt1;
-        mTexture2 = Assets.getInstance().shirt2;
-        stamina = Assets.getInstance().stamina;
 
         Util util = new Util();
         keeperStable = util.getKeeperPiece(stat.matchLevel);

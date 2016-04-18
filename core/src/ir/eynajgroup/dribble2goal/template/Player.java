@@ -51,6 +51,7 @@ public class Player {
     }
 
     public float getStamina() {
+        stamina = Float.parseFloat(stamina + "");
         return stamina;
     }
 

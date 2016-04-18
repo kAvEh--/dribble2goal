@@ -17,5 +17,8 @@ public class Constants {
     public static final int GAME_GOAL = 3;
     public static final int GAME_POSITIONING = 4;
     public static final int GAME_END = 5;
-
+    public static final int GAME_WAITING = 6;
+    public static final int GAME_WAIT_FOR_AFTER = 7;
+    public static final int GAME_WINNER = 11;
+    public static final int GAME_LOSER = 12;
 }

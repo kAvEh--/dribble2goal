@@ -27,6 +27,9 @@ public class Box2dBall {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(x, y);
         bodyDef.type = type;
+        bodyDef.bullet = true;
+        bodyDef.allowSleep = false;
+        bodyDef.awake = true;
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(radius);
@@ -62,7 +65,7 @@ public class Box2dBall {
             this.mBody.setLinearVelocity(this.mBody.getLinearVelocity().x * 0.8F, this.mBody.getLinearVelocity().y * 0.8F);
         }
 
-        mBody.setAngularDamping(1f);
+//        mBody.setAngularDamping(1f);
     }
 
     float getAngularVelocity() {

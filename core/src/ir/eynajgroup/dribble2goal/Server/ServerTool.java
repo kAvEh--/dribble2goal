@@ -67,4 +67,8 @@ public class ServerTool {
             e.printStackTrace();
         }
     }
+
+    public void sendAfter(JSONObject data) {
+        socket.emit("after", data);
+    }
 }

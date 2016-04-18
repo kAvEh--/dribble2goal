@@ -170,6 +170,8 @@ public class Assets implements Disposable {
     public Texture login_pass;
     public Texture login_pass_re;
     public Texture login_email;
+    public Texture lose_image;
+    public Texture win_image;
 
     public void init() {
 //        Texture.setEnforcePotImages(false);
@@ -326,6 +328,9 @@ public class Assets implements Disposable {
         login_pass  = new Texture(Gdx.files.internal("img/login_pass.png"));
         login_pass_re  = new Texture(Gdx.files.internal("img/login_pass_re.png"));
         login_username  = new Texture(Gdx.files.internal("img/login_username.png"));
+
+        lose_image  = new Texture(Gdx.files.internal("img/loser.jpg"));
+        win_image  = new Texture(Gdx.files.internal("img/winner.jpg"));
 
         player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         shirt1.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

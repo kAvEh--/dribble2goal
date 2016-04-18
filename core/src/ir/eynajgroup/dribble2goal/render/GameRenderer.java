@@ -12,7 +12,7 @@ import ir.eynajgroup.dribble2goal.Constants;
 import ir.eynajgroup.dribble2goal.MatchStats;
 import ir.eynajgroup.dribble2goal.model.IRenderer;
 import ir.eynajgroup.dribble2goal.render.effects.GoalEffect;
-import ir.eynajgroup.dribble2goal.render.effects.IEffect;
+import ir.eynajgroup.dribble2goal.render.effects.LoseEffect;
 import ir.eynajgroup.dribble2goal.render.effects.WinEffect;
 import ir.eynajgroup.dribble2goal.render.textures.BallTexture;
 import ir.eynajgroup.dribble2goal.render.textures.ITexture;
@@ -32,23 +32,25 @@ public class GameRenderer implements IRenderer {
     private Field mField;
     private final ITexture<Player> mPlayerTexture;
     private final ITexture<Ball> mBallTexture;
-    private final IEffect<Team> mWinEffect;
 
-    MatchStats gameStat;
+    MatchStats matchStat;
 
     TweenManager mTweenManager;
     private GoalEffect mGoalEffect;
+    private WinEffect mWinEffect;
+    private LoseEffect mLoseEffect;
 
     public GameRenderer(OrthographicCamera camera, OrthographicCamera hudCamera, MatchStats stat, TweenManager tmanager) {
-        this.gameStat = stat;
+        this.matchStat = stat;
         mCamera = camera;
         mMainBatch = new SpriteBatch();
-        mPlayerTexture = new PlayerTexture(this.gameStat);
+        mPlayerTexture = new PlayerTexture(this.matchStat);
         mBallTexture = new BallTexture();
-        mWinEffect = new WinEffect(hudCamera);
         mTweenManager = tmanager;
 
-        mGoalEffect = new GoalEffect(mTweenManager, gameStat);
+        mGoalEffect = new GoalEffect(mTweenManager, matchStat);
+        mWinEffect = new WinEffect(mTweenManager, matchStat);
+        mLoseEffect = new LoseEffect(mTweenManager, matchStat);
     }
 
     @Override
@@ -59,71 +61,63 @@ public class GameRenderer implements IRenderer {
         mMainBatch.setTransformMatrix(mCamera.view);
         mMainBatch.begin();
 
-//        mMainBatch.draw(Assets.getInstance().main_bg, -Constants.SCREEN_WIDTH / 2, -Constants.SCREEN_HEIGHT / 2,
-//                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-
 //        Box2dWalls.createBatch(mMainBatch);
 
-        if (gameStat.GAME_STATE == Constants.GAME_SHOOTING) {
-            if (gameStat.isMeFirst) {
-                mPlayerTexture.drawStamina(mMainBatch, mField.getT1Player1(), Gdx.graphics.getDeltaTime());
-                mPlayerTexture.drawStamina(mMainBatch, mField.getT1Player2(), Gdx.graphics.getDeltaTime());
-                mPlayerTexture.drawStamina(mMainBatch, mField.getT1Player3(), Gdx.graphics.getDeltaTime());
-            } else {
-                mPlayerTexture.drawStamina(mMainBatch, mField.getT2Player1(), Gdx.graphics.getDeltaTime());
-                mPlayerTexture.drawStamina(mMainBatch, mField.getT2Player2(), Gdx.graphics.getDeltaTime());
-                mPlayerTexture.drawStamina(mMainBatch, mField.getT2Player3(), Gdx.graphics.getDeltaTime());
-            }
+        if (matchStat.GAME_STATE == Constants.GAME_SHOOTING) {
+            mPlayerTexture.drawStamina(mMainBatch, mField.getMyPlayer1(), Gdx.graphics.getDeltaTime());
+            mPlayerTexture.drawStamina(mMainBatch, mField.getMyPlayer2(), Gdx.graphics.getDeltaTime());
+            mPlayerTexture.drawStamina(mMainBatch, mField.getMyPlayer3(), Gdx.graphics.getDeltaTime());
+            mPlayerTexture.drawStamina(mMainBatch, mField.getMyPlayer4(), Gdx.graphics.getDeltaTime());
+            mPlayerTexture.drawStamina(mMainBatch, mField.getMyPlayer5(), Gdx.graphics.getDeltaTime());
         }
 
-        mPlayerTexture.draw(mMainBatch, mField.getT1Player1(), 0);
-        mPlayerTexture.draw(mMainBatch, mField.getT1Player2(), 0);
-        mPlayerTexture.draw(mMainBatch, mField.getT1Player3(), 0);
+        mPlayerTexture.draw(mMainBatch, mField.getMyPlayer1(), 0);
+        mPlayerTexture.draw(mMainBatch, mField.getMyPlayer2(), 0);
+        mPlayerTexture.draw(mMainBatch, mField.getMyPlayer3(), 0);
+        mPlayerTexture.draw(mMainBatch, mField.getMyPlayer4(), 0);
+        mPlayerTexture.draw(mMainBatch, mField.getMyPlayer5(), 0);
 
-        mPlayerTexture.draw(mMainBatch, mField.getT2Player1(), 1);
-        mPlayerTexture.draw(mMainBatch, mField.getT2Player2(), 1);
-        mPlayerTexture.draw(mMainBatch, mField.getT2Player3(), 1);
+        mPlayerTexture.draw(mMainBatch, mField.getOppPlayer1(), 1);
+        mPlayerTexture.draw(mMainBatch, mField.getOppPlayer2(), 1);
+        mPlayerTexture.draw(mMainBatch, mField.getOppPlayer3(), 1);
+        mPlayerTexture.draw(mMainBatch, mField.getOppPlayer4(), 1);
+        mPlayerTexture.draw(mMainBatch, mField.getOppPlayer5(), 1);
 
         mPlayerTexture.draw(mMainBatch, mField.getGoalKeeper(), 2);
         mBallTexture.draw(mMainBatch, mField.getBall());
 
-        if (mField != null && mField.getT1p1Arrow() != null && gameStat.GAME_STATE == Constants.GAME_SHOOTING) {
-            drawLine(mMainBatch, mField.getT1Player1().getPosition().x, mField.getT1Player1().getPosition().y,
-                    mField.getT1p1Arrow().x, mField.getT1p1Arrow().y);
-        }
-        if (mField != null && mField.getT1p2Arrow() != null && gameStat.GAME_STATE == Constants.GAME_SHOOTING) {
-            drawLine(mMainBatch, mField.getT1Player2().getPosition().x, mField.getT1Player2().getPosition().y,
-                    mField.getT1p2Arrow().x, mField.getT1p2Arrow().y);
-        }
-        if (mField != null && mField.getT1p3Arrow() != null && gameStat.GAME_STATE == Constants.GAME_SHOOTING) {
-            drawLine(mMainBatch, mField.getT1Player3().getPosition().x, mField.getT1Player3().getPosition().y,
-                    mField.getT1p3Arrow().x, mField.getT1p3Arrow().y);
+        if (mField != null && matchStat.myShootDirection != null && matchStat.GAME_STATE == Constants.GAME_SHOOTING) {
+            if (matchStat.myPlayerShooting == 1) {
+                drawLine(mMainBatch, mField.getMyPlayer1().getPosition().x, mField.getMyPlayer1().getPosition().y,
+                        matchStat.myShootDirection.x, matchStat.myShootDirection.y);
+            } else if (matchStat.myPlayerShooting == 2) {
+                drawLine(mMainBatch, mField.getMyPlayer2().getPosition().x, mField.getMyPlayer2().getPosition().y,
+                        matchStat.myShootDirection.x, matchStat.myShootDirection.y);
+            } else if (matchStat.myPlayerShooting == 3) {
+                drawLine(mMainBatch, mField.getMyPlayer3().getPosition().x, mField.getMyPlayer3().getPosition().y,
+                        matchStat.myShootDirection.x, matchStat.myShootDirection.y);
+            } else if (matchStat.myPlayerShooting == 4) {
+                drawLine(mMainBatch, mField.getMyPlayer4().getPosition().x, mField.getMyPlayer4().getPosition().y,
+                        matchStat.myShootDirection.x, matchStat.myShootDirection.y);
+            } else if (matchStat.myPlayerShooting == 5) {
+                drawLine(mMainBatch, mField.getMyPlayer5().getPosition().x, mField.getMyPlayer5().getPosition().y,
+                        matchStat.myShootDirection.x, matchStat.myShootDirection.y);
+            }
         }
 
-        if (mField != null && mField.getT2p1Arrow() != null && gameStat.GAME_STATE == Constants.GAME_SHOOTING) {
-            drawLine(mMainBatch, mField.getT2Player1().getPosition().x, mField.getT2Player1().getPosition().y,
-                    mField.getT2p1Arrow().x, mField.getT2p1Arrow().y);
-        }
-        if (mField != null && mField.getT2p2Arrow() != null && gameStat.GAME_STATE == Constants.GAME_SHOOTING) {
-            drawLine(mMainBatch, mField.getT2Player2().getPosition().x, mField.getT2Player2().getPosition().y,
-                    mField.getT2p2Arrow().x, mField.getT2p2Arrow().y);
-        }
-        if (mField != null && mField.getT2p3Arrow() != null && gameStat.GAME_STATE == Constants.GAME_SHOOTING) {
-            drawLine(mMainBatch, mField.getT2Player3().getPosition().x, mField.getT2Player3().getPosition().y,
-                    mField.getT2p3Arrow().x, mField.getT2p3Arrow().y);
-        }
-//        mMainBatch.draw(Assets.getInstance().goal_sample, -Constants.SCREEN_WIDTH / 2, -Constants.SCREEN_HEIGHT / 2,
-//                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-//        mMainBatch.draw(new Util().getStadiumArc(gameStat.matchLevel), -Constants.SCREEN_WIDTH / 2, -Constants.SCREEN_HEIGHT / 2,
-//                Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-
-        if (gameStat.GAME_STATE == Constants.GAME_GOAL) {
+        if (matchStat.GAME_STATE == Constants.GAME_GOAL) {
             mGoalEffect.draw(mMainBatch, Team.PLAYER1);
+        }
+        if (matchStat.GAME_STATE == Constants.GAME_WINNER) {
+            mWinEffect.draw(mMainBatch);
+        }
+        if (matchStat.GAME_STATE == Constants.GAME_LOSER) {
+            mLoseEffect.draw(mMainBatch);
         }
 
         mMainBatch.end();
 
-        mWinEffect.draw(mMainBatch, mField.getLastWinTeam());
+//        mWinEffect.draw(mMainBatch, mField.getLastWinTeam());
         mTweenManager.update(Gdx.graphics.getDeltaTime());
     }
 
@@ -131,7 +125,6 @@ public class GameRenderer implements IRenderer {
         float dx = x2 - x1;
         float dy = y2 - y1;
         float dist = Math.min((float) Math.sqrt(dx * dx + dy * dy), 1f);
-//        float dist = (float) Math.sqrt(dx * dx + dy * dy);
         float rad = (float) Math.atan2(dy, dx);
         Texture mTexture = Assets.getInstance().arrow;
 
@@ -145,7 +138,6 @@ public class GameRenderer implements IRenderer {
         arrow.setPosition(x1 + (dist - .4f), y1 - .2f);
         arrow.setOrigin(-(dist - .4f), .2f);
         arrow.setRotation((float) Math.toDegrees(rad) + 180);
-//        arrow.setColor(.8f,.5f,.1f,1f);
         arrow.draw(batch);
     }
 
@@ -156,17 +148,16 @@ public class GameRenderer implements IRenderer {
 
     @Override
     public void playWinEffect() {
-        mWinEffect.play();
+
     }
 
     @Override
     public void stopWinEffect() {
-        mWinEffect.stop();
+
     }
 
     @Override
     public void dispose() {
-        mWinEffect.dispose();
         mMainBatch.dispose();
     }
 }

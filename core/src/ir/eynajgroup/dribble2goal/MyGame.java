@@ -16,7 +16,6 @@ import ir.eynajgroup.dribble2goal.Util.MyScrollPane;
 import ir.eynajgroup.dribble2goal.model.Box2dBall;
 import ir.eynajgroup.dribble2goal.model.Box2dPlayer;
 import ir.eynajgroup.dribble2goal.model.IModel;
-import ir.eynajgroup.dribble2goal.model.PhysicalModel;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressCircle;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressLine;
 import ir.eynajgroup.dribble2goal.screens.CoachScreen;
@@ -62,6 +61,9 @@ public class MyGame extends Game {
         Tween.registerAccessor(MyScrollPane.class, new SteperAccessor());
         Tween.registerAccessor(TextField.class, new TextFieldAccessor());
         Tween.registerAccessor(ProgressLine.class, new ProgressLineAccessor());
+
+        float f = -0.6009111404418945f;
+        System.out.println(Float.floatToIntBits(f) + "***" + Float.toHexString(f) + "***" + (Float.parseFloat(Float.toHexString(f)) == f));
 
 //        setProfileScreen();
 //        setLoadingScreen();
@@ -119,8 +121,7 @@ public class MyGame extends Game {
 //        MatchConstants temp = new MatchConstants();
 //        matchStat.myStartPosition = temp.getP1Arrange(matchStat.p1Arrange);
 //        matchStat.oppStartPosition = temp.getP2Arrange(matchStat.p2Arrange);
-        mModel = new PhysicalModel(matchStat, mTweenManager);
-        setScreen(new GameScreen(matchStat, mModel));
+        setScreen(new GameScreen(matchStat));
     }
 
     @Override
@@ -134,8 +135,5 @@ public class MyGame extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        if (mModel != null) {
-            mModel.dispose();
-        }
     }
 }

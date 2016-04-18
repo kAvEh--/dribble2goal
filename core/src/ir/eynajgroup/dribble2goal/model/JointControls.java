@@ -25,21 +25,19 @@ public class JointControls implements ITouchControls {
     Field mField;
     public int player = 0;
     Player myPlayer;
-    Player otherPlayer;
     String playerTag;
-    String otherTag;
-    MatchStats gameStat;
+    MatchStats matchStat;
+    private int lastpointer;
 
     JointControls(World world, Field f, MatchStats stat) {
         mWorld = world;
         mMouseJoints = new HashMap<Integer, MouseJoint>();
         mField = f;
-        gameStat = stat;
+        matchStat = stat;
     }
 
     @Override
     public void sendTouchDown(final float x, final float y, final int pointer) {
-        System.out.println("hereeee");
         mWorld.QueryAABB(new QueryCallback() {
             @Override
             public boolean reportFixture(Fixture fixture) {
@@ -49,86 +47,50 @@ public class JointControls implements ITouchControls {
                 jointDef.bodyA = mWorld.createBody(new BodyDef());
                 jointDef.bodyB = fixture.getBody();
                 jointDef.target.set(x, y);
-                if (gameStat.GAME_STATE != Constants.GAME_SHOOTING)
+                if (matchStat.GAME_STATE != Constants.GAME_SHOOTING)
                     return false;
                 if (fixture.getBody().getLinearVelocity().x > 0f || fixture.getBody().getLinearVelocity().y > 0f
                         || fixture.getBody().getUserData() == null) {
                     return false;
                 }
 
-                System.out.println(fixture.getBody().getUserData().toString().contains("T1") + "===");
                 if (fixture.getBody().getUserData().toString().contains("T1")) {
                     if (myPlayer != null)
-                        if (fixture.getBody().getUserData().toString() != playerTag) {
-                            if (playerTag == "T1P1") {
-                                if (mField.getT1p1Arrow() != null && mField.getT1p1Arrow().len() != 0) {
-                                    return false;
-                                }
-                            } else if (playerTag == "T1P2") {
-                                if (mField.getT1p2Arrow() != null && mField.getT1p2Arrow().len() != 0) {
-                                    return false;
-                                }
-                            } else if (playerTag == "T1P3") {
-                                if (mField.getT1p3Arrow() != null && mField.getT1p3Arrow().len() != 0) {
-                                    return false;
-                                }
+                        if (!fixture.getBody().getUserData().toString().equals(playerTag)) {
+                            if (matchStat.myShootDirection != null && matchStat.myShootDirection.len() != 0) {
+                                return false;
                             }
                         }
                     myPlayer = null;
                     playerTag = "";
                 } else {
-                    if (otherPlayer != null)
-                        if (fixture.getBody().getUserData().toString() != otherTag) {
-                            if (playerTag == "T2P1") {
-                                if (mField.getT2p1Arrow() != null && mField.getT2p1Arrow().len() != 0) {
-                                    return false;
-                                }
-                            } else if (playerTag == "T2P2") {
-                                if (mField.getT2p2Arrow() != null && mField.getT2p2Arrow().len() != 0) {
-                                    return false;
-                                }
-                            } else if (playerTag == "T2P3") {
-                                if (mField.getT2p3Arrow() != null && mField.getT2p3Arrow().len() != 0) {
-                                    return false;
-                                }
-                            }
-                        }
-                    otherPlayer = null;
-                    otherTag = "";
+                    return false;
                 }
 
-                if (fixture.getBody().getUserData().toString() == "T1P1") {
-                    mField.setLeftDragged(true);
+                if (fixture.getBody().getUserData().toString().equals("T1P1")) {
                     player = 1;
-                    myPlayer = mField.getT1Player1();
+                    myPlayer = mField.getMyPlayer1();
                     playerTag = fixture.getBody().getUserData().toString();
-                } else if (fixture.getBody().getUserData().toString() == "T1P2") {
-                    mField.setLeftDragged(true);
+                } else if (fixture.getBody().getUserData().toString().equals("T1P2")) {
                     player = 2;
-                    myPlayer = mField.getT1Player2();
+                    myPlayer = mField.getMyPlayer2();
                     playerTag = fixture.getBody().getUserData().toString();
-                } else if (fixture.getBody().getUserData().toString() == "T1P3") {
-                    mField.setLeftDragged(true);
+                } else if (fixture.getBody().getUserData().toString().equals("T1P3")) {
                     player = 3;
-                    myPlayer = mField.getT1Player3();
+                    myPlayer = mField.getMyPlayer3();
                     playerTag = fixture.getBody().getUserData().toString();
-                } else if (fixture.getBody().getUserData().toString() == "T2P1") {
-                    mField.setRightDragged(true);
+                } else if (fixture.getBody().getUserData().toString().equals("T1P4")) {
                     player = 4;
-                    otherPlayer = mField.getT2Player1();
-                    otherTag = fixture.getBody().getUserData().toString();
-                } else if (fixture.getBody().getUserData().toString() == "T2P2") {
-                    mField.setRightDragged(true);
+                    myPlayer = mField.getMyPlayer4();
+                    playerTag = fixture.getBody().getUserData().toString();
+                } else if (fixture.getBody().getUserData().toString().equals("T1P5")) {
                     player = 5;
-                    otherPlayer = mField.getT2Player2();
-                    otherTag = fixture.getBody().getUserData().toString();
-                } else if (fixture.getBody().getUserData().toString() == "T2P3") {
-                    mField.setRightDragged(true);
-                    player = 6;
-                    otherPlayer = mField.getT2Player3();
-                    otherTag = fixture.getBody().getUserData().toString();
+                    myPlayer = mField.getMyPlayer5();
+                    playerTag = fixture.getBody().getUserData().toString();
                 }
+                matchStat.myPlayerShooting = player;
                 mMouseJoints.put(pointer, (MouseJoint) mWorld.createJoint(jointDef));
+                lastpointer = pointer;
                 return false;
             }
         }, x, y, x, y);
@@ -136,9 +98,15 @@ public class JointControls implements ITouchControls {
 
     @Override
     public void sendTouchDragged(float x, float y, int pointer) {
+        MouseJoint joint = mMouseJoints.get(pointer);
+        lastpointer = pointer;
+        if (matchStat.GAME_STATE != Constants.GAME_SHOOTING && joint != null) {
+            mWorld.destroyJoint(joint);
+            mMouseJoints.remove(pointer);
+            return;
+        }
         boolean cancelArrowT1 = false;
-        boolean cancelArrowT2 = false;
-        if (myPlayer != null && player < 4) {
+        if (myPlayer != null && player < 6) {
             float dx = x - myPlayer.getPosition().x;
             float dy = y - myPlayer.getPosition().y;
 
@@ -149,65 +117,25 @@ public class JointControls implements ITouchControls {
                 cancelArrowT1 = true;
             }
         }
-        if (otherPlayer != null && player > 3) {
-            float dx = x - otherPlayer.getPosition().x;
-            float dy = y - otherPlayer.getPosition().y;
 
-            float dist = (float) Math.sqrt(dx * dx + dy * dy);
-            if (dist < .1f) {
-                otherPlayer = null;
-                otherTag = "";
-                cancelArrowT2 = true;
-            }
-        }
-
-        MouseJoint joint = mMouseJoints.get(pointer);
         if (joint != null) {
-            switch (player) {
-                case 1:
-                    if (cancelArrowT1)
-                        mField.setT1p1Arrow(null);
-                    else
-                        mField.setT1p1Arrow(new Vector2(x, y));
-                    break;
-                case 2:
-                    if (cancelArrowT1)
-                        mField.setT1p2Arrow(null);
-                    else
-                        mField.setT1p2Arrow(new Vector2(x, y));
-                    break;
-                case 3:
-                    if (cancelArrowT1)
-                        mField.setT1p3Arrow(null);
-                    else
-                        mField.setT1p3Arrow(new Vector2(x, y));
-                    break;
-                case 4:
-                    if (cancelArrowT2)
-                        mField.setT2p1Arrow(null);
-                    else
-                        mField.setT2p1Arrow(new Vector2(x, y));
-                    break;
-                case 5:
-                    if (cancelArrowT2)
-                        mField.setT2p2Arrow(null);
-                    else
-                        mField.setT2p2Arrow(new Vector2(x, y));
-                    break;
-                case 6:
-                    if (cancelArrowT2)
-                        mField.setT2p3Arrow(null);
-                    else
-                        mField.setT2p3Arrow(new Vector2(x, y));
-                    break;
-            }
+            if (cancelArrowT1)
+                matchStat.myShootDirection = null;
+            else
+                matchStat.myShootDirection = new Vector2(x, y);
         }
     }
 
     @Override
     public void sendTouchUp(float x, float y, int pointer) {
+        MouseJoint joint = mMouseJoints.get(pointer);
+        lastpointer = pointer;
+        if (matchStat.GAME_STATE != Constants.GAME_SHOOTING && joint != null) {
+            mWorld.destroyJoint(joint);
+            mMouseJoints.remove(pointer);
+            return;
+        }
         boolean cancelArrowT1 = false;
-        boolean cancelArrowT2 = false;
         if (myPlayer != null && player < 4) {
             float dx = x - myPlayer.getPosition().x;
             float dy = y - myPlayer.getPosition().y;
@@ -219,61 +147,25 @@ public class JointControls implements ITouchControls {
                 cancelArrowT1 = true;
             }
         }
-        if (otherPlayer != null && player > 3) {
-            float dx = x - otherPlayer.getPosition().x;
-            float dy = y - otherPlayer.getPosition().y;
-
-            float dist = (float) Math.sqrt(dx * dx + dy * dy);
-            if (dist < .1f) {
-                otherPlayer = null;
-                otherTag = "";
-                cancelArrowT2 = true;
-            }
-        }
-
-        MouseJoint joint = mMouseJoints.get(pointer);
 
         if (joint != null) {
-            switch (player) {
-                case 1:
-                    if (cancelArrowT1)
-                        mField.setT1p1Arrow(null);
-                    else
-                        mField.setT1p1Arrow(new Vector2(x, y));
-                    break;
-                case 2:
-                    if (cancelArrowT1)
-                        mField.setT1p2Arrow(null);
-                    else
-                        mField.setT1p2Arrow(new Vector2(x, y));
-                    break;
-                case 3:
-                    if (cancelArrowT1)
-                        mField.setT1p3Arrow(null);
-                    else
-                        mField.setT1p3Arrow(new Vector2(x, y));
-                    break;
-                case 4:
-                    if (cancelArrowT2)
-                        mField.setT2p1Arrow(null);
-                    else
-                        mField.setT2p1Arrow(new Vector2(x, y));
-                    break;
-                case 5:
-                    if (cancelArrowT2)
-                        mField.setT2p2Arrow(null);
-                    else
-                        mField.setT2p2Arrow(new Vector2(x, y));
-                    break;
-                case 6:
-                    if (cancelArrowT2)
-                        mField.setT2p3Arrow(null);
-                    else
-                        mField.setT2p3Arrow(new Vector2(x, y));
-                    break;
-            }
+            if (cancelArrowT1)
+                matchStat.myShootDirection = null;
+            else
+                matchStat.myShootDirection = new Vector2(x, y);
+
             mWorld.destroyJoint(joint);
             mMouseJoints.remove(pointer);
+        }
+    }
+
+    @Override
+    public void destroyTJoint() {
+        MouseJoint joint = mMouseJoints.get(lastpointer);
+        if (matchStat.GAME_STATE != Constants.GAME_SHOOTING && joint != null) {
+            mWorld.destroyJoint(joint);
+            mMouseJoints.remove(lastpointer);
+            return;
         }
     }
 }

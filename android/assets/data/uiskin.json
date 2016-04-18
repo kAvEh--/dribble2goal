@@ -1,5 +1,5 @@
 {
-com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: koodak15.txt } ,energy12: { file: energyfont12.txt},energy24: { file: energyfont24.txt},energy36: { file: energyfont36.txt},yekan36: { file: yekan36.txt},yekan15: { file: yekan15.txt},english:{ file: calibri.txt},english36:{ file: calibri36.txt},english14:{ file: calibri14.txt},english16:{ file: calibri16.txt},english20:{ file: calibri20.txt},english36:{ file: calibri36.txt},number16:{ file: number16.txt},number18:{ file: number18.txt},number20:{ file: number20.txt},number24:{ file: number24.txt},number40:{ file: number40.txt},number50:{ file: number50.txt},levelnumber16:{ file: levelnumber16.txt},levelnumber32:{ file: levelnumber24.txt},levelnumber24:{ file: levelnumber32.txt},yekan24:{ file: yekan24.txt},homa24:{ file: homa24.txt},koodak15:{ file: koodak15.txt},koodak7:{ file: koodak151.txt},number36:{ file: number36.txt}},
+com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: koodak15.txt } ,english:{ file: calibri.txt}},
 com.badlogic.gdx.graphics.Color: {
 	green: { a: 1, b: 0, g: 1, r: 0 },
 	white: { a: 1, b: 1, g: 1, r: 1 },
@@ -33,8 +33,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 	default-horizontal: { background: default-slider, knob: default-slider-knob }
 },
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-	default: { font: english, fontColor: white },
-	username: { font: number16, fontColor: white }
+	default: { font: english, fontColor: white }
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: { selection: selection, font: english , fontColor: gray, cursor: cursor }

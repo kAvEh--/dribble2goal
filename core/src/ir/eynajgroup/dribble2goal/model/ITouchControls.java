@@ -7,4 +7,5 @@ public interface ITouchControls {
     void sendTouchDown(float x, float y, int pointer);
     void sendTouchDragged(float x, float y, int pointer);
     void sendTouchUp(float x, float y, int pointer);
+    void destroyTJoint();
 }

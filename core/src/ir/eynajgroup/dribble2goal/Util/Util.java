@@ -181,63 +181,75 @@ public class Util {
                 break;
         }
 
-        for (int i =0; i< 5;i++) {
-            System.out.println(players[i] + "====" + ret[players[i]]);
-        }
+//        for (int i =0; i< 5;i++) {
+//            System.out.println(players[i] + "====" + ret[players[i]]);
+//        }
 
         return ret;
     }
 
-    public Vector2[] getAbovePlayerPosition(int model) {
+    public Vector2[] getAbovePlayerPosition(int model, int[] players) {
         Vector2[] arrange;
         switch (model) {
             case 2:
-                arrange = new Vector2[3];
-                arrange[0] = new Vector2(-Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 8f);
-                arrange[1] = new Vector2(0f, Constants.SCREEN_HEIGHT * .3125f);
-                arrange[2] = new Vector2(Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 8f);
+                arrange = new Vector2[5];
+                arrange[players[0]] = new Vector2(-Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 8f);
+                arrange[players[1]] = new Vector2(0f, Constants.SCREEN_HEIGHT * .3125f);
+                arrange[players[2]] = new Vector2(Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 8f);
+                arrange[players[3]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+                arrange[players[4]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
                 return arrange;
             case 3:
-                arrange = new Vector2[3];
-                arrange[0] = new Vector2(-Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 8f);
-                arrange[1] = new Vector2(-Constants.SCREEN_WIDTH / 8f, Constants.SCREEN_HEIGHT * .3125f);
-                arrange[2] = new Vector2(Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 4f);
+                arrange = new Vector2[5];
+                arrange[players[0]] = new Vector2(-Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 8f);
+                arrange[players[1]] = new Vector2(-Constants.SCREEN_WIDTH / 8f, Constants.SCREEN_HEIGHT * .3125f);
+                arrange[players[2]] = new Vector2(Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[3]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+                arrange[players[4]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
                 return arrange;
             default:
-                arrange = new Vector2[3];
-                arrange[0] = new Vector2(-Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 4f);
-                arrange[1] = new Vector2(0f, Constants.SCREEN_HEIGHT / 4f);
-                arrange[2] = new Vector2(Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 4f);
+                arrange = new Vector2[5];
+                arrange[players[0]] = new Vector2(-Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[1]] = new Vector2(0f, Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[2]] = new Vector2(Constants.SCREEN_WIDTH / 4f, Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[3]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+                arrange[players[4]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
                 return arrange;
         }
 
     }
 
-    public Vector2[] getBelowPlayerPosition(int model) {
+    public Vector2[] getBelowPlayerPosition(int model, int[] players) {
         Vector2[] arrange;
         switch (model) {
             case 2:
-                arrange = new Vector2[3];
-                arrange[0] = new Vector2(-Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 8f);
-                arrange[1] = new Vector2(0, -Constants.SCREEN_HEIGHT * .3125f);
-                arrange[2] = new Vector2(Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 8f);
+                arrange = new Vector2[5];
+                arrange[players[0]] = new Vector2(-Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 8f);
+                arrange[players[1]] = new Vector2(0, -Constants.SCREEN_HEIGHT * .3125f);
+                arrange[players[2]] = new Vector2(Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 8f);
+                arrange[players[3]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+                arrange[players[4]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
                 return arrange;
             case 3:
-                arrange = new Vector2[3];
-                arrange[0] = new Vector2(-Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 8f);
-                arrange[1] = new Vector2(-Constants.SCREEN_WIDTH / 8f, -Constants.SCREEN_HEIGHT * .3125f);
-                arrange[2] = new Vector2(Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 4f);
+                arrange = new Vector2[5];
+                arrange[players[0]] = new Vector2(-Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 8f);
+                arrange[players[1]] = new Vector2(-Constants.SCREEN_WIDTH / 8f, -Constants.SCREEN_HEIGHT * .3125f);
+                arrange[players[2]] = new Vector2(Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[3]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+                arrange[players[4]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
                 return arrange;
             default:
-                arrange = new Vector2[3];
-                arrange[0] = new Vector2(-Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 4f);
-                arrange[1] = new Vector2(0, -Constants.SCREEN_HEIGHT / 4f);
-                arrange[2] = new Vector2(Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 4f);
+                arrange = new Vector2[5];
+                arrange[players[0]] = new Vector2(-Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[1]] = new Vector2(0, -Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[2]] = new Vector2(Constants.SCREEN_WIDTH / 4f, -Constants.SCREEN_HEIGHT / 4f);
+                arrange[players[3]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+                arrange[players[4]] = new Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
                 return arrange;
         }

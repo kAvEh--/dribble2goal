@@ -1,79 +1,68 @@
 package ir.eynajgroup.dribble2goal.template;
 
-import com.badlogic.gdx.math.Vector2;
-
 /**
  * Created by kAvEh on 2/19/2016.
  */
 public class Field {
-    private Player t1Player1;
-    private Player t1Player2;
-    private Player t1Player3;
-    private Player t2Player1;
-    private Player t2Player2;
-    private Player t2Player3;
+    private Player myPlayer1;
+    private Player myPlayer2;
+    private Player myPlayer3;
+    private Player myPlayer4;
+    private Player myPlayer5;
+    private Player oppPlayer1;
+    private Player oppPlayer2;
+    private Player oppPlayer3;
+    private Player oppPlayer4;
+    private Player oppPlayer5;
     private Player mGoalKeeper;
     private Ball mBall;
-    private int mLeftPlayerScore;
-    private int mRightPlayerScore;
-    private Team mLastWinTeam;
-    private boolean leftDragged = false;
-    private boolean rightDragged = false;
 
-    private Vector2 t1p1Arrow;
-    private Vector2 t1p2Arrow;
-    private Vector2 t1p3Arrow;
-
-    private Vector2 t2p1Arrow;
-    private Vector2 t2p2Arrow;
-    private Vector2 t2p3Arrow;
-
-    public Player getT1Player1() {
-        return t1Player1;
+    public Player getMyPlayer1() {
+        return myPlayer1;
     }
 
-    public void setT1Player1(Player t1Player1) {
-        this.t1Player1 = t1Player1;
+    public void setMyPlayer1(Player myPlayer1) {
+        this.myPlayer1 = myPlayer1;
     }
 
-    public Player getT1Player2() {
-        return t1Player2;
+    public Player getMyPlayer2() {
+        return myPlayer2;
     }
 
-    public void setT1Player2(Player t1Player2) {
-        this.t1Player2 = t1Player2;
+    public void setMyPlayer2(Player myPlayer2) {
+        this.myPlayer2 = myPlayer2;
     }
 
-    public Player getT1Player3() {
-        return t1Player3;
+    public Player getMyPlayer3() {
+        return myPlayer3;
     }
 
-    public void setT1Player3(Player t1Player3) {
-        this.t1Player3 = t1Player3;
+    public void setMyPlayer3(Player myPlayer3) {
+        this.myPlayer3 = myPlayer3;
     }
 
-    public Player getT2Player1() {
-        return t2Player1;
+    public Player getOppPlayer1() {
+        return oppPlayer1;
     }
 
-    public void setT2Player1(Player t2Player1) {
-        this.t2Player1 = t2Player1;
+    public void setOppPlayer1(Player oppPlayer1) {
+        this.oppPlayer1 = oppPlayer1;
     }
 
-    public Player getT2Player2() {
-        return t2Player2;
+    public Player getOppPlayer2() {
+        return oppPlayer2;
     }
 
-    public void setT2Player2(Player t2Player2) {
-        this.t2Player2 = t2Player2;
+    public void setOppPlayer2(Player oppPlayer2) {
+        this.oppPlayer2 = oppPlayer2;
     }
 
-    public Player getT2Player3() {
-        return t2Player3;
+    public Player getOppPlayer3() {
+        return oppPlayer3;
     }
 
-    public void setT2Player3(Player t2Player3) {
-        this.t2Player3 = t2Player3;
+    public void setOppPlayer3(Player oppPlayer3) {
+        this.oppPlayer3 = oppPlayer3;
     }
 
     public void setGoalKeeper(Player leftPlayer) {
@@ -92,91 +81,35 @@ public class Field {
         mBall = ball;
     }
 
-    public int getLeftPlayerScore() {
-        return mLeftPlayerScore;
+    public Player getMyPlayer4() {
+        return myPlayer4;
     }
 
-    public void setLeftPlayerScore(int leftPlayerScore) {
-        mLeftPlayerScore = leftPlayerScore;
+    public void setMyPlayer4(Player myPlayer4) {
+        this.myPlayer4 = myPlayer4;
     }
 
-    public int getRightPlayerScore() {
-        return mRightPlayerScore;
+    public Player getMyPlayer5() {
+        return myPlayer5;
     }
 
-    public void setRightPlayerScore(int rightPlayerScore) {
-        mRightPlayerScore = rightPlayerScore;
+    public void setMyPlayer5(Player myPlayer5) {
+        this.myPlayer5 = myPlayer5;
     }
 
-    public Team getLastWinTeam() {
-        return mLastWinTeam;
+    public Player getOppPlayer4() {
+        return oppPlayer4;
     }
 
-    public void setLastWinTeam(Team lastWinTeam) {
-        mLastWinTeam = lastWinTeam;
+    public void setOppPlayer4(Player oppPlayer4) {
+        this.oppPlayer4 = oppPlayer4;
     }
 
-    public boolean isLeftDragged() {
-        return leftDragged;
+    public Player getOppPlayer5() {
+        return oppPlayer5;
     }
 
-    public void setLeftDragged(boolean leftDragged) {
-        this.leftDragged = leftDragged;
-    }
-
-    public boolean isRightDragged() {
-        return rightDragged;
-    }
-
-    public void setRightDragged(boolean rightDragged) {
-        this.rightDragged = rightDragged;
-    }
-
-    public Vector2 getT1p1Arrow() {
-        return t1p1Arrow;
-    }
-
-    public void setT1p1Arrow(Vector2 t1p1Arrow) {
-        this.t1p1Arrow = t1p1Arrow;
-    }
-
-    public Vector2 getT1p2Arrow() {
-        return t1p2Arrow;
-    }
-
-    public void setT1p2Arrow(Vector2 t1p2Arrow) {
-        this.t1p2Arrow = t1p2Arrow;
-    }
-
-    public Vector2 getT1p3Arrow() {
-        return t1p3Arrow;
-    }
-
-    public void setT1p3Arrow(Vector2 t1p3Arrow) {
-        this.t1p3Arrow = t1p3Arrow;
-    }
-
-    public Vector2 getT2p1Arrow() {
-        return t2p1Arrow;
-    }
-
-    public void setT2p1Arrow(Vector2 t2p1Arrow) {
-        this.t2p1Arrow = t2p1Arrow;
-    }
-
-    public Vector2 getT2p2Arrow() {
-        return t2p2Arrow;
-    }
-
-    public void setT2p2Arrow(Vector2 t2p2Arrow) {
-        this.t2p2Arrow = t2p2Arrow;
-    }
-
-    public Vector2 getT2p3Arrow() {
-        return t2p3Arrow;
-    }
-
-    public void setT2p3Arrow(Vector2 t2p3Arrow) {
-        this.t2p3Arrow = t2p3Arrow;
+    public void setOppPlayer5(Player oppPlayer5) {
+        this.oppPlayer5 = oppPlayer5;
     }
 }

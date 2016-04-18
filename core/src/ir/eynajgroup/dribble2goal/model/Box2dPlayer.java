@@ -38,6 +38,9 @@ public class Box2dPlayer {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(x, y);
         bodyDef.type = type;
+        bodyDef.bullet = true;
+        bodyDef.allowSleep = false;
+        bodyDef.awake = true;
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(radius);
@@ -87,8 +90,6 @@ public class Box2dPlayer {
         if ((Math.abs(this.mBody.getLinearVelocity().x) + Math.abs(this.mBody.getLinearVelocity().y)) / 2.0F < 0.1F) {
             this.mBody.setLinearVelocity(this.mBody.getLinearVelocity().x * 0.8F, this.mBody.getLinearVelocity().y * 0.8F);
         }
-
-        mBody.setAngularDamping(1f);
     }
 
     void applyForceGoaler() {
@@ -136,7 +137,7 @@ public class Box2dPlayer {
     }
 
     void fix() {
-        mBody.setLinearVelocity(0, 0);
-        mBody.setAngularVelocity(0);
+        mBody.setLinearVelocity(0f, 0f);
+        mBody.setAngularVelocity(0f);
     }
 }
