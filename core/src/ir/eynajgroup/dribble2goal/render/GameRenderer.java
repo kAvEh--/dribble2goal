@@ -10,6 +10,7 @@ import aurelienribon.tweenengine.TweenManager;
 import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
 import ir.eynajgroup.dribble2goal.MatchStats;
+import ir.eynajgroup.dribble2goal.model.Box2dWalls;
 import ir.eynajgroup.dribble2goal.model.IRenderer;
 import ir.eynajgroup.dribble2goal.render.effects.GoalEffect;
 import ir.eynajgroup.dribble2goal.render.effects.LoseEffect;
@@ -40,10 +41,10 @@ public class GameRenderer implements IRenderer {
     private WinEffect mWinEffect;
     private LoseEffect mLoseEffect;
 
-    public GameRenderer(OrthographicCamera camera, OrthographicCamera hudCamera, MatchStats stat, TweenManager tmanager) {
+    public GameRenderer(OrthographicCamera camera, SpriteBatch batch, MatchStats stat, TweenManager tmanager) {
         this.matchStat = stat;
         mCamera = camera;
-        mMainBatch = new SpriteBatch();
+        mMainBatch = batch;
         mPlayerTexture = new PlayerTexture(this.matchStat);
         mBallTexture = new BallTexture();
         mTweenManager = tmanager;
@@ -61,7 +62,7 @@ public class GameRenderer implements IRenderer {
         mMainBatch.setTransformMatrix(mCamera.view);
         mMainBatch.begin();
 
-//        Box2dWalls.createBatch(mMainBatch);
+        Box2dWalls.createBatch(mMainBatch);
 
         if (matchStat.GAME_STATE == Constants.GAME_SHOOTING) {
             mPlayerTexture.drawStamina(mMainBatch, mField.getMyPlayer1(), Gdx.graphics.getDeltaTime());

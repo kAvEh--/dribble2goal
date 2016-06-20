@@ -3,6 +3,7 @@ package ir.eynajgroup.dribble2goal.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Json;
 
 import aurelienribon.tweenengine.TweenManager;
@@ -66,7 +67,7 @@ public class Game2Screen implements Screen, IModelListener {
         mMainCamera.update();
         mHUDCamera = new OrthographicCamera(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
         mHUDCamera.update();
-        mGameRenderer = new GameRenderer(mMainCamera, mHUDCamera, this.gameStat, mTweenManager);
+        mGameRenderer = new GameRenderer(mMainCamera, new SpriteBatch(), this.gameStat, mTweenManager);
         mControls = new Controls(mModel, mMainCamera);
         mControls.setState(State.IDLE);
         Gdx.input.setInputProcessor(mControls);

@@ -75,7 +75,7 @@ public class Box2dWalls {
     }
 
     public static void createBatch(SpriteBatch batch) {
-        mTexture = Assets.getInstance().player;
+        mTexture = Assets.getInstance().goalImage;
 
         // ---- Top Horizontal Line
         batch.draw(mTexture,

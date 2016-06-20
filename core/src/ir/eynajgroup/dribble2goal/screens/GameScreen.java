@@ -781,7 +781,7 @@ public class GameScreen implements Screen, IModelListener {
 
         mJson = new Json();
 
-        mGameRenderer = new GameRenderer(mMainCamera, mHUDCamera, matchStat, mTweenManager);
+        mGameRenderer = new GameRenderer(mMainCamera, mMainBatch, matchStat, mTweenManager);
 
         Controls mControls = new Controls(mModel, mMainCamera);
         mControls.setState(State.IDLE);
@@ -959,6 +959,7 @@ public class GameScreen implements Screen, IModelListener {
         mMainCamera.update();
 
         mStage.getViewport().update(width, (int) (Constants.SCREEN_HEIGHT * aspectRatio), true);
+        mMainBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, (int) (Constants.SCREEN_HEIGHT * aspectRatio));
     }
 
     @Override
