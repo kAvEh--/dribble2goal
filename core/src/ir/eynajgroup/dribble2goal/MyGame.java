@@ -121,6 +121,7 @@ public class MyGame extends Game {
 //        MatchConstants temp = new MatchConstants();
 //        matchStat.myStartPosition = temp.getP1Arrange(matchStat.p1Arrange);
 //        matchStat.oppStartPosition = temp.getP2Arrange(matchStat.p2Arrange);
+        //Test for GIT
         setScreen(new GameScreen(matchStat));
     }
 
