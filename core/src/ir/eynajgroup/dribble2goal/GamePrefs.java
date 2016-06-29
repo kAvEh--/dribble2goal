@@ -8,7 +8,7 @@ import com.badlogic.gdx.Preferences;
  */
 public class GamePrefs {
 
-    private static final String PREFS_NAME = "ir.eynajgroup.dribble2goal";
+    private static final String PREFS_NAME = "ir.eynakgroup.dribble2goal";
 
     private final String key_music = "setting_music";
     private final String key_effect = "setting_effect";
@@ -41,6 +41,8 @@ public class GamePrefs {
     public boolean isDailyAvailable = false;
     public int winRate = 0;
     public int cleanSheet = 0;
+    public int[][] players = new int[5][3];
+    public int[] lineup = new int[5];
 
     private GamePrefs() {}
 

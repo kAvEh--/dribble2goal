@@ -1,15 +1,15 @@
 package ir.eynajgroup.dribble2goal.tween;
 
 import aurelienribon.tweenengine.TweenAccessor;
-import ir.eynajgroup.dribble2goal.Util.MyScrollPane;
+import ir.eynajgroup.dribble2goal.Util.SelectGameScrollPane;
 
 /**
  * Created by kAvEh on 3/6/2016.
  */
-public class SteperAccessor implements TweenAccessor<MyScrollPane> {
+public class SteperAccessor implements TweenAccessor<SelectGameScrollPane> {
     public static final int SCROLL_Y = 1;
 
-    public int getValues(MyScrollPane paramScrollPane, int paramInt, float[] paramArrayOfFloat) {
+    public int getValues(SelectGameScrollPane paramScrollPane, int paramInt, float[] paramArrayOfFloat) {
         switch (paramInt) {
 
             case 1:
@@ -19,7 +19,7 @@ public class SteperAccessor implements TweenAccessor<MyScrollPane> {
         return -1;
     }
 
-    public void setValues(MyScrollPane paramScrollPane, int paramInt, float[] paramArrayOfFloat) {
+    public void setValues(SelectGameScrollPane paramScrollPane, int paramInt, float[] paramArrayOfFloat) {
         switch (paramInt) {
 
             case 1:

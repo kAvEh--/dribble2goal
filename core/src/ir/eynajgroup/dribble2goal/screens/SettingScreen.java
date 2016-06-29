@@ -76,7 +76,7 @@ public class SettingScreen implements Screen {
         setting_holder.setPosition(Gdx.graphics.getWidth() * .17f, Gdx.graphics.getHeight() * .01f);
 
         Table table1 = new Table();
-        Image music = new Image(Assets.getInstance().setting_item_bg);
+        Image music = new Image(Assets.getInstance().setting_music_bg);
         music.setSize(Gdx.graphics.getWidth() * .66f, Gdx.graphics.getHeight() * .127f);
         table1.addActor(music);
         music_bg = new Image(Assets.getInstance().setting_button_bg);
@@ -98,7 +98,7 @@ public class SettingScreen implements Screen {
         music_inside.row();
 
         Table table2 = new Table();
-        Image effects = new Image(Assets.getInstance().setting_item_bg);
+        Image effects = new Image(Assets.getInstance().setting_sound_bg);
         effects.setSize(Gdx.graphics.getWidth() * .66f, Gdx.graphics.getHeight() * .127f);
         table2.addActor(effects);
         effect_bg = new Image(Assets.getInstance().setting_button_bg);
@@ -120,7 +120,7 @@ public class SettingScreen implements Screen {
         music_inside.row();
 
         Table table3 = new Table();
-        Image vibrate = new Image(Assets.getInstance().setting_item_bg);
+        Image vibrate = new Image(Assets.getInstance().setting_vibe_bg);
         vibrate.setSize(Gdx.graphics.getWidth() * .66f, Gdx.graphics.getHeight() * .127f);
         table3.addActor(vibrate);
         vibrate_bg = new Image(Assets.getInstance().setting_button_bg);

@@ -177,7 +177,7 @@ public class MainMenuScreen implements Screen {
 
         menu_shop.addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
-                System.out.println("tapppppp");
+                MyGame.mainInstance.setShopScreen();
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {

@@ -122,6 +122,15 @@ public class Assets implements Disposable {
     public Texture setting_item_bg;
     public Texture setting_button;
     public Texture setting_button_bg;
+    public Texture setting_music_bg;
+    public Texture setting_sound_bg;
+    public Texture setting_vibe_bg;
+    public Texture setting_dot;
+    public Texture setting_shop_1;
+    public Texture setting_shop_2;
+    public Texture setting_shop_3;
+    public Texture setting_shop_4;
+    public Texture setting_shop_5;
     public Texture findmatch_main;
 
     public Texture keeper_piece_1;
@@ -172,6 +181,9 @@ public class Assets implements Disposable {
     public Texture login_email;
     public Texture lose_image;
     public Texture win_image;
+
+    public Texture shop_coin_1;
+    public Texture shop_coin_2;
 
     public void init() {
 //        Texture.setEnforcePotImages(false);
@@ -286,6 +298,15 @@ public class Assets implements Disposable {
         setting_item_bg = new Texture(Gdx.files.internal("img/settings_bg.png"));
         setting_button = new Texture(Gdx.files.internal("img/setting_button.png"));
         setting_button_bg = new Texture(Gdx.files.internal("img/setting_button_bg.png"));
+        setting_music_bg = new Texture(Gdx.files.internal("img/setting_music_bg.png"));
+        setting_sound_bg = new Texture(Gdx.files.internal("img/setting_sound_bg.png"));
+        setting_vibe_bg = new Texture(Gdx.files.internal("img/setting_vibe_bg.png"));
+        setting_dot = new Texture(Gdx.files.internal("img/setting_dot.png"));
+        setting_shop_1 = new Texture(Gdx.files.internal("img/coach_shop_1.png"));
+        setting_shop_2 = new Texture(Gdx.files.internal("img/coach_shop_2.png"));
+        setting_shop_3 = new Texture(Gdx.files.internal("img/coach_shop_3.png"));
+        setting_shop_4 = new Texture(Gdx.files.internal("img/coach_shop_4.png"));
+        setting_shop_5 = new Texture(Gdx.files.internal("img/coach_shop_5.png"));
 
         keeper_piece_1 = new Texture(Gdx.files.internal("img/keeper_piece_1.png"));
         keeper_piece_2 = new Texture(Gdx.files.internal("img/keeper_piece_2.png"));
@@ -331,6 +352,9 @@ public class Assets implements Disposable {
 
         lose_image  = new Texture(Gdx.files.internal("img/loser.jpg"));
         win_image  = new Texture(Gdx.files.internal("img/winner.jpg"));
+
+        shop_coin_1  = new Texture(Gdx.files.internal("img/shop_coin_1.png"));
+        shop_coin_2  = new Texture(Gdx.files.internal("img/shop_coin_2.png"));
 
         player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         shirt1.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

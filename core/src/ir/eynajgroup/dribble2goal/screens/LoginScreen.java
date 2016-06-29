@@ -3,7 +3,10 @@ package ir.eynajgroup.dribble2goal.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -26,6 +29,7 @@ import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
 import ir.eynajgroup.dribble2goal.GamePrefs;
 import ir.eynajgroup.dribble2goal.MyGame;
+import ir.eynajgroup.dribble2goal.ParticleEffectActor;
 import ir.eynajgroup.dribble2goal.Server.ServerTool;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressLine;
 
@@ -55,6 +59,7 @@ public class LoginScreen implements Screen {
     Skin mSkin;
 
     ProgressLine progress;
+    ParticleEffectActor pActor;
 
     public LoginScreen() {
         mTweenManager = MyGame.mTweenManager;
@@ -118,12 +123,21 @@ public class LoginScreen implements Screen {
             }
         });
 
+        ParticleEffect p = new ParticleEffect();
+        p.load(Gdx.files.internal("effects/test.p"), Gdx.files.internal("effects"));
+//        p.setPosition(Constants.HUD_SCREEN_WIDTH * .01f, Constants.HUD_SCREEN_HEIGHT * .01f);
+        p.allowCompletion();
+
+        pActor = new ParticleEffectActor(p);
+        pActor.setPosition(Constants.HUD_SCREEN_WIDTH * .9f, Constants.HUD_SCREEN_HEIGHT * .27f);
+
         mainTable.addActor(bg);
         mainTable.addActor(email);
         mainTable.addActor(email_txt);
         mainTable.addActor(password);
         mainTable.addActor(password_txt);
         mainTable.addActor(login);
+        mainTable.addActor(pActor);
 
         this.mainTable.setSize(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
         Gdx.input.setInputProcessor(mStage);
@@ -161,6 +175,7 @@ public class LoginScreen implements Screen {
             } else {
 
             }
+            System.out.println(data);
             GamePrefs.getInstance().isDailyAvailable = data.getBoolean("dailyCoin");
             JSONObject player = data.getJSONObject("player");
             GamePrefs.getInstance().game_won = player.getInt("winCount");
@@ -182,6 +197,46 @@ public class LoginScreen implements Screen {
             GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
             GamePrefs.getInstance().achieve_win = achs.getInt("win");
             GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
+            //First Player Data
+            JSONObject tmpPlayer = player.getJSONObject("players").getJSONObject("1");
+            GamePrefs.getInstance().players[0][0] = tmpPlayer.getInt("stamina");
+            GamePrefs.getInstance().players[0][1] = tmpPlayer.getInt("speed");
+            GamePrefs.getInstance().players[0][2] = tmpPlayer.getInt("size");
+            //Second Player Data
+            tmpPlayer = player.getJSONObject("players").getJSONObject("2");
+            GamePrefs.getInstance().players[1][0] = tmpPlayer.getInt("stamina");
+            GamePrefs.getInstance().players[1][1] = tmpPlayer.getInt("speed");
+            GamePrefs.getInstance().players[1][2] = tmpPlayer.getInt("size");
+            //Third Player Data
+            tmpPlayer = player.getJSONObject("players").getJSONObject("3");
+            GamePrefs.getInstance().players[2][0] = tmpPlayer.getInt("stamina");
+            GamePrefs.getInstance().players[2][1] = tmpPlayer.getInt("speed");
+            GamePrefs.getInstance().players[2][2] = tmpPlayer.getInt("size");
+            //Fourth Player Data
+            tmpPlayer = player.getJSONObject("players").getJSONObject("4");
+            GamePrefs.getInstance().players[3][0] = tmpPlayer.getInt("stamina");
+            GamePrefs.getInstance().players[3][1] = tmpPlayer.getInt("speed");
+            GamePrefs.getInstance().players[3][2] = tmpPlayer.getInt("size");
+            //Fifth Player Data
+            tmpPlayer = player.getJSONObject("players").getJSONObject("5");
+            GamePrefs.getInstance().players[4][0] = tmpPlayer.getInt("stamina");
+            GamePrefs.getInstance().players[4][1] = tmpPlayer.getInt("speed");
+            GamePrefs.getInstance().players[4][2] = tmpPlayer.getInt("size");
+            //Lineup
+            JSONObject tmp = player.getJSONObject("lineup");
+            boolean flag = true;
+            for (int i = 1; i < 6; i++) {
+                if (tmp.getInt(i + "") == -1) {
+                    if (flag) {
+                        GamePrefs.getInstance().lineup[3] = (i-1);
+                        flag = false;
+                    } else {
+                        GamePrefs.getInstance().lineup[4] = (i-1);
+                    }
+                } else {
+                    GamePrefs.getInstance().lineup[tmp.getInt(i + "") - 1] = (i-1);
+                }
+            }
 
             return true;
         } catch (Exception e) {
@@ -206,13 +261,21 @@ public class LoginScreen implements Screen {
 
                     }
                 });
+
+        Tween.to(pActor, 1, 13f)
+                .target(Constants.HUD_SCREEN_WIDTH * .2f, Constants.HUD_SCREEN_HEIGHT * .9f).ease(TweenEquations.easeInExpo)
+                .start(mTweenManager).delay(0.0F)
+                .setCallback(new TweenCallback() {
+                    public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
+
+                    }
+                });
+        pActor.start();
     }
 
     @Override
     public void render(float delta) {
-
         mStage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-
         mStage.act(delta);
         mStage.draw();
     }

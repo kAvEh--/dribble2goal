@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
-import ir.eynajgroup.dribble2goal.Util.MyScrollPane;
+import ir.eynajgroup.dribble2goal.Util.SelectGameScrollPane;
 import ir.eynajgroup.dribble2goal.model.Box2dBall;
 import ir.eynajgroup.dribble2goal.model.Box2dPlayer;
 import ir.eynajgroup.dribble2goal.model.IModel;
@@ -27,7 +27,9 @@ import ir.eynajgroup.dribble2goal.screens.MainMenuScreen;
 import ir.eynajgroup.dribble2goal.screens.ProfileScreen;
 import ir.eynajgroup.dribble2goal.screens.SelectGameScreen;
 import ir.eynajgroup.dribble2goal.screens.SettingScreen;
+import ir.eynajgroup.dribble2goal.screens.ShopScreen;
 import ir.eynajgroup.dribble2goal.tween.BallAccessor;
+import ir.eynajgroup.dribble2goal.tween.EffectAccessor;
 import ir.eynajgroup.dribble2goal.tween.ImageAccessor;
 import ir.eynajgroup.dribble2goal.tween.PlayerAccessor;
 import ir.eynajgroup.dribble2goal.tween.ProgressCircleAccessor;
@@ -58,9 +60,10 @@ public class MyGame extends Game {
         Tween.registerAccessor(Table.class, new TableAccessor());
         Tween.registerAccessor(ScrollPane.class, new ScrollAccessor());
         Tween.registerAccessor(ProgressCircle.class, new ProgressCircleAccessor());
-        Tween.registerAccessor(MyScrollPane.class, new SteperAccessor());
+        Tween.registerAccessor(SelectGameScrollPane.class, new SteperAccessor());
         Tween.registerAccessor(TextField.class, new TextFieldAccessor());
         Tween.registerAccessor(ProgressLine.class, new ProgressLineAccessor());
+        Tween.registerAccessor(ParticleEffectActor.class, new EffectAccessor());
 
         float f = -0.6009111404418945f;
         System.out.println(Float.floatToIntBits(f) + "***" + Float.toHexString(f) + "***" + (Float.parseFloat(Float.toHexString(f)) == f));
@@ -100,6 +103,10 @@ public class MyGame extends Game {
         setScreen(new CoachScreen());
     }
 
+    public void setShopScreen() {
+        setScreen(new ShopScreen());
+    }
+
     public void setCoachScreen() {
         setScreen(new CoachScreen());
     }
@@ -121,7 +128,6 @@ public class MyGame extends Game {
 //        MatchConstants temp = new MatchConstants();
 //        matchStat.myStartPosition = temp.getP1Arrange(matchStat.p1Arrange);
 //        matchStat.oppStartPosition = temp.getP2Arrange(matchStat.p2Arrange);
-        //Test for GIT
         setScreen(new GameScreen(matchStat));
     }
 

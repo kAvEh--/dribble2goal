@@ -19,7 +19,7 @@ import ir.eynajgroup.dribble2goal.MyGame;
 /**
  * Created by kAvEh on 3/4/2016.
  */
-public class MyScrollPane extends Table {
+public class SelectGameScrollPane extends Table {
     public static Table innerTable;
     private float _scrollHeight;
     private int _itemCount;
@@ -40,9 +40,9 @@ public class MyScrollPane extends Table {
 
     private Image stadium[];
 
-    public MyScrollPane(Image[] buttons, int itemCount, float scrollWidth,
-                        float scrollHeight, float posX, float posY, float itemWidth,
-                        float itemHeight, float itemPad, Image[] s) {
+    public SelectGameScrollPane(Image[] buttons, int itemCount, float scrollWidth,
+                                float scrollHeight, float posX, float posY, float itemWidth,
+                                float itemHeight, float itemPad, Image[] s) {
         mTweenManager = MyGame.mTweenManager;
         this._itemPad = itemPad;
         this._itemWidth = itemWidth;
@@ -65,7 +65,7 @@ public class MyScrollPane extends Table {
         this.stadium = s;
         this.mainScroll.addListener(new DragListener() {
             public void drag(InputEvent event, float x, float y, int pointer) {
-                MyScrollPane.this.setItemSizeByScrollValue();
+                SelectGameScrollPane.this.setItemSizeByScrollValue();
             }
 
             public void dragStart(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt) {
@@ -112,7 +112,7 @@ public class MyScrollPane extends Table {
     public void init() {
         Timer.schedule(new Timer.Task() {
             public void run() {
-                MyScrollPane.this.setItemSizeByScrollValue();
+                SelectGameScrollPane.this.setItemSizeByScrollValue();
             }
         }, 0.01F, 0.1F, 1);
     }
@@ -168,17 +168,17 @@ public class MyScrollPane extends Table {
     }
 
     public void flingScrollPane(final float paramFloat) {
-        Tween.to(MyScrollPane.this, 1, Math.abs(paramFloat / 2000.0F))
+        Tween.to(SelectGameScrollPane.this, 1, Math.abs(paramFloat / 2000.0F))
                 .target(this.mainScroll.getScrollY() + paramFloat / 100f)
                 .ease(TweenEquations.easeNone).start(mTweenManager)
                 .setCallback(new TweenCallback() {
                     public void onEvent(int paramAnonymousInt, BaseTween<?> paramAnonymousBaseTween) {
                         System.out.println("$$$$");
-                        Tween.to(MyScrollPane.this, 1, Math.abs(paramFloat / 4000.0F))
-                                .target(MyScrollPane.this.mainScroll.getScrollY() + paramFloat / 200f).ease(TweenEquations.easeOutSine)
+                        Tween.to(SelectGameScrollPane.this, 1, Math.abs(paramFloat / 4000.0F))
+                                .target(SelectGameScrollPane.this.mainScroll.getScrollY() + paramFloat / 200f).ease(TweenEquations.easeOutSine)
                                 .start(mTweenManager).setCallback(new TweenCallback() {
                             public void onEvent(int paramAnonymousInt, BaseTween<?> paramAnonymousBaseTween) {
-                                MyScrollPane.this.flingFlag = false;
+                                SelectGameScrollPane.this.flingFlag = false;
                             }
                         });
                     }

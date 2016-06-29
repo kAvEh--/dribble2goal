@@ -27,7 +27,7 @@ import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
 import ir.eynajgroup.dribble2goal.GamePrefs;
 import ir.eynajgroup.dribble2goal.MyGame;
-import ir.eynajgroup.dribble2goal.Util.MyScrollPane;
+import ir.eynajgroup.dribble2goal.Util.SelectGameScrollPane;
 import ir.eynajgroup.dribble2goal.render.textures.ProgressCircle;
 
 /**
@@ -45,7 +45,7 @@ public class SelectGameScreen implements Screen {
     Image arc;
 
     Image[] scrollImg;
-    MyScrollPane mainmenuScroll;
+    SelectGameScrollPane mainmenuScroll;
 
     Stage mStage;
     Table mainTable;
@@ -163,7 +163,7 @@ public class SelectGameScreen implements Screen {
             }
         });
 
-        mainmenuScroll = new MyScrollPane(this.scrollImg, 6,
+        mainmenuScroll = new SelectGameScrollPane(this.scrollImg, 6,
                 Constants.HUD_SCREEN_WIDTH, (int) Constants.HUD_SCREEN_HEIGHT,
                 (int) (Constants.HUD_SCREEN_WIDTH * .07f), 0,
                 Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f,
