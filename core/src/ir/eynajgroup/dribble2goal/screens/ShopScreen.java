@@ -37,6 +37,7 @@ public class ShopScreen implements Screen {
     Skin mSkin;
 
     Table scrollPane;
+    Table dots;
 
     Image back;
 
@@ -52,8 +53,16 @@ public class ShopScreen implements Screen {
         bg = new Image(Assets.getInstance().main_bg);
         bg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        scrollPane = new ShopScrollPane((int) (Gdx.graphics.getWidth()), (int) (Gdx.graphics.getHeight() * .8f));
-        scrollPane.setPosition(0f, Gdx.graphics.getHeight() * .15f);
+        scrollPane = new ShopScrollPane((int) (Gdx.graphics.getWidth()), (int) (Gdx.graphics.getHeight()));
+        scrollPane.setPosition(0f, 0f);
+
+        dots = new Table();
+        dots.setPosition(Constants.HUD_SCREEN_WIDTH * .5f, Constants.HUD_SCREEN_HEIGHT * .12f);
+        for (int i = 0; i < 5; i++) {
+            dots.add(new Image(Assets.getInstance().setting_dot))
+                    .pad(0, 0, 0, 0)
+                    .size(Constants.HUD_SCREEN_WIDTH * .03f, Constants.HUD_SCREEN_WIDTH * .03f);
+        }
 
 //        music_icon = new Image(Assets.getInstance().setting_music_icon);
 //        music_icon.setSize(Gdx.graphics.getWidth() * .133f, Gdx.graphics.getHeight() * .186f);
@@ -72,6 +81,7 @@ public class ShopScreen implements Screen {
         mainTable.addActor(bg);
         mainTable.addActor(back);
         mainTable.addActor(scrollPane);
+        mainTable.addActor(dots);
 
         back.addListener(new ActorGestureListener() {
             public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {

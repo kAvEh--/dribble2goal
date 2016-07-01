@@ -68,10 +68,10 @@ public class SelectGameScrollPane extends Table {
                 SelectGameScrollPane.this.setItemSizeByScrollValue();
             }
 
-            public void dragStart(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt) {
+            public void dragStart(InputEvent event, float x, float y, int pointer) {
             }
 
-            public void dragStop(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt) {
+            public void dragStop(InputEvent event, float x, float y, int pointer) {
                 if (!flingFlag)
                     step();
             }
@@ -82,7 +82,7 @@ public class SelectGameScrollPane extends Table {
 //                flingScrollPane(velocityY);
             }
 
-            public void pan(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, float paramAnonymousFloat3, float paramAnonymousFloat4) {
+            public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
             }
         });
         addActor(this.mainScroll);
