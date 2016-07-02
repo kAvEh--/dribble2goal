@@ -182,6 +182,7 @@ public class Assets implements Disposable {
     public Texture lose_image;
     public Texture win_image;
 
+    public Texture page_indicator_dot;
     public Texture shop_coin_1;
     public Texture shop_coin_2;
 
@@ -353,6 +354,7 @@ public class Assets implements Disposable {
         lose_image  = new Texture(Gdx.files.internal("img/loser.jpg"));
         win_image  = new Texture(Gdx.files.internal("img/winner.jpg"));
 
+        page_indicator_dot  = new Texture(Gdx.files.internal("img/page_indicator_dot.png"));
         shop_coin_1  = new Texture(Gdx.files.internal("img/shop_coin_1.png"));
         shop_coin_2  = new Texture(Gdx.files.internal("img/shop_coin_2.png"));
 

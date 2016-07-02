@@ -93,7 +93,7 @@ public class FindMatchScreen implements Screen {
         mainTable.addActor(opp_avatar);
 
 //        back.addListener(new ActorGestureListener() {
-//            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+//            public void tap(InputEvent event, float x, float y, int count, int button) {
 //                MyGame.mainInstance.setMainScreen();
 //            }
 //

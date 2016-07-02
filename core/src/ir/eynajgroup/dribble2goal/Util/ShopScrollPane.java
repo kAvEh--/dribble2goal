@@ -29,7 +29,10 @@ public class ShopScrollPane extends Table {
     public ScrollPane mainScroll;
     private TweenManager mTweenManager;
 
-    public ShopScrollPane(int width, int height) {
+    Image indicator;
+
+    public ShopScrollPane(int width, int height, Image indi) {
+        indicator = indi;
         this._width = width;
         this._height = height;
         mainTable = new Table();
@@ -81,7 +84,7 @@ public class ShopScrollPane extends Table {
             if (i == 5)
                 innerTable1.add(new Image(Assets.getInstance().shop_coin_1))
                         .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                Constants.HUD_SCREEN_HEIGHT * .35f, Constants.HUD_SCREEN_WIDTH * .025f)
+                                Constants.HUD_SCREEN_HEIGHT * .3f, Constants.HUD_SCREEN_WIDTH * .025f)
                         .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
             else if (i== 2) {
                 innerTable1.add(new Image(Assets.getInstance().shop_coin_1))
@@ -93,7 +96,7 @@ public class ShopScrollPane extends Table {
             } else if (i > 2)
                 innerTable1.add(new Image(Assets.getInstance().shop_coin_1))
                         .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                Constants.HUD_SCREEN_HEIGHT * .35f, 0)
+                                Constants.HUD_SCREEN_HEIGHT * .3f, 0)
                         .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
             else
                 innerTable1.add(new Image(Assets.getInstance().shop_coin_1))

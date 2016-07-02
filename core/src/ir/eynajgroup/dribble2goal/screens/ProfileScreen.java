@@ -262,7 +262,7 @@ public class ProfileScreen implements Screen {
         mainTable.addActor(back);
 
         back.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setMainScreen();
             }
 
@@ -278,7 +278,7 @@ public class ProfileScreen implements Screen {
         });
 
         stat_off_header.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 Tween.to(stat_on_header, 3, .2f)
                         .target(1f).ease(TweenEquations.easeInBack)
                         .start(mTweenManager).delay(0.0F)
@@ -318,7 +318,7 @@ public class ProfileScreen implements Screen {
         });
 
         ach_off_header.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 Tween.to(stat_on_header, 3, .2f)
                         .target(0f).ease(TweenEquations.easeInBack)
                         .start(mTweenManager).delay(0.0F)

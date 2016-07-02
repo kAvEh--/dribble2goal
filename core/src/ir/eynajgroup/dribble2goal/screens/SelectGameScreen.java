@@ -103,7 +103,7 @@ public class SelectGameScreen implements Screen {
         back.setPosition(Constants.HUD_SCREEN_WIDTH * .85f, Constants.HUD_SCREEN_HEIGHT * .04f);
 
         back.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setMainScreen();
             }
 
@@ -133,32 +133,32 @@ public class SelectGameScreen implements Screen {
         scrollImg[5].setSize(Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f);
 
         scrollImg[0].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setFindMatchScreen(1);
             }
         });
         scrollImg[1].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setFindMatchScreen(2);
             }
         });
         scrollImg[2].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setFindMatchScreen(3);
             }
         });
         scrollImg[3].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setFindMatchScreen(4);
             }
         });
         scrollImg[4].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setFindMatchScreen(5);
             }
         });
         scrollImg[5].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setFindMatchScreen(6);
             }
         });

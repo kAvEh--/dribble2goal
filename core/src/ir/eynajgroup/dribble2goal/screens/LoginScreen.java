@@ -108,7 +108,7 @@ public class LoginScreen implements Screen {
 //        ServerTool.getInstance().register("omid", "123", "Mid Tagh");
 
         login.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 ServerTool.getInstance().login(email_txt.getText(), password_txt.getText());
                 GamePrefs.getInstance().setUserName(email_txt.getText());
                 GamePrefs.getInstance().setPassword(password_txt.getText());

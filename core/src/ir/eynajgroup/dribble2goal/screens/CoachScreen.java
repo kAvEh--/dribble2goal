@@ -107,7 +107,7 @@ public class CoachScreen implements Screen {
         new_position = GamePrefs.getInstance().position;
 
         position_left.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 if (new_position == 1) {
                     new_position = GamePrefs.getInstance().position_num;
                 } else {
@@ -129,7 +129,7 @@ public class CoachScreen implements Screen {
         });
 
         position_right.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 if (new_position == GamePrefs.getInstance().position_num) {
                     new_position = 1;
                 } else {
@@ -171,7 +171,7 @@ public class CoachScreen implements Screen {
         players[4].setSize(Constants.HUD_SCREEN_WIDTH * .09f, Constants.HUD_SCREEN_HEIGHT * .16f);
 
         players[0].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 Tween.to(selected, 1, .3f)
                         .target(players[0].getX() + Constants.HUD_SCREEN_WIDTH * .015f,
                                 players[0].getY() + Constants.HUD_SCREEN_HEIGHT * .032f)
@@ -208,7 +208,7 @@ public class CoachScreen implements Screen {
         });
 
         players[1].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 Tween.to(selected, 1, .3f)
                         .target(players[1].getX() + Constants.HUD_SCREEN_WIDTH * .015f,
                                 players[1].getY() + Constants.HUD_SCREEN_HEIGHT * .032f)
@@ -245,7 +245,7 @@ public class CoachScreen implements Screen {
         });
 
         players[2].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 Tween.to(selected, 1, .3f)
                         .target(players[2].getX() + Constants.HUD_SCREEN_WIDTH * .015f,
                                 players[2].getY() + Constants.HUD_SCREEN_HEIGHT * .032f)
@@ -282,7 +282,7 @@ public class CoachScreen implements Screen {
         });
 
         players[3].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 Tween.to(selected, 1, .3f)
                         .target(players[3].getX() + Constants.HUD_SCREEN_WIDTH * .015f,
                                 players[3].getY() + Constants.HUD_SCREEN_HEIGHT * .032f)
@@ -319,7 +319,7 @@ public class CoachScreen implements Screen {
         });
 
         players[4].addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 Tween.to(selected, 1, .3f)
                         .target(players[4].getX() + Constants.HUD_SCREEN_WIDTH * .015f,
                                 players[4].getY() + Constants.HUD_SCREEN_HEIGHT * .032f)
@@ -370,7 +370,7 @@ public class CoachScreen implements Screen {
         stamina_shop.setSize(Constants.HUD_SCREEN_WIDTH * .12f, Constants.HUD_SCREEN_HEIGHT * .140f);
         stamina_shop.setPosition(Constants.HUD_SCREEN_WIDTH * .835f, Constants.HUD_SCREEN_HEIGHT * .792f);
         stamina_shop.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 ServerTool.getInstance().sendUpgrade(selected_item + 1, "stamina", GamePrefs.getInstance().players[selected_item][0] + 1);
             }
 
@@ -398,7 +398,7 @@ public class CoachScreen implements Screen {
         size_shop.setSize(Constants.HUD_SCREEN_WIDTH * .12f, Constants.HUD_SCREEN_HEIGHT * .140f);
         size_shop.setPosition(Constants.HUD_SCREEN_WIDTH * .835f, Constants.HUD_SCREEN_HEIGHT * .552f);
         size_shop.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 ServerTool.getInstance().sendUpgrade(selected_item + 1, "size", GamePrefs.getInstance().players[selected_item][1] + 1);
             }
 
@@ -426,7 +426,7 @@ public class CoachScreen implements Screen {
         speed_shop.setSize(Constants.HUD_SCREEN_WIDTH * .12f, Constants.HUD_SCREEN_HEIGHT * .140f);
         speed_shop.setPosition(Constants.HUD_SCREEN_WIDTH * .835f, Constants.HUD_SCREEN_HEIGHT * .312f);
         speed_shop.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 ServerTool.getInstance().sendUpgrade(selected_item + 1, "speed", GamePrefs.getInstance().players[selected_item][2] + 1);
             }
 
@@ -459,7 +459,7 @@ public class CoachScreen implements Screen {
         coins_txt.setPosition(Constants.HUD_SCREEN_WIDTH * .57f, Constants.HUD_SCREEN_HEIGHT * .087f);
 
         back.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setMainScreen();
             }
 
@@ -475,7 +475,7 @@ public class CoachScreen implements Screen {
         });
 
         confirm.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 //TODO set new settings
                 if (new_position != GamePrefs.getInstance().position)
                     GamePrefs.getInstance().position = new_position;

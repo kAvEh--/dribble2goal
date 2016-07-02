@@ -157,7 +157,7 @@ public class SettingScreen implements Screen {
         mainTable.addActor(setting_holder);
 
         back.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setMainScreen();
             }
 
@@ -173,7 +173,7 @@ public class SettingScreen implements Screen {
         });
 
         music_button.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -207,7 +207,7 @@ public class SettingScreen implements Screen {
         });
 
         effect_button.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -241,7 +241,7 @@ public class SettingScreen implements Screen {
         });
 
         vibrate_button.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
             }
 
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {

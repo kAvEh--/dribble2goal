@@ -152,7 +152,7 @@ public class MainMenuScreen implements Screen {
         mStage.addActor(this.mainTable);
 
         item_2p.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setGameSelectScreen();
             }
 
@@ -164,7 +164,7 @@ public class MainMenuScreen implements Screen {
         });
 
         item_coach.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setCoachingScreen();
             }
 
@@ -176,7 +176,7 @@ public class MainMenuScreen implements Screen {
         });
 
         menu_shop.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setShopScreen();
             }
 
@@ -193,7 +193,7 @@ public class MainMenuScreen implements Screen {
         });
 
         menu_settings.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setSettingScreen();
             }
 

@@ -40,6 +40,7 @@ public class ShopScreen implements Screen {
     Table dots;
 
     Image back;
+    Image indicator;
 
     public ShopScreen() {
         mTweenManager = MyGame.mTweenManager;
@@ -53,16 +54,41 @@ public class ShopScreen implements Screen {
         bg = new Image(Assets.getInstance().main_bg);
         bg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        scrollPane = new ShopScrollPane((int) (Gdx.graphics.getWidth()), (int) (Gdx.graphics.getHeight()));
-        scrollPane.setPosition(0f, 0f);
-
         dots = new Table();
         dots.setPosition(Constants.HUD_SCREEN_WIDTH * .5f, Constants.HUD_SCREEN_HEIGHT * .12f);
         for (int i = 0; i < 5; i++) {
-            dots.add(new Image(Assets.getInstance().setting_dot))
+            dots.add(new Image(Assets.getInstance().page_indicator_dot))
                     .pad(0, 0, 0, 0)
                     .size(Constants.HUD_SCREEN_WIDTH * .03f, Constants.HUD_SCREEN_WIDTH * .03f);
         }
+        indicator = new Image(Assets.getInstance().setting_dot);
+//        indicator.setSize(Constants.HUD_SCREEN_WIDTH * .03f, Constants.HUD_SCREEN_WIDTH * .03f);
+//        indicator.setPosition(Constants.HUD_SCREEN_WIDTH * -.1f, Constants.HUD_SCREEN_WIDTH * -.19f);
+        dots.add(indicator).pad(0, Constants.HUD_SCREEN_WIDTH * -.21f, 0, 0)
+                .size(Constants.HUD_SCREEN_WIDTH * .03f, Constants.HUD_SCREEN_WIDTH * .03f);
+
+        scrollPane = new ShopScrollPane((int) (Gdx.graphics.getWidth()), (int) (Gdx.graphics.getHeight()), dots, indicator);
+        scrollPane.setPosition(0f, 0f);
+
+        back = new Image(Assets.getInstance().icon_back);
+        back.setSize(Constants.HUD_SCREEN_WIDTH * .133f, Constants.HUD_SCREEN_HEIGHT * .186f);
+        back.setPosition(Constants.HUD_SCREEN_WIDTH * .85f, Constants.HUD_SCREEN_HEIGHT * .04f);
+
+        back.addListener(new ActorGestureListener() {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
+                MyGame.mainInstance.setMainScreen();
+            }
+
+            public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                back.setSize(Constants.HUD_SCREEN_WIDTH * .133f * .8f, Constants.HUD_SCREEN_HEIGHT * .186f * .8f);
+                back.setPosition(Constants.HUD_SCREEN_WIDTH * .863f, Constants.HUD_SCREEN_HEIGHT * .06f);
+            }
+
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                back.setSize(Constants.HUD_SCREEN_WIDTH * .133f, Constants.HUD_SCREEN_HEIGHT * .186f);
+                back.setPosition(Constants.HUD_SCREEN_WIDTH * .85f, Constants.HUD_SCREEN_HEIGHT * .04f);
+            }
+        });
 
 //        music_icon = new Image(Assets.getInstance().setting_music_icon);
 //        music_icon.setSize(Gdx.graphics.getWidth() * .133f, Gdx.graphics.getHeight() * .186f);
@@ -72,19 +98,15 @@ public class ShopScreen implements Screen {
         Gdx.input.setInputProcessor(mStage);
         mSkin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-        mSkin.getFont("english").getData().scale(-.2f);
-
-        back = new Image(Assets.getInstance().icon_back);
-        back.setSize(Constants.HUD_SCREEN_WIDTH * .133f, Constants.HUD_SCREEN_HEIGHT * .186f);
-        back.setPosition(Constants.HUD_SCREEN_WIDTH * .85f, Constants.HUD_SCREEN_HEIGHT * .04f);
+        mSkin.getFont("english").getData();
 
         mainTable.addActor(bg);
-        mainTable.addActor(back);
-        mainTable.addActor(scrollPane);
         mainTable.addActor(dots);
+        mainTable.addActor(scrollPane);
+        mainTable.addActor(back);
 
         back.addListener(new ActorGestureListener() {
-            public void tap(InputEvent paramAnonymousInputEvent, float paramAnonymousFloat1, float paramAnonymousFloat2, int paramAnonymousInt1, int paramAnonymousInt2) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 MyGame.mainInstance.setMainScreen();
             }
 
