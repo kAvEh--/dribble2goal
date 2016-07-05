@@ -104,6 +104,21 @@ public class ServerTool {
         }
     }
 
+    public void sendShop(int coinPackage, int shirtId, String token, String payload) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("coinPackage", coinPackage);
+            data.put("shirtId", shirtId);
+            data.put("token", token);
+            data.put("payload", payload);
+
+            socket.emit("shop", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendAfter(JSONObject data) {
         socket.emit("after", data);
     }

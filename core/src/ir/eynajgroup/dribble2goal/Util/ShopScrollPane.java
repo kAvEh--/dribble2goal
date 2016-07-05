@@ -1,16 +1,24 @@
 package ir.eynajgroup.dribble2goal.Util;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.Timer;
 
 import aurelienribon.tweenengine.TweenManager;
 import ir.eynajgroup.dribble2goal.Assets;
 import ir.eynajgroup.dribble2goal.Constants;
+import ir.eynajgroup.dribble2goal.GamePrefs;
+import ir.eynajgroup.dribble2goal.Server.ServerTool;
 
 /**
  * Created by Eynak_PC2 on 6/29/2016.
@@ -18,10 +26,7 @@ import ir.eynajgroup.dribble2goal.Constants;
 public class ShopScrollPane extends Table {
 
     Table mainTable;
-    Table innerTable1;
-    Table innerTable2;
-    Table innerTable3;
-    Table innerTable4;
+    Table[] innerTables;
     int _width;
     int _height;
     int page = 0;
@@ -30,28 +35,26 @@ public class ShopScrollPane extends Table {
     private TweenManager mTweenManager;
 
     Image indicator;
+    Table dots;
 
-    public ShopScrollPane(int width, int height, Image indi) {
+    public ShopScrollPane(int width, int height, Table dd, Image indi) {
         indicator = indi;
+        dots = dd;
         this._width = width;
         this._height = height;
         mainTable = new Table();
-        innerTable1 = new Table();
-        innerTable2 = new Table();
-        innerTable3 = new Table();
-        innerTable4 = new Table();
-        mainTable.add(innerTable1);
-        mainTable.add(innerTable2);
-        mainTable.add(innerTable3);
-        mainTable.add(innerTable4);
-        innerTable1.setSize(_width, height);
-//        innerTable1.setBackground(new TextureRegionDrawable(new TextureRegion(Assets.getInstance().shadow, _width, 0)));
-        innerTable2.setSize(_width, height);
-//        innerTable2.setBackground(new TextureRegionDrawable(new TextureRegion(Assets.getInstance().shadow, _width, 0)));
-        innerTable3.setSize(_width, height);
-//        innerTable3.setBackground(new TextureRegionDrawable(new TextureRegion(Assets.getInstance().shadow, _width, 0)));
-        innerTable4.setSize(_width, height);
-//        innerTable4.setBackground(new TextureRegionDrawable(new TextureRegion(Assets.getInstance().shadow, _width, 0)));
+        innerTables = new Table[4];
+        for (int i = 0; i < 4; i++) {
+            innerTables[i] = new Table();
+        }
+        mainTable.add(innerTables[0]);
+        mainTable.add(innerTables[1]);
+        mainTable.add(innerTables[2]);
+        mainTable.add(innerTables[3]);
+        innerTables[0].setSize(_width, height);
+        innerTables[1].setSize(_width, height);
+        innerTables[2].setSize(_width, height);
+        innerTables[3].setSize(_width, height);
 
         this.mainScroll = new ScrollPane(mainTable);
         this.mainScroll.setSize(_width, _height);
@@ -80,74 +83,161 @@ public class ShopScrollPane extends Table {
             }
         });
         addActor(mainScroll);
-        for (int i = 0; i < 6; i++) {
-            if (i == 5)
-                innerTable1.add(new Image(Assets.getInstance().shop_coin_1))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                Constants.HUD_SCREEN_HEIGHT * .3f, Constants.HUD_SCREEN_WIDTH * .025f)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
-            else if (i== 2) {
-                innerTable1.add(new Image(Assets.getInstance().shop_coin_1))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                0, Constants.HUD_SCREEN_WIDTH * .025f)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
+        Image tmpBg;
+        Image tmpShirt;
+        final Table[] items = new Table[24];
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 6; i++) {
+                items[j * 6 + i] = new Table();
+                if (GamePrefs.getInstance().shirts[j * 6 + i] == 2) {
+                    tmpBg = new Image(Assets.getInstance().shop_shirt_selected);
+                } else if (GamePrefs.getInstance().shirts[j * 6 + i] == 1) {
+                    tmpBg = new Image(Assets.getInstance().shop_shirt_select);
+                } else {
+                    tmpBg = new Image(Assets.getInstance().shop_shirts_bg[j * 6 + i]);
+                }
+                final int finalI = j * 6 + i;
+                items[j * 6 + i].addListener(new ActorGestureListener() {
+                    public void tap(InputEvent event, float x, float y, int count, int button) {
+                        selectShirt(finalI);
+                    }
 
-                innerTable1.row();
-            } else if (i > 2)
-                innerTable1.add(new Image(Assets.getInstance().shop_coin_1))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                Constants.HUD_SCREEN_HEIGHT * .3f, 0)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
-            else
-                innerTable1.add(new Image(Assets.getInstance().shop_coin_1))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                0, 0)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
-        }
-        for (int i = 0; i < 6; i++) {
-            if (i == 2 || i == 5)
-                innerTable2.add(new Image(Assets.getInstance().shop_coin_2))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                0, Constants.HUD_SCREEN_WIDTH * .025f)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
-            else
-                innerTable2.add(new Image(Assets.getInstance().shop_coin_2))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                0, 0)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
-            if (i == 2)
-                innerTable2.row();
-        }
-        for (int i = 0; i < 6; i++) {
-            if (i == 2 || i == 5)
-                innerTable3.add(new Image(Assets.getInstance().shop_coin_1))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                0, Constants.HUD_SCREEN_WIDTH * .025f)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
-            else
-                innerTable3.add(new Image(Assets.getInstance().shop_coin_1))
-                        .pad(Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .025f,
-                                0, 0)
-                        .size(Constants.HUD_SCREEN_WIDTH * .3f, Constants.HUD_SCREEN_HEIGHT * .2f);
-            if (i == 2)
-                innerTable3.row();
+                    public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        if (finalI < 6) {
+                            innerTables[0].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f * .8f);
+                            innerTables[0].invalidate();
+                        } else if (finalI < 12) {
+                            innerTables[1].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f * .8f);
+                            innerTables[1].invalidate();
+                        } else if (finalI < 18) {
+                            innerTables[2].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f * .8f);
+                            innerTables[2].invalidate();
+                        } else {
+                            innerTables[3].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f * .8f);
+                            innerTables[3].invalidate();
+                        }
+                    }
+
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        if (finalI < 6) {
+                            innerTables[0].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                            innerTables[0].invalidate();
+                        } else if (finalI < 12) {
+                            innerTables[1].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                            innerTables[1].invalidate();
+                        } else if (finalI < 18) {
+                            innerTables[2].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                            innerTables[2].invalidate();
+                        } else {
+                            innerTables[3].getCell(items[finalI]).size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                            innerTables[3].invalidate();
+                        }
+                    }
+                });
+                tmpBg.setSize(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                items[j * 6 + i].addActor(tmpBg);
+                tmpShirt = new Image(Assets.getInstance().shop_shirts[j * 6 + i]);
+                tmpShirt.setSize(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                items[j * 6 + i].addActor(tmpShirt);
+                if (i == 5) {
+                    innerTables[j].add(items[j * 6 + i])
+                            .pad(Constants.HUD_SCREEN_HEIGHT * .07f, Constants.HUD_SCREEN_WIDTH * .06f,
+                                    Constants.HUD_SCREEN_HEIGHT * .12f, Constants.HUD_SCREEN_WIDTH * .06f)
+                            .size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                } else if (i == 2) {
+                    innerTables[j].add(items[j * 6 + i])
+                            .pad(Constants.HUD_SCREEN_HEIGHT * .07f, Constants.HUD_SCREEN_WIDTH * .06f,
+                                    0, Constants.HUD_SCREEN_WIDTH * .06f)
+                            .size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+
+                    innerTables[j].row();
+                } else if (i > 2) {
+                    innerTables[j].add(items[j * 6 + i])
+                            .pad(Constants.HUD_SCREEN_HEIGHT * .07f, Constants.HUD_SCREEN_WIDTH * .06f,
+                                    Constants.HUD_SCREEN_HEIGHT * .12f, 0)
+                            .size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                } else {
+                    innerTables[j].add(items[j * 6 + i]).
+                            pad(Constants.HUD_SCREEN_HEIGHT * .07f, Constants.HUD_SCREEN_WIDTH * .06f,
+                                    0, 0)
+                            .size(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
+                }
+            }
         }
 
         init();
+    }
+
+    private void selectShirt(int finalI) {
+        if (GamePrefs.getInstance().shirts[finalI] == 2) {
+            //TODO keep calm, this shirt is mine
+        } else if (GamePrefs.getInstance().shirts[finalI] == 1) {
+            //TODO change the shirt
+        } else {
+            //TODO goto shop and buy it
+            ServerTool.getInstance().sendShop(0, finalI + 1, "", "");
+        }
     }
 
     public void step(boolean endFlag) {
         float scroll = this.mainScroll.getScrollX();
         int pivot = page * _width;
         int tmp = page;
-        if (scroll > pivot + _width * .3f) {
+        if (scroll > pivot + _width * .1f) {
             tmp += 1;
-        } else if (scroll < pivot - _width * .3f) {
+        } else if (scroll < pivot - _width * .1f) {
             tmp -= 1;
         }
         if (endFlag) {
             page = tmp;
             this.mainScroll.setScrollX(page * _width);
+        }
+        switch (tmp) {
+            case 0:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.21f);
+                dots.invalidate();
+                break;
+            case 1:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.15f);
+                dots.invalidate();
+                break;
+            case 2:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.088f);
+                dots.invalidate();
+                break;
+            case 3:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.03f);
+                dots.invalidate();
+                break;
+        }
+    }
+
+    public void gotoPage(boolean isNext) {
+        if (isNext) {
+            if (page < 3)
+                page++;
+        } else {
+            if (page > 0)
+                page--;
+        }
+        this.mainScroll.setScrollX(page * _width);
+        switch (page) {
+            case 0:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.21f);
+                dots.invalidate();
+                break;
+            case 1:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.15f);
+                dots.invalidate();
+                break;
+            case 2:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.088f);
+                dots.invalidate();
+                break;
+            case 3:
+                dots.getCell(indicator).padLeft(Constants.HUD_SCREEN_WIDTH * -.03f);
+                dots.invalidate();
+                break;
         }
     }
 

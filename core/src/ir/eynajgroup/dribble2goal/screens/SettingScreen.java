@@ -68,7 +68,7 @@ public class SettingScreen implements Screen {
         setting_holder = new Table();
         Table music_inside = new Table();
         ScrollPane pane = new ScrollPane(music_inside);
-        pane.setForceScroll(false, true);
+        pane.setForceScroll(false, false);
         setting_holder.add(pane).width(Gdx.graphics.getWidth() * .66f).height(Gdx.graphics.getHeight() * .75f);
         setting_holder.row();
         setting_holder.setBounds(0, 0, Gdx.graphics.getWidth() * .66f, Gdx.graphics.getHeight() * .75f);

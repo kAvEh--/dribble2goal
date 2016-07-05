@@ -43,6 +43,7 @@ public class GamePrefs {
     public int cleanSheet = 0;
     public int[][] players = new int[5][3];
     public int[] lineup = new int[5];
+    public int[] shirts = new int[24];
 
     private GamePrefs() {}
 

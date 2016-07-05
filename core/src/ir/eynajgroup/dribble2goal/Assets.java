@@ -183,8 +183,18 @@ public class Assets implements Disposable {
     public Texture win_image;
 
     public Texture page_indicator_dot;
-    public Texture shop_coin_1;
-    public Texture shop_coin_2;
+    public Texture shop_tab_coins;
+    public Texture shop_tab_app;
+    public Texture shop_tab_coins_on;
+    public Texture shop_tab_app_on;
+    public Texture[] shop_shirts = new Texture[24];
+    public Texture[] shop_shirts_bg = new Texture[24];
+    public Texture shop_coin_500;
+    public Texture shop_coin_1500;
+    public Texture shop_coin_4k;
+    public Texture shop_coin_10k;
+    public Texture shop_shirt_select;
+    public Texture shop_shirt_selected;
 
     public void init() {
 //        Texture.setEnforcePotImages(false);
@@ -316,47 +326,106 @@ public class Assets implements Disposable {
         keeper_piece_5 = new Texture(Gdx.files.internal("img/keeper_piece_5.png"));
         keeper_piece_6 = new Texture(Gdx.files.internal("img/keeper_piece_6.png"));
 
-        keeper_1  = new Texture(Gdx.files.internal("img/keeper_1.png"));
-        keeper_2  = new Texture(Gdx.files.internal("img/keeper_2.png"));
-        keeper_3  = new Texture(Gdx.files.internal("img/keeper_3.png"));
-        keeper_4  = new Texture(Gdx.files.internal("img/keeper_4.png"));
-        keeper_5  = new Texture(Gdx.files.internal("img/keeper_5.png"));
-        keeper_6  = new Texture(Gdx.files.internal("img/keeper_6.png"));
+        keeper_1 = new Texture(Gdx.files.internal("img/keeper_1.png"));
+        keeper_2 = new Texture(Gdx.files.internal("img/keeper_2.png"));
+        keeper_3 = new Texture(Gdx.files.internal("img/keeper_3.png"));
+        keeper_4 = new Texture(Gdx.files.internal("img/keeper_4.png"));
+        keeper_5 = new Texture(Gdx.files.internal("img/keeper_5.png"));
+        keeper_6 = new Texture(Gdx.files.internal("img/keeper_6.png"));
 
-        court_1  = new Texture(Gdx.files.internal("img/court_1.jpg"));
-        court_2  = new Texture(Gdx.files.internal("img/court_2.jpg"));
-        court_3  = new Texture(Gdx.files.internal("img/court_3.jpg"));
-        court_4  = new Texture(Gdx.files.internal("img/court_4.jpg"));
-        court_5  = new Texture(Gdx.files.internal("img/court_5.jpg"));
-        court_6  = new Texture(Gdx.files.internal("img/court_6.jpg"));
+        court_1 = new Texture(Gdx.files.internal("img/court_1.jpg"));
+        court_2 = new Texture(Gdx.files.internal("img/court_2.jpg"));
+        court_3 = new Texture(Gdx.files.internal("img/court_3.jpg"));
+        court_4 = new Texture(Gdx.files.internal("img/court_4.jpg"));
+        court_5 = new Texture(Gdx.files.internal("img/court_5.jpg"));
+        court_6 = new Texture(Gdx.files.internal("img/court_6.jpg"));
 
-        court_dark_1  = new Texture(Gdx.files.internal("img/court_dark_1.jpg"));
-        court_dark_2  = new Texture(Gdx.files.internal("img/court_dark_2.jpg"));
-        court_dark_3  = new Texture(Gdx.files.internal("img/court_dark_3.jpg"));
-        court_dark_4  = new Texture(Gdx.files.internal("img/court_dark_4.jpg"));
-        court_dark_5  = new Texture(Gdx.files.internal("img/court_dark_5.jpg"));
-        court_dark_6  = new Texture(Gdx.files.internal("img/court_dark_6.jpg"));
+        court_dark_1 = new Texture(Gdx.files.internal("img/court_dark_1.jpg"));
+        court_dark_2 = new Texture(Gdx.files.internal("img/court_dark_2.jpg"));
+        court_dark_3 = new Texture(Gdx.files.internal("img/court_dark_3.jpg"));
+        court_dark_4 = new Texture(Gdx.files.internal("img/court_dark_4.jpg"));
+        court_dark_5 = new Texture(Gdx.files.internal("img/court_dark_5.jpg"));
+        court_dark_6 = new Texture(Gdx.files.internal("img/court_dark_6.jpg"));
 
-        court_arc_1  = new Texture(Gdx.files.internal("img/court_arc_1.png"));
-        court_arc_2  = new Texture(Gdx.files.internal("img/court_arc_2.png"));
-        court_arc_3  = new Texture(Gdx.files.internal("img/court_arc_3.png"));
-        court_arc_4  = new Texture(Gdx.files.internal("img/court_arc_4.png"));
-        court_arc_5  = new Texture(Gdx.files.internal("img/court_arc_5.png"));
-        court_arc_6  = new Texture(Gdx.files.internal("img/court_arc_6.png"));
+        court_arc_1 = new Texture(Gdx.files.internal("img/court_arc_1.png"));
+        court_arc_2 = new Texture(Gdx.files.internal("img/court_arc_2.png"));
+        court_arc_3 = new Texture(Gdx.files.internal("img/court_arc_3.png"));
+        court_arc_4 = new Texture(Gdx.files.internal("img/court_arc_4.png"));
+        court_arc_5 = new Texture(Gdx.files.internal("img/court_arc_5.png"));
+        court_arc_6 = new Texture(Gdx.files.internal("img/court_arc_6.png"));
 
-        time_bar  = new Texture(Gdx.files.internal("img/time_bar.png"));
+        time_bar = new Texture(Gdx.files.internal("img/time_bar.png"));
 
-        login_email  = new Texture(Gdx.files.internal("img/login_email.png"));
-        login_pass  = new Texture(Gdx.files.internal("img/login_pass.png"));
-        login_pass_re  = new Texture(Gdx.files.internal("img/login_pass_re.png"));
-        login_username  = new Texture(Gdx.files.internal("img/login_username.png"));
+        login_email = new Texture(Gdx.files.internal("img/login_email.png"));
+        login_pass = new Texture(Gdx.files.internal("img/login_pass.png"));
+        login_pass_re = new Texture(Gdx.files.internal("img/login_pass_re.png"));
+        login_username = new Texture(Gdx.files.internal("img/login_username.png"));
 
-        lose_image  = new Texture(Gdx.files.internal("img/loser.jpg"));
-        win_image  = new Texture(Gdx.files.internal("img/winner.jpg"));
+        lose_image = new Texture(Gdx.files.internal("img/loser.jpg"));
+        win_image = new Texture(Gdx.files.internal("img/winner.jpg"));
 
-        page_indicator_dot  = new Texture(Gdx.files.internal("img/page_indicator_dot.png"));
-        shop_coin_1  = new Texture(Gdx.files.internal("img/shop_coin_1.png"));
-        shop_coin_2  = new Texture(Gdx.files.internal("img/shop_coin_2.png"));
+        page_indicator_dot = new Texture(Gdx.files.internal("img/page_indicator_dot.png"));
+        shop_tab_coins = new Texture(Gdx.files.internal("img/shop_tab_coins.png"));
+        shop_tab_app = new Texture(Gdx.files.internal("img/shop_tab_app.png"));
+        shop_tab_coins_on = new Texture(Gdx.files.internal("img/shop_tab_coins_on.png"));
+        shop_tab_app_on = new Texture(Gdx.files.internal("img/shop_tab_app_on.png"));
+        shop_coin_500 = new Texture(Gdx.files.internal("img/shop_coin_500.png"));
+        shop_coin_1500 = new Texture(Gdx.files.internal("img/shop_coin_1500.png"));
+        shop_coin_4k = new Texture(Gdx.files.internal("img/shop_coin_4k.png"));
+        shop_coin_10k = new Texture(Gdx.files.internal("img/shop_coin_10k.png"));
+
+        shop_shirts[0] = new Texture(Gdx.files.internal("img/shop_shirt_1.png"));
+        shop_shirts[1] = new Texture(Gdx.files.internal("img/shop_shirt_2.png"));
+        shop_shirts[2] = new Texture(Gdx.files.internal("img/shop_shirt_3.png"));
+        shop_shirts[3] = new Texture(Gdx.files.internal("img/shop_shirt_4.png"));
+        shop_shirts[4] = new Texture(Gdx.files.internal("img/shop_shirt_5.png"));
+        shop_shirts[5] = new Texture(Gdx.files.internal("img/shop_shirt_6.png"));
+        shop_shirts[6] = new Texture(Gdx.files.internal("img/shop_shirt_7.png"));
+        shop_shirts[7] = new Texture(Gdx.files.internal("img/shop_shirt_8.png"));
+        shop_shirts[8] = new Texture(Gdx.files.internal("img/shop_shirt_9.png"));
+        shop_shirts[9] = new Texture(Gdx.files.internal("img/shop_shirt_10.png"));
+        shop_shirts[10] = new Texture(Gdx.files.internal("img/shop_shirt_11.png"));
+        shop_shirts[11] = new Texture(Gdx.files.internal("img/shop_shirt_12.png"));
+        shop_shirts[12] = new Texture(Gdx.files.internal("img/shop_shirt_13.png"));
+        shop_shirts[13] = new Texture(Gdx.files.internal("img/shop_shirt_14.png"));
+        shop_shirts[14] = new Texture(Gdx.files.internal("img/shop_shirt_15.png"));
+        shop_shirts[15] = new Texture(Gdx.files.internal("img/shop_shirt_16.png"));
+        shop_shirts[16] = new Texture(Gdx.files.internal("img/shop_shirt_17.png"));
+        shop_shirts[17] = new Texture(Gdx.files.internal("img/shop_shirt_18.png"));
+        shop_shirts[18] = new Texture(Gdx.files.internal("img/shop_shirt_19.png"));
+        shop_shirts[19] = new Texture(Gdx.files.internal("img/shop_shirt_20.png"));
+        shop_shirts[20] = new Texture(Gdx.files.internal("img/shop_shirt_21.png"));
+        shop_shirts[21] = new Texture(Gdx.files.internal("img/shop_shirt_22.png"));
+        shop_shirts[22] = new Texture(Gdx.files.internal("img/shop_shirt_23.png"));
+        shop_shirts[23] = new Texture(Gdx.files.internal("img/shop_shirt_24.png"));
+
+        shop_shirts_bg[0] = new Texture(Gdx.files.internal("img/shop_shirt_select.png"));
+        shop_shirts_bg[1] = new Texture(Gdx.files.internal("img/shop_shirt_select.png"));
+        shop_shirts_bg[2] = new Texture(Gdx.files.internal("img/shop_shirt_1k.png"));
+        shop_shirts_bg[3] = new Texture(Gdx.files.internal("img/shop_shirt_2k.png"));
+        shop_shirts_bg[4] = new Texture(Gdx.files.internal("img/shop_shirt_9k.png"));
+        shop_shirts_bg[5] = new Texture(Gdx.files.internal("img/shop_shirt_9k.png"));
+        shop_shirts_bg[6] = new Texture(Gdx.files.internal("img/shop_shirt_1k.png"));
+        shop_shirts_bg[7] = new Texture(Gdx.files.internal("img/shop_shirt_9k.png"));
+        shop_shirts_bg[8] = new Texture(Gdx.files.internal("img/shop_shirt_9k.png"));
+        shop_shirts_bg[9] = new Texture(Gdx.files.internal("img/shop_shirt_2k.png"));
+        shop_shirts_bg[10] = new Texture(Gdx.files.internal("img/shop_shirt_2k.png"));
+        shop_shirts_bg[11] = new Texture(Gdx.files.internal("img/shop_shirt_5k.png"));
+        shop_shirts_bg[12] = new Texture(Gdx.files.internal("img/shop_shirt_5k.png"));
+        shop_shirts_bg[13] = new Texture(Gdx.files.internal("img/shop_shirt_1k.png"));
+        shop_shirts_bg[14] = new Texture(Gdx.files.internal("img/shop_shirt_2k.png"));
+        shop_shirts_bg[15] = new Texture(Gdx.files.internal("img/shop_shirt_2k.png"));
+        shop_shirts_bg[16] = new Texture(Gdx.files.internal("img/shop_shirt_2k.png"));
+        shop_shirts_bg[17] = new Texture(Gdx.files.internal("img/shop_shirt_5k.png"));
+        shop_shirts_bg[18] = new Texture(Gdx.files.internal("img/shop_shirt_5k.png"));
+        shop_shirts_bg[19] = new Texture(Gdx.files.internal("img/shop_shirt_5k.png"));
+        shop_shirts_bg[20] = new Texture(Gdx.files.internal("img/shop_shirt_2t.png"));
+        shop_shirts_bg[21] = new Texture(Gdx.files.internal("img/shop_shirt_2t.png"));
+        shop_shirts_bg[22] = new Texture(Gdx.files.internal("img/shop_shirt_2t.png"));
+        shop_shirts_bg[23] = new Texture(Gdx.files.internal("img/shop_shirt_2t.png"));
+
+        shop_shirt_select = new Texture(Gdx.files.internal("img/shop_shirt_select.png"));
+        shop_shirt_selected = new Texture(Gdx.files.internal("img/shop_shirt_selected.png"));
 
         player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         shirt1.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

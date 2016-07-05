@@ -182,7 +182,7 @@ public class LoginScreen implements Screen {
             GamePrefs.getInstance().game_played = player.getInt("gameCount");
             GamePrefs.getInstance().winRate = player.getInt("winrate");
             GamePrefs.getInstance().cleanSheet = player.getInt("cleanSheet");
-            GamePrefs.getInstance().shirt = player.getInt("shirt");
+            GamePrefs.getInstance().shirt = player.getInt("shirt") - 1;
             GamePrefs.getInstance().name = player.getString("nickname");
             GamePrefs.getInstance().setUserName(player.getString("username"));
             GamePrefs.getInstance().playerId = player.getInt("playerId");
@@ -228,15 +228,21 @@ public class LoginScreen implements Screen {
             for (int i = 1; i < 6; i++) {
                 if (tmp.getInt(i + "") == -1) {
                     if (flag) {
-                        GamePrefs.getInstance().lineup[3] = (i-1);
+                        GamePrefs.getInstance().lineup[3] = (i - 1);
                         flag = false;
                     } else {
-                        GamePrefs.getInstance().lineup[4] = (i-1);
+                        GamePrefs.getInstance().lineup[4] = (i - 1);
                     }
                 } else {
-                    GamePrefs.getInstance().lineup[tmp.getInt(i + "") - 1] = (i-1);
+                    GamePrefs.getInstance().lineup[tmp.getInt(i + "") - 1] = (i - 1);
                 }
             }
+            //Shirts
+            tmp = player.getJSONObject("shirts");
+            for (int i = 0; i < 24; i++) {
+                GamePrefs.getInstance().shirts[i] = tmp.getInt((i + 1) + "");
+            }
+            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
 
             return true;
         } catch (Exception e) {
