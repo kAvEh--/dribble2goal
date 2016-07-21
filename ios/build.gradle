@@ -4,7 +4,7 @@ sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
-	mainClassName = "ir.eynajgroup.dribble2goal.IOSLauncher"
+	mainClassName = "ir.eynakgroup.dribble2goal.IOSLauncher"
 }
 
 launchIPhoneSimulator.dependsOn build

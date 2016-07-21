@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'ir.eynajgroup.dribble2goal.GdxDefinition'
-    devModules 'ir.eynajgroup.dribble2goal.GdxDefinitionSuperdev'
+    modules 'ir.eynakgroup.dribble2goal.GdxDefinition'
+    devModules 'ir.eynakgroup.dribble2goal.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

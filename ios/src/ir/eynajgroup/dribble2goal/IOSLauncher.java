@@ -1,11 +1,11 @@
-package ir.eynajgroup.dribble2goal;
+package ir.eynakgroup.dribble2goal;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import ir.eynajgroup.dribble2goal.MyGame;
+import ir.eynakgroup.dribble2goal.MyGame;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override

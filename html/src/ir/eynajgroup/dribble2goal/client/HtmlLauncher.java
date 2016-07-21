@@ -1,9 +1,9 @@
-package ir.eynajgroup.dribble2goal.client;
+package ir.eynakgroup.dribble2goal.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import ir.eynajgroup.dribble2goal.MyGame;
+import ir.eynakgroup.dribble2goal.MyGame;
 
 public class HtmlLauncher extends GwtApplication {
 
