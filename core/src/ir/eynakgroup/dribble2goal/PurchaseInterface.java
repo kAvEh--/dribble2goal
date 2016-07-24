@@ -10,7 +10,15 @@ public class PurchaseInterface {
         public abstract void onFinish(Purchase paramPurchase);
     }
 
+    public static abstract class InAppPurchaseConsumeHandler {
+        public abstract void onError(int paramInt);
+
+        public abstract void onFinish(Purchase paramPurchase);
+    }
+
     public static abstract interface InAppPurchaseInterface {
-        public abstract void StartPurchaseFlow(String paramString, PurchaseInterface.InAppPurchaseFinishHandler paramInAppPurchaseFinishHandler);
+        void StartPurchaseFlow(String sku, PurchaseInterface.InAppPurchaseFinishHandler finishHandler);
+
+        void ConsumePurchase(String sku, PurchaseInterface.InAppPurchaseConsumeHandler consumeHandler);
     }
 }
