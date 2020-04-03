@@ -14,14 +14,5 @@ public class Purchase {
     public String signature;
     public String sku;
     public String token;
-
-    public int getPurchaseFromPreferences() {
-
-        return 0;
-    }
-
-    public void savePurchaseToPrefereces(int paramInt1, int paramInt2) {
-
-    }
 }
 

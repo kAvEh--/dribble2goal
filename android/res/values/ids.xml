@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_id">908208637805</string>
+    <string name="achievement_win_10">CgkI7Y7Qq7caEAIQAQ</string>
+    <string name="achievement_win_50">CgkI7Y7Qq7caEAIQAg</string>
+    <string name="achievement_win_200">CgkI7Y7Qq7caEAIQAw</string>
+    <string name="achievement_win_500">CgkI7Y7Qq7caEAIQBA</string>
+    <string name="achievement_win_1000">CgkI7Y7Qq7caEAIQBQ</string>
+    <string name="achievement_score_10">CgkI7Y7Qq7caEAIQBg</string>
+    <string name="achievement_score_50">CgkI7Y7Qq7caEAIQBw</string>
+    <string name="achievement_score_200">CgkI7Y7Qq7caEAIQCA</string>
+    <string name="achievement_score_500">CgkI7Y7Qq7caEAIQCQ</string>
+    <string name="achievement_score_1000">CgkI7Y7Qq7caEAIQCg</string>
+    <string name="achievement_score_5000">CgkI7Y7Qq7caEAIQCw</string>
+    <string name="achievement_keep_5">CgkI7Y7Qq7caEAIQDA</string>
+    <string name="achievement_keep_20">CgkI7Y7Qq7caEAIQDQ</string>
+    <string name="achievement_keep_50">CgkI7Y7Qq7caEAIQDg</string>
+    <string name="achievement_keep_100">CgkI7Y7Qq7caEAIQDw</string>
+    <string name="achievement_keep_200">CgkI7Y7Qq7caEAIQEA</string>
+    <string name="achievement_keep_500">CgkI7Y7Qq7caEAIQEQ</string>
+    <string name="achievement_inraw_2">CgkI7Y7Qq7caEAIQEg</string>
+    <string name="achievement_inraw_5">CgkI7Y7Qq7caEAIQEw</string>
+    <string name="achievement_inraw_10">CgkI7Y7Qq7caEAIQFA</string>
+    <string name="achievement_inraw_20">CgkI7Y7Qq7caEAIQFQ</string>
+</resources>

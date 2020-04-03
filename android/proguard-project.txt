@@ -34,6 +34,17 @@
    <init>(com.badlogic.gdx.Application, android.content.Context, java.lang.Object, com.badlogic.gdx.backends.android.AndroidApplicationConfiguration);
 }
 
+-keep class com.android.vending.billing
+-keep class com.google.** {*;}
+
+-keepattributes Signature
+        -keepattributes *Annotation*
+        -keepattributes EnclosingMethod
+        -keep class sun.misc.Unsafe { *; }
+        -keep interface ir.tapsell.tapsellvideosdk.NoProguard
+        -keep class * implements ir.tapsell.tapsellvideosdk.NoProguard { *; }
+        -keep interface * extends ir.tapsell.tapsellvideosdk.NoProguard { *; }
+
 -keepclassmembers class com.badlogic.gdx.physics.box2d.World {
    boolean contactFilter(long, long);
    void    beginContact(long);

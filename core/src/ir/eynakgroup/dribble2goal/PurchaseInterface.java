@@ -1,10 +1,13 @@
 package ir.eynakgroup.dribble2goal;
 
+import ir.eynakgroup.dribble2goal.Util.ShopScrollPane;
+
 /**
  * Created by Eynak_PC2 on 7/21/2016.
  */
 public class PurchaseInterface {
     public static abstract class InAppPurchaseFinishHandler {
+        public ShopScrollPane shopholder;
         public abstract void onError(int paramInt);
 
         public abstract void onFinish(Purchase paramPurchase);

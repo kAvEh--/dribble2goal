@@ -1,13 +1,17 @@
 buildscript {
     repositories {
+        google()
+        mavenLocal()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
     }
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-        classpath 'com.android.tools.build:gradle:2.1.2'
-        classpath 'org.robovm:robovm-gradle-plugin:1.12.0'
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.9'
+        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.8'
     }
 }
 
@@ -18,29 +22,31 @@ allprojects {
     version = '1.0'
     ext {
         appName = "Dribble2Goal"
-        gdxVersion = '1.9.2'
-        roboVMVersion = '1.12.0'
+        gdxVersion = '1.9.10'
+        roboVMVersion = '2.3.8'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
     }
 
     repositories {
+        google()
+        mavenLocal()
         mavenCentral()
+        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
 
 project(":desktop") {
-    apply plugin: "java"
-
+    apply plugin: "java-library"
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
     }
 }
 
@@ -50,62 +56,74 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        implementation fileTree(dir: '../libs', include: '*.jar')
+        implementation project(":core")
+        implementation 'com.google.android.gms:play-services-games:19.0.0'
+        implementation 'com.android.support:support-v4:28.0.0'
+        implementation 'com.android.support:multidex:1.0.3'
+//        compile 'com.google.firebase:firebase-core:17.3.0'
+//        compile 'com.google.firebase:firebase-messaging:20.1.4'
+//        compile 'com.google.firebase:firebase-auth:19.3.0'
+//        compile 'com.google.android.gms:play-services-auth:18.0.0'
+
+        // glide is added to load the g+ profile image. Ignore if you want
+        implementation 'com.github.bumptech.glide:glide:4.10.0'
+        implementation project(':BaseGameUtils')
+        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
-        compile fileTree(dir: '../libs', include: '*.jar')
     }
 }
 
 project(":ios") {
-    apply plugin: "java"
+    apply plugin: "java-library"
     apply plugin: "robovm"
 
 
     dependencies {
-        compile project(":core")
-        compile "org.robovm:robovm-rt:$roboVMVersion"
-        compile "org.robovm:robovm-cocoatouch:$roboVMVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
+        implementation project(":core")
+        api "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
+        api "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
+        api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
     }
 }
 
 project(":html") {
+    apply plugin: "java-library"
     apply plugin: "gwt"
     apply plugin: "war"
 
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
     }
 }
 
 project(":core") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "io.socket:socket.io-client:0.6.2"
-        compile fileTree(dir: '../libs', include: '*.jar')
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        implementation "io.socket:socket.io-client:0.8.3"
+        implementation fileTree(dir: '../libs', include: '*.jar')
     }
 }
 

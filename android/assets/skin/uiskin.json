@@ -1,5 +1,5 @@
 {
-com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: main_font.fnt }, font21: { file: font_21.fnt } },
+com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: main_font.fnt }, font21: { file: font_21.fnt }, yekan: { file: sanse.fnt } },
 com.badlogic.gdx.graphics.Color: {
 	green: { a: 1, b: 0, g: 1, r: 0 },
 	white: { a: 1, b: 1, g: 1, r: 1 },
@@ -43,7 +43,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: { font: default-font, fontColor: grey }
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-	default: { selection: selection, font: default-font, fontColor: grey, cursor: cursor }
+	default: { selection: selection, font: default-font, fontColor: white, cursor: cursor }
 },
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: { checkboxOn: check-on, checkboxOff: check-off, font: default-font, fontColor: white }
