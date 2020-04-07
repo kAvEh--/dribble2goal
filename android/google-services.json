@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "908208637805",
+    "firebase_url": "https://dribble-2-goal-79463387.firebaseio.com",
+    "project_id": "dribble-2-goal-79463387",
+    "storage_bucket": "dribble-2-goal-79463387.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908208637805:android:09c6b9182371ea7d",
+        "android_client_info": {
+          "package_name": "ir.eynakgames.dribble2goal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908208637805-ftmi4kbg0q3gs2vsddnbt1b6ickmpvmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ir.eynakgames.dribble2goal",
+            "certificate_hash": "4370b210c9b1ad3cc8aeccf1fc86c384d10eab8b"
+          }
+        },
+        {
+          "client_id": "908208637805-tgg6euogiu4j96m194uodcdt15mrujks.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "908208637805-qgqgbnt5r9a5pmdhcss1e7nrtdrrvrbr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHEIzOvSDfocb7Bz3rp1YW-ZmmSBzv18A"
+        },
+        {
+          "current_key": "AIzaSyCrZxQprPT7QgYU4Gg7UkC75CagNaUcojE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908208637805-tgg6euogiu4j96m194uodcdt15mrujks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

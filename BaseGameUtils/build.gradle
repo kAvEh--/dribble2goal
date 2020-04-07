@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+
+buildscript {
+    repositories {
+        google()
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.1'
+    }
+}
+dependencies {
+    // Set defaults so that BaseGameUtils can be used outside of BasicSamples
+    if (!project.hasProperty('appcompat_library_version')) {
+        ext.appcompat_library_version = '20.0.+'
+    }
+    if (!project.hasProperty('support_library_version')) {
+        ext.support_library_version = '20.0.+'
+    }
+    if (!project.hasProperty('gms_library_version')) {
+        ext.gms_library_version = '8.4.0'
+    }
+
+}
+
+android {
+    // Set defaults so that BaseGameUtils can be used outside of BasicSamples
+    if (!project.hasProperty('android_compile_version')) {
+        ext.android_compile_version = 23
+    }
+    if (!project.hasProperty('android_min_version')) {
+        ext.android_min_version = 15
+    }
+    if (!project.hasProperty('android_version')) {
+        ext.build_tools_version = "28.0.3"
+    }
+
+    compileSdkVersion android_compile_version
+    buildToolsVersion build_tools_version
+
+    defaultConfig {
+        minSdkVersion android_min_version
+        targetSdkVersion android_compile_version
+    }
+}
+
