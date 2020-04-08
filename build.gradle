@@ -122,7 +122,7 @@ project(":core") {
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        implementation "io.socket:socket.io-client:0.8.3"
+        implementation "io.socket:socket.io-client:1.0.0"
         implementation fileTree(dir: '../libs', include: '*.jar')
     }
 }

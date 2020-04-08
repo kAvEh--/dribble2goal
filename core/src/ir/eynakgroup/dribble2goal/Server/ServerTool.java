@@ -25,12 +25,12 @@ public class ServerTool {
         return instance;
     }
 
-    public static void connectSocket2() {
+    private static void connectSocket2() {
         try {
-            socket = IO.socket("http://130.185.74.27:6060");
+            socket = IO.socket("http://127.0.0.1:8080");
             socket.connect();
         } catch (Exception e) {
-            System.err.println(e);
+//            System.err.println(e);
         }
     }
 
@@ -141,6 +141,7 @@ public class ServerTool {
             data.put("username", username);
             data.put("password", pass);
 
+            System.out.println("----------->>>>" + data);
             socket.emit("sign-in", data);
         } catch (JSONException e) {
             e.printStackTrace();

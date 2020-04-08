@@ -95,15 +95,15 @@ public class SplashScreen implements Screen {
     }
 
     private void checkSavedData() {
-        System.out.println(GamePrefs.getInstance().getUserName() + "^^^^^^" + GamePrefs.getInstance().getPassword());
-        if (GamePrefs.getInstance().getUserName() != null &&
-                GamePrefs.getInstance().getUserName().length() > 0) {
-            ServerTool.getInstance().login(GamePrefs.getInstance().getUserName(), GamePrefs.getInstance().getPassword());
-
-            ServerTool.getInstance().socket.on("loggedInPlayer", onLoginListener);
-        } else {
-            login_flag = 1;
-        }
+        System.out.println(GamePrefs.getInstance().getUserName() + "^^^111^^^" + GamePrefs.getInstance().getPassword());
+//        if (GamePrefs.getInstance().getUserName() != null &&
+//                GamePrefs.getInstance().getUserName().length() > 0) {
+//            ServerTool.getInstance().login(GamePrefs.getInstance().getUserName(), GamePrefs.getInstance().getPassword());
+//
+//            ServerTool.socket.on("loggedInPlayer", onLoginListener);
+//        } else {
+//        }
+        login_flag = 1;
     }
 
     private Emitter.Listener onLoginListener = new Emitter.Listener() {

@@ -710,14 +710,14 @@ public class LoginScreen implements Screen, InputProcessor {
             GamePrefs.getInstance().setUserName(email_txt.getText());
             GamePrefs.getInstance().setPassword(password_txt.getText());
 
-            ServerTool.getInstance().socket.off("loggedInPlayer");
-            ServerTool.getInstance().socket.on("loggedInPlayer", onRegisterListener);
+            ServerTool.socket.off("loggedInPlayer");
+            ServerTool.socket.on("loggedInPlayer", onRegisterListener);
         }
     }
 
     private void checkLogin(String mail, String pass) {
-        if (!ServerTool.getInstance().socket.connected())
-            ServerTool.getInstance().socket.connect();
+        if (!ServerTool.socket.connected())
+            ServerTool.socket.connect();
         //TODO
         if (!loginlock) {
             loginlock = true;
@@ -765,8 +765,8 @@ public class LoginScreen implements Screen, InputProcessor {
 
             error_txt.setText("logging in ....");
 
-            ServerTool.getInstance().socket.off("loggedInPlayer");
-            ServerTool.getInstance().socket.on("loggedInPlayer", onLoginListener);
+            ServerTool.socket.off("loggedInPlayer");
+            ServerTool.socket.on("loggedInPlayer", onLoginListener);
         }
     }
 
