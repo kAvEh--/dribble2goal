@@ -95,7 +95,7 @@ public class SplashScreen implements Screen {
     }
 
     private void checkSavedData() {
-        System.out.println(GamePrefs.getInstance().getUserName() + "^^^111^^^" + GamePrefs.getInstance().getPassword());
+        System.out.println(GamePrefs.getInstance().getUserName() + "^^^@^^^" + GamePrefs.getInstance().getPassword());
 //        if (GamePrefs.getInstance().getUserName() != null &&
 //                GamePrefs.getInstance().getUserName().length() > 0) {
 //            ServerTool.getInstance().login(GamePrefs.getInstance().getUserName(), GamePrefs.getInstance().getPassword());
@@ -103,7 +103,7 @@ public class SplashScreen implements Screen {
 //            ServerTool.socket.on("loggedInPlayer", onLoginListener);
 //        } else {
 //        }
-        login_flag = 1;
+            login_flag = 1;
     }
 
     private Emitter.Listener onLoginListener = new Emitter.Listener() {
@@ -143,14 +143,14 @@ public class SplashScreen implements Screen {
             JSONObject player = data.getJSONObject("player");
             GamePrefs.getInstance().game_won = player.getInt("winCount");
             GamePrefs.getInstance().game_played = player.getInt("gameCount");
-            GamePrefs.getInstance().winRate = (int) (player.getDouble("winrate") * 100f);
+            GamePrefs.getInstance().winRate = (int) (player.getDouble("winRate") * 100f);
             GamePrefs.getInstance().cleanSheet = player.getInt("cleanSheet");
             GamePrefs.getInstance().position = player.getInt("formation");
             GamePrefs.getInstance().shirt = player.getInt("shirt") - 1;
             GamePrefs.getInstance().name = player.getString("nickname");
             GamePrefs.getInstance().avatar = player.getInt("avatarId");
             GamePrefs.getInstance().setUserName(player.getString("username"));
-            GamePrefs.getInstance().playerId = player.getString("_id");
+            GamePrefs.getInstance().playerId = player.getString("user_id");
             GamePrefs.getInstance().goals = player.getInt("goals");
             GamePrefs.getInstance().winInaRaw = player.getInt("winInaRow");
             GamePrefs.getInstance().coins_num = player.getInt("coin");

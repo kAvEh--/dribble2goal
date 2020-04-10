@@ -141,7 +141,7 @@ public class ServerTool {
             data.put("username", username);
             data.put("password", pass);
 
-            System.out.println("----------->>>>" + data);
+            System.out.println("------->>>> login emitted" + data);
             socket.emit("sign-in", data);
         } catch (JSONException e) {
             e.printStackTrace();

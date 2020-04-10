@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import aurelienribon.tweenengine.BaseTween;
@@ -156,21 +157,26 @@ public class EntranceScreen implements Screen, InputProcessor {
 
         @Override
         public void call(Object... args) {
-            JSONObject response = (JSONObject) args[0];
+            JSONObject response = null;
             try {
-                String s = response.getString("err");
-                System.out.println(s + "---- ERR LOGIN D2G ------------------->>>>>>>>>>>>>>>>>>");
-                GamePrefs.getInstance().setUserName("");
-                GamePrefs.getInstance().setPassword("");
-            } catch (Exception e) {
-                if (setData((JSONObject) args[0])) {
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            MyGame.mainInstance.setMainScreen();
-                        }
-                    });
+                response = new JSONObject((String) args[0]);
+                try {
+                    String s = response.getString("err");
+                    System.out.println(s + "---- ERR LOGIN D2G ------------------->>>>>>>>>>>>>>>>>>");
+                    GamePrefs.getInstance().setUserName("");
+                    GamePrefs.getInstance().setPassword("");
+                } catch (Exception e) {
+                    if (setData(response)) {
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                MyGame.mainInstance.setMainScreen();
+                            }
+                        });
+                    }
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
@@ -178,80 +184,74 @@ public class EntranceScreen implements Screen, InputProcessor {
 
     private boolean setData(JSONObject data) {
         try {
-            if (data.getBoolean("rc")) {
-
-            } else {
-
-            }
+//            if (data.getBoolean("rc")) {
+//
+//            } else {
+//
+//            }
             System.out.println(data);
             GamePrefs.getInstance().isDailyAvailable = data.getBoolean("dailyCoin");
             JSONObject player = data.getJSONObject("player");
             GamePrefs.getInstance().game_won = player.getInt("winCount");
             GamePrefs.getInstance().game_played = player.getInt("gameCount");
-            GamePrefs.getInstance().winRate = player.getInt("winrate");
+            GamePrefs.getInstance().winRate = player.getInt("winRate");
             GamePrefs.getInstance().cleanSheet = player.getInt("cleanSheet");
             GamePrefs.getInstance().shirt = player.getInt("shirt") - 1;
             GamePrefs.getInstance().name = player.getString("nickname");
             GamePrefs.getInstance().avatar = player.getInt("avatarId");
             GamePrefs.getInstance().setUserName(player.getString("username"));
-            GamePrefs.getInstance().playerId = player.getString("_id");
+            GamePrefs.getInstance().playerId = player.getString("id");
             GamePrefs.getInstance().goals = player.getInt("goals");
             GamePrefs.getInstance().winInaRaw = player.getInt("winInaRow");
             GamePrefs.getInstance().coins_num = player.getInt("coin");
             JSONObject level = player.getJSONObject("level");
             GamePrefs.getInstance().level = level.getInt("lvl");
             GamePrefs.getInstance().xp = level.getInt("xp");
-            JSONObject achs = player.getJSONObject("achievements");
-            GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
-            GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-            GamePrefs.getInstance().achieve_win = achs.getInt("win");
-            GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
-            //First Player Data
-            JSONObject tmpPlayer = player.getJSONObject("players").getJSONObject("1");
-            GamePrefs.getInstance().players[0][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[0][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[0][2] = tmpPlayer.getInt("speed");
-            //Second Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("2");
-            GamePrefs.getInstance().players[1][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[1][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[1][2] = tmpPlayer.getInt("speed");
-            //Third Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("3");
-            GamePrefs.getInstance().players[2][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[2][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[2][2] = tmpPlayer.getInt("speed");
-            //Fourth Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("4");
-            GamePrefs.getInstance().players[3][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[3][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[3][2] = tmpPlayer.getInt("speed");
-            //Fifth Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("5");
-            GamePrefs.getInstance().players[4][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[4][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[4][2] = tmpPlayer.getInt("speed");
+//            JSONObject achs = player.getJSONObject("achievements");
+//            GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
+//            GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
+//            GamePrefs.getInstance().achieve_win = achs.getInt("win");
+//            GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
+//            //First Player Data
+//            JSONObject tmpPlayer = player.getJSONObject("players").getJSONObject("1");
+//            GamePrefs.getInstance().players[0][0] = tmpPlayer.getInt("stamina");
+//            GamePrefs.getInstance().players[0][1] = tmpPlayer.getInt("size");
+//            GamePrefs.getInstance().players[0][2] = tmpPlayer.getInt("speed");
+//            //Second Player Data
+//            tmpPlayer = player.getJSONObject("players").getJSONObject("2");
+//            GamePrefs.getInstance().players[1][0] = tmpPlayer.getInt("stamina");
+//            GamePrefs.getInstance().players[1][1] = tmpPlayer.getInt("size");
+//            GamePrefs.getInstance().players[1][2] = tmpPlayer.getInt("speed");
+//            //Third Player Data
+//            tmpPlayer = player.getJSONObject("players").getJSONObject("3");
+//            GamePrefs.getInstance().players[2][0] = tmpPlayer.getInt("stamina");
+//            GamePrefs.getInstance().players[2][1] = tmpPlayer.getInt("size");
+//            GamePrefs.getInstance().players[2][2] = tmpPlayer.getInt("speed");
+//            //Fourth Player Data
+//            tmpPlayer = player.getJSONObject("players").getJSONObject("4");
+//            GamePrefs.getInstance().players[3][0] = tmpPlayer.getInt("stamina");
+//            GamePrefs.getInstance().players[3][1] = tmpPlayer.getInt("size");
+//            GamePrefs.getInstance().players[3][2] = tmpPlayer.getInt("speed");
+//            //Fifth Player Data
+//            tmpPlayer = player.getJSONObject("players").getJSONObject("5");
+//            GamePrefs.getInstance().players[4][0] = tmpPlayer.getInt("stamina");
+//            GamePrefs.getInstance().players[4][1] = tmpPlayer.getInt("size");
+//            GamePrefs.getInstance().players[4][2] = tmpPlayer.getInt("speed");
             //Lineup
-            JSONObject tmp = player.getJSONObject("lineup");
-            boolean flag = true;
-            for (int i = 1; i < 6; i++) {
-                if (tmp.getInt(i + "") == -1) {
-                    if (flag) {
-                        GamePrefs.getInstance().lineup[3] = (i - 1);
-                        flag = false;
-                    } else {
-                        GamePrefs.getInstance().lineup[4] = (i - 1);
-                    }
-                } else {
-                    GamePrefs.getInstance().lineup[tmp.getInt(i + "") - 1] = (i - 1);
-                }
+            String tmpLineUp = player.getString("lineup");
+            if (tmpLineUp.equals("A")) {
+                GamePrefs.getInstance().lineup = new int[]{0, 1, 2, 3, 4};
+            } else if (tmpLineUp.equals("B")) {
+                GamePrefs.getInstance().lineup = new int[]{0, 1, 3, 2, 4};
+            } else {
+                GamePrefs.getInstance().lineup = new int[]{0, 1, 4, 2, 3};
             }
             //Shirts
-            tmp = player.getJSONObject("shirts");
-            for (int i = 0; i < 24; i++) {
-                GamePrefs.getInstance().shirts[i] = tmp.getInt((i + 1) + "");
-            }
-            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
+//            tmp = player.getJSONObject("shirts");
+//            for (int i = 0; i < 24; i++) {
+//                GamePrefs.getInstance().shirts[i] = tmp.getInt((i + 1) + "");
+//            }
+//            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
 
             return true;
         } catch (Exception e) {
