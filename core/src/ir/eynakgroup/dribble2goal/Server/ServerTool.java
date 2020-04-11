@@ -27,7 +27,7 @@ public class ServerTool {
 
     private static void connectSocket2() {
         try {
-            socket = IO.socket("http://127.0.0.1:8080");
+            socket = IO.socket("http://127.0.0.1:6060");
             socket.connect();
         } catch (Exception e) {
 //            System.err.println(e);
