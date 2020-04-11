@@ -244,11 +244,11 @@ public class EntranceScreen implements Screen, InputProcessor {
                 GamePrefs.getInstance().lineup = new int[]{0, 1, 4, 2, 3};
             }
             //Shirts
-//            tmp = player.getJSONObject("shirts");
-//            for (int i = 0; i < 24; i++) {
-//                GamePrefs.getInstance().shirts[i] = tmp.getInt((i + 1) + "");
-//            }
-//            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
+            JSONArray tmpShirt = player.getJSONArray("shirts");
+            for (int i = 0; i < tmpShirt.length(); i++) {
+                GamePrefs.getInstance().shirts[tmpShirt.getJSONObject(i).getInt("shirt_id")] = tmpShirt.getJSONObject(i).getBoolean("has_shirt") ? 1 : 0;
+            }
+            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
 
             return true;
         } catch (Exception e) {
