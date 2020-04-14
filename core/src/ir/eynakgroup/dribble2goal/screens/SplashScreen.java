@@ -25,6 +25,7 @@ import ir.eynakgroup.dribble2goal.Constants;
 import ir.eynakgroup.dribble2goal.GamePrefs;
 import ir.eynakgroup.dribble2goal.MyGame;
 import ir.eynakgroup.dribble2goal.Server.ServerTool;
+import ir.eynakgroup.dribble2goal.Util.Util;
 import ir.eynakgroup.dribble2goal.render.textures.LoadingProgress;
 
 /**
@@ -32,43 +33,39 @@ import ir.eynakgroup.dribble2goal.render.textures.LoadingProgress;
  */
 public class SplashScreen implements Screen {
 
-    TweenManager mTweenManager;
+    private TweenManager mTweenManager;
     private OrthographicCamera mMainCamera;
-    SpriteBatch mMainBatch;
 
-    Image bg;
-    Image logo;
-    Image loading_bar;
-    LoadingProgress progressbar;
+    private LoadingProgress progressbar;
 
-    Stage mStage;
-    Table mainTable;
-    Skin mSkin;
+    private Stage mStage;
+    private Table mainTable;
 
-    int login_flag = 0;
-    boolean loading_flag = false;
+    private int login_flag = 0;
 
-    boolean rc_flag = false;
+    private Util util;
 
     public SplashScreen() {
         Assets.getInstance().initLoading();
         Assets.getInstance().assetManager.finishLoading();
         Assets.getInstance().initSplashTexture();
         mTweenManager = MyGame.mTweenManager;
-        mMainBatch = new SpriteBatch();
+        SpriteBatch mMainBatch = new SpriteBatch();
 
-        mSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+        Skin mSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+
+        util = new Util();
 
         mStage = new Stage(new FitViewport(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT), mMainBatch);
         mainTable = new Table();
 
-        bg = new Image(Assets.getInstance().main_bg_fade);
+        Image bg = new Image(Assets.getInstance().main_bg_fade);
         bg.setSize(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
 
-        logo = new Image(Assets.getInstance().logo);
+        Image logo = new Image(Assets.getInstance().logo);
         logo.setSize(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
 
-        loading_bar = new Image(Assets.getInstance().loading_bar);
+        Image loading_bar = new Image(Assets.getInstance().loading_bar);
         loading_bar.setSize(Constants.HUD_SCREEN_WIDTH * .5f, Constants.HUD_SCREEN_HEIGHT * .0585f);
         loading_bar.setPosition(Constants.HUD_SCREEN_WIDTH * .25f, Constants.HUD_SCREEN_HEIGHT * .1f);
 
@@ -95,15 +92,16 @@ public class SplashScreen implements Screen {
     }
 
     private void checkSavedData() {
-        System.out.println(GamePrefs.getInstance().getUserName() + "^^^@^^^" + GamePrefs.getInstance().getPassword());
-//        if (GamePrefs.getInstance().getUserName() != null &&
-//                GamePrefs.getInstance().getUserName().length() > 0) {
-//            ServerTool.getInstance().login(GamePrefs.getInstance().getUserName(), GamePrefs.getInstance().getPassword());
-//
-//            ServerTool.socket.on("loggedInPlayer", onLoginListener);
-//        } else {
-//        }
+        System.out.println(GamePrefs.getInstance().getUserName() + "^^^@##@^^^" + GamePrefs.getInstance().getPassword());
+        if (GamePrefs.getInstance().getUserName() != null &&
+                GamePrefs.getInstance().getUserName().length() > 0) {
+            ServerTool.getInstance().login(GamePrefs.getInstance().getUserName(), GamePrefs.getInstance().getPassword());
+
+            ServerTool.getInstance().socket.off("loggedInPlayer");
+            ServerTool.getInstance().socket.on("loggedInPlayer", onLoginListener);
+        } else {
             login_flag = 1;
+        }
     }
 
     private Emitter.Listener onLoginListener = new Emitter.Listener() {
@@ -119,7 +117,7 @@ public class SplashScreen implements Screen {
                 GamePrefs.getInstance().setPassword("");
                 login_flag = 1;
             } catch (Exception e) {
-                if (setData(response)) {
+                if (util.setData(response)) {
                     login_flag = 2;
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
@@ -131,90 +129,6 @@ public class SplashScreen implements Screen {
         }
 
     };
-
-    private boolean setData(JSONObject data) {
-        try {
-            if (data.getBoolean("rc")) {
-                rc_flag = true;
-            } else {
-                rc_flag = false;
-            }
-            GamePrefs.getInstance().isDailyAvailable = data.getBoolean("dailyCoin");
-            JSONObject player = data.getJSONObject("player");
-            GamePrefs.getInstance().game_won = player.getInt("winCount");
-            GamePrefs.getInstance().game_played = player.getInt("gameCount");
-            GamePrefs.getInstance().winRate = (int) (player.getDouble("winRate") * 100f);
-            GamePrefs.getInstance().cleanSheet = player.getInt("cleanSheet");
-            GamePrefs.getInstance().position = player.getInt("formation");
-            GamePrefs.getInstance().shirt = player.getInt("shirt") - 1;
-            GamePrefs.getInstance().name = player.getString("nickname");
-            GamePrefs.getInstance().avatar = player.getInt("avatarId");
-            GamePrefs.getInstance().setUserName(player.getString("username"));
-            GamePrefs.getInstance().playerId = player.getString("user_id");
-            GamePrefs.getInstance().goals = player.getInt("goals");
-            GamePrefs.getInstance().winInaRaw = player.getInt("winInaRow");
-            GamePrefs.getInstance().coins_num = player.getInt("coin");
-            JSONObject level = player.getJSONObject("level");
-            GamePrefs.getInstance().level = level.getInt("lvl");
-            GamePrefs.getInstance().xp = level.getInt("xp");
-            JSONObject achs = player.getJSONObject("achievements");
-            GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
-            GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-            GamePrefs.getInstance().achieve_win = achs.getInt("win");
-            GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
-            //First Player Data
-            JSONObject tmpPlayer = player.getJSONObject("players").getJSONObject("1");
-            GamePrefs.getInstance().players[0][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[0][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[0][2] = tmpPlayer.getInt("speed");
-            //Second Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("2");
-            GamePrefs.getInstance().players[1][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[1][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[1][2] = tmpPlayer.getInt("speed");
-            //Third Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("3");
-            GamePrefs.getInstance().players[2][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[2][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[2][2] = tmpPlayer.getInt("speed");
-            //Fourth Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("4");
-            GamePrefs.getInstance().players[3][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[3][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[3][2] = tmpPlayer.getInt("speed");
-            //Fifth Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("5");
-            GamePrefs.getInstance().players[4][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[4][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[4][2] = tmpPlayer.getInt("speed");
-            //Lineup
-            JSONObject tmp = player.getJSONObject("lineup");
-            boolean flag = true;
-            for (int i = 1; i < 6; i++) {
-                if (tmp.getInt(i + "") == -1) {
-                    if (flag) {
-                        GamePrefs.getInstance().lineup[3] = (i - 1);
-                        flag = false;
-                    } else {
-                        GamePrefs.getInstance().lineup[4] = (i - 1);
-                    }
-                } else {
-                    GamePrefs.getInstance().lineup[tmp.getInt(i + "") - 1] = (i - 1);
-                }
-            }
-            //Shirts
-            tmp = player.getJSONObject("shirts");
-            for (int i = 0; i < 24; i++) {
-                GamePrefs.getInstance().shirts[i] = tmp.getInt((i + 1) + "");
-            }
-            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public void show() {
@@ -235,7 +149,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        loading_flag = Assets.assetManager.update();
+        boolean loading_flag = Assets.assetManager.update();
 
         // display loading information
         progressbar.setPercentage(Assets.assetManager.getProgress());
@@ -243,6 +157,7 @@ public class SplashScreen implements Screen {
         if (loading_flag) {
             Assets.getInstance().init();
             if (login_flag == 2) {
+                boolean rc_flag = false;
                 if (rc_flag) {
                     MyGame.mainInstance.setReconnectScreen();
                 } else {

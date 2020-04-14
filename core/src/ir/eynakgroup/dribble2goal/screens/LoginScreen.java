@@ -34,55 +34,52 @@ import ir.eynakgroup.dribble2goal.GamePrefs;
 import ir.eynakgroup.dribble2goal.MyGame;
 import ir.eynakgroup.dribble2goal.ParticleEffectActor;
 import ir.eynakgroup.dribble2goal.Server.ServerTool;
-import ir.eynakgroup.dribble2goal.render.textures.ProgressLine;
+import ir.eynakgroup.dribble2goal.Util.Util;
 
 /**
  * Created by kAvEh on 3/16/2016.
  */
 public class LoginScreen implements Screen, InputProcessor {
 
-    TweenManager mTweenManager;
+    private TweenManager mTweenManager;
     private OrthographicCamera mMainCamera;
-    SpriteBatch mMainBatch;
 
-    Image bg;
-    Image email;
-    TextField email_txt;
-    Image userName;
-    TextField userName_txt;
-    Image password;
-    TextField password_txt;
-    Image rePassword;
-    TextField rePassword_txt;
-    Label error_txt;
-    Image login;
-    Image back;
+    private Image email;
+    private TextField email_txt;
+    private Image userName;
+    private TextField userName_txt;
+    private Image password;
+    private TextField password_txt;
+    private Image rePassword;
+    private TextField rePassword_txt;
+    private Label error_txt;
+    private Image login;
+    private Image back;
+    private Util util;
 
-    boolean loginlock = false;
-    boolean isLogin;
+    private boolean loginlock = false;
 
-    Stage mStage;
-    Table mainTable;
-    Skin mSkin;
+    private Stage mStage;
+    private Table mainTable;
 
-    int current_item = 1;
+    private int current_item = 1;
 
-    ParticleEffectActor pActor;
+    private ParticleEffectActor pActor;
 
     public LoginScreen(final boolean isLogin) {
         mTweenManager = MyGame.mTweenManager;
-        mMainBatch = new SpriteBatch();
+        SpriteBatch mMainBatch = new SpriteBatch();
 
-        this.isLogin = isLogin;
+        Skin mSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-        mSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+        util = new Util();
 
         mStage = new Stage(new FitViewport(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT), mMainBatch);
         mainTable = new Table();
 
         mStage.setKeyboardFocus(email_txt);
 
-        bg = new Image(Assets.getInstance().main_bg);
+        Image bg = new Image(Assets.getInstance().main_bg);
         bg.setSize(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
 
         email = new Image(Assets.getInstance().login_email);
@@ -710,14 +707,14 @@ public class LoginScreen implements Screen, InputProcessor {
             GamePrefs.getInstance().setUserName(email_txt.getText());
             GamePrefs.getInstance().setPassword(password_txt.getText());
 
-            ServerTool.socket.off("loggedInPlayer");
-            ServerTool.socket.on("loggedInPlayer", onRegisterListener);
+            ServerTool.getInstance().socket.off("loggedInPlayer");
+            ServerTool.getInstance().socket.on("loggedInPlayer", onRegisterListener);
         }
     }
 
     private void checkLogin(String mail, String pass) {
-        if (!ServerTool.socket.connected())
-            ServerTool.socket.connect();
+        if (!ServerTool.getInstance().socket.connected())
+            ServerTool.getInstance().socket.connect();
         //TODO
         if (!loginlock) {
             loginlock = true;
@@ -765,8 +762,8 @@ public class LoginScreen implements Screen, InputProcessor {
 
             error_txt.setText("logging in ....");
 
-            ServerTool.socket.off("loggedInPlayer");
-            ServerTool.socket.on("loggedInPlayer", onLoginListener);
+            ServerTool.getInstance().socket.off("loggedInPlayer");
+            ServerTool.getInstance().socket.on("loggedInPlayer", onLoginListener);
         }
     }
 
@@ -780,7 +777,7 @@ public class LoginScreen implements Screen, InputProcessor {
                 GamePrefs.getInstance().setUserName("");
                 GamePrefs.getInstance().setPassword("");
             } catch (Exception e) {
-                if (setData((JSONObject) args[0])) {
+                if (util.setData((JSONObject) args[0])) {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
@@ -818,7 +815,7 @@ public class LoginScreen implements Screen, InputProcessor {
                 mStage.setKeyboardFocus(email_txt);
                 current_item = 1;
             } catch (Exception e) {
-                if (setData((JSONObject) args[0])) {
+                if (util.setData((JSONObject) args[0])) {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
@@ -832,90 +829,6 @@ public class LoginScreen implements Screen, InputProcessor {
         }
 
     };
-
-    private boolean setData(JSONObject data) {
-        try {
-            if (data.getBoolean("rc")) {
-
-            } else {
-
-            }
-            GamePrefs.getInstance().isDailyAvailable = data.getBoolean("dailyCoin");
-            JSONObject player = data.getJSONObject("player");
-            GamePrefs.getInstance().game_won = player.getInt("winCount");
-            GamePrefs.getInstance().position = player.getInt("formation");
-            GamePrefs.getInstance().game_played = player.getInt("gameCount");
-            GamePrefs.getInstance().winRate = (int) (player.getDouble("winrate") * 100f);
-            GamePrefs.getInstance().cleanSheet = player.getInt("cleanSheet");
-            GamePrefs.getInstance().shirt = player.getInt("shirt") - 1;
-            GamePrefs.getInstance().name = player.getString("nickname");
-            GamePrefs.getInstance().avatar = player.getInt("avatarId");
-            GamePrefs.getInstance().setUserName(player.getString("username"));
-            GamePrefs.getInstance().playerId = player.getString("_id");
-            GamePrefs.getInstance().goals = player.getInt("goals");
-            GamePrefs.getInstance().winInaRaw = player.getInt("winInaRow");
-            GamePrefs.getInstance().coins_num = player.getInt("coin");
-            JSONObject level = player.getJSONObject("level");
-            GamePrefs.getInstance().level = level.getInt("lvl");
-            GamePrefs.getInstance().xp = level.getInt("xp");
-            JSONObject achs = player.getJSONObject("achievements");
-            GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
-            GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-            GamePrefs.getInstance().achieve_win = achs.getInt("win");
-            GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
-            //First Player Data
-            JSONObject tmpPlayer = player.getJSONObject("players").getJSONObject("1");
-            GamePrefs.getInstance().players[0][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[0][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[0][2] = tmpPlayer.getInt("speed");
-            //Second Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("2");
-            GamePrefs.getInstance().players[1][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[1][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[1][2] = tmpPlayer.getInt("speed");
-            //Third Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("3");
-            GamePrefs.getInstance().players[2][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[2][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[2][2] = tmpPlayer.getInt("speed");
-            //Fourth Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("4");
-            GamePrefs.getInstance().players[3][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[3][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[3][2] = tmpPlayer.getInt("speed");
-            //Fifth Player Data
-            tmpPlayer = player.getJSONObject("players").getJSONObject("5");
-            GamePrefs.getInstance().players[4][0] = tmpPlayer.getInt("stamina");
-            GamePrefs.getInstance().players[4][1] = tmpPlayer.getInt("size");
-            GamePrefs.getInstance().players[4][2] = tmpPlayer.getInt("speed");
-            //Lineup
-            JSONObject tmp = player.getJSONObject("lineup");
-            boolean flag = true;
-            for (int i = 1; i < 6; i++) {
-                if (tmp.getInt(i + "") == -1) {
-                    if (flag) {
-                        GamePrefs.getInstance().lineup[3] = (i - 1);
-                        flag = false;
-                    } else {
-                        GamePrefs.getInstance().lineup[4] = (i - 1);
-                    }
-                } else {
-                    GamePrefs.getInstance().lineup[tmp.getInt(i + "") - 1] = (i - 1);
-                }
-            }
-            //Shirts
-            tmp = player.getJSONObject("shirts");
-            for (int i = 0; i < 24; i++) {
-                GamePrefs.getInstance().shirts[i] = tmp.getInt((i + 1) + "");
-            }
-            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public void show() {

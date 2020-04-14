@@ -19,6 +19,7 @@ public class ServerTool {
 
     public static ServerTool getInstance() {
         if (instance == null) {
+            System.out.println("<>>>>>>>>>!! inka");
             instance = new ServerTool();
             connectSocket2();
         }
@@ -30,7 +31,7 @@ public class ServerTool {
             socket = IO.socket("http://127.0.0.1:6060");
             socket.connect();
         } catch (Exception e) {
-//            System.err.println(e);
+            System.err.println(e);
         }
     }
 
@@ -135,6 +136,7 @@ public class ServerTool {
     public void login(String username, String pass) {
         if (!socket.connected()) {
             socket.connect();
+            System.out.println(">>>>>>>>>>>>>>>>>>>> socket connecting"+ socket.connected());
         }
         JSONObject data = new JSONObject();
         try {
