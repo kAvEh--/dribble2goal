@@ -10,7 +10,6 @@ import ir.eynakgroup.dribble2goal.MyGame;
 
 /**
  * Created by kAvEh on 2/20/2016.
- *
  */
 public class ServerTool {
 
@@ -46,6 +45,73 @@ public class ServerTool {
             data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("coin", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void login(String username, String pass) {
+        if (!socket.connected()) {
+            socket.connect();
+        }
+        JSONObject data = new JSONObject();
+        try {
+            data.put("username", username);
+            data.put("password", pass);
+
+            socket.emit("sign-in", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loginGoogle(String email, String id, String nickName) {
+        if (!socket.connected()) {
+            socket.connect();
+            return;
+        }
+        JSONObject data = new JSONObject();
+        try {
+            data.put("username", email);
+            data.put("password", id);
+            data.put("nickname", nickName);
+
+            socket.emit("sign-in-google", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void register(String username, String pass, String nickName) {
+        if (!socket.connected()) {
+            socket.connect();
+            return;
+        }
+        JSONObject data = new JSONObject();
+        try {
+            data.put("username", username);
+            data.put("password", pass);
+            data.put("nickname", nickName);
+
+            socket.emit("new-player", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void findMatch(int level, int matchType) {
+        if (!socket.connected()) {
+            socket.connect();
+            MyGame.mainInstance.setEntranceScreen();
+            return;
+        }
+        JSONObject data = new JSONObject();
+        try {
+            data.put("playerId", GamePrefs.getInstance().user.getId());
+            data.put("level", level);
+            data.put("type", matchType);
+
+            socket.emit("find-match", data);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -128,75 +194,6 @@ public class ServerTool {
             data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("sign-out", data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void login(String username, String pass) {
-        if (!socket.connected()) {
-            socket.connect();
-        }
-        JSONObject data = new JSONObject();
-        try {
-            data.put("username", username);
-            data.put("password", pass);
-
-            socket.emit("sign-in", data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void loginGoogle(String email, String id, String nickName) {
-        if (!socket.connected()) {
-            socket.connect();
-            return;
-        }
-        JSONObject data = new JSONObject();
-        try {
-            data.put("username", email);
-            data.put("password", id);
-            data.put("nickname", nickName);
-
-            socket.emit("sign-in-google", data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void register(String username, String pass, String nickName) {
-        if (!socket.connected()) {
-            socket.connect();
-            return;
-        }
-        JSONObject data = new JSONObject();
-        try {
-            data.put("username", username);
-            data.put("password", pass);
-            data.put("nickname", nickName);
-
-            socket.emit("new-player", data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void findMatch(int level, boolean isPenalty) {
-        if (!socket.connected()) {
-            socket.connect();
-            MyGame.mainInstance.setEntranceScreen();
-            return;
-        }
-        JSONObject data = new JSONObject();
-        int tmp = 0;
-        if (isPenalty)
-            tmp = 6;
-        try {
-            data.put("playerId", GamePrefs.getInstance().user.getId());
-            data.put("roomNum", level + tmp);
-
-            socket.emit("find-match", data);
         } catch (JSONException e) {
             e.printStackTrace();
         }

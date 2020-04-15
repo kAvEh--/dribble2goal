@@ -37,6 +37,8 @@ import ir.eynakgroup.dribble2goal.Server.ServerTool;
 import ir.eynakgroup.dribble2goal.Util.Random;
 import ir.eynakgroup.dribble2goal.Util.Util;
 
+import static ir.eynakgroup.dribble2goal.Util.Util.GAME_TYPE_1V1;
+
 /**
  * Created by kAvEh on 3/19/2016.
  */
@@ -70,18 +72,18 @@ public class FindMatchScreen implements Screen, InputProcessor {
 
     boolean isOppReady = false;
     private int stadium;
-    private boolean isPenalty;
+    private int gameType;
 
     MatchStats stat;
 
-    public FindMatchScreen(int s, boolean isP) {
+    public FindMatchScreen(int s, int type) {
         mTweenManager = MyGame.mTweenManager;
         mMainBatch = new SpriteBatch();
 
         mSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         this.stadium = s;
-        this.isPenalty = isP;
+        this.gameType = type;
 
         mStage = new Stage(new FitViewport(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT), mMainBatch);
         mainTable = new Table();
@@ -205,7 +207,7 @@ public class FindMatchScreen implements Screen, InputProcessor {
         back.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 int tmp = stadium;
-                if (isPenalty) {
+                if (gameType == GAME_TYPE_1V1) {
                     tmp += 6;
                 }
                 ServerTool.getInstance().sendBackFind(tmp);
@@ -227,6 +229,26 @@ public class FindMatchScreen implements Screen, InputProcessor {
 
         mStage.addActor(this.mainTable);
 
+        Emitter.Listener onMatchFindListener = new Emitter.Listener() {
+
+            @Override
+            public void call(Object... args) {
+                System.out.println(args[0]);
+                JSONObject response = (JSONObject) args[0];
+                try {
+                    String s = response.getString("err");
+                } catch (Exception e) {
+                    if (setData((JSONObject) args[0])) {
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                gotoGame(stat);
+                            }
+                        });
+                    }
+                }
+            }
+        };
         ServerTool.getInstance().socket.on("match-found", onMatchFindListener);
     }
 
@@ -271,27 +293,6 @@ public class FindMatchScreen implements Screen, InputProcessor {
                     });
         }
     }
-
-    private Emitter.Listener onMatchFindListener = new Emitter.Listener() {
-
-        @Override
-        public void call(Object... args) {
-            System.out.println(args[0]);
-            JSONObject response = (JSONObject) args[0];
-            try {
-                String s = response.getString("err");
-            } catch (Exception e) {
-                if (setData((JSONObject) args[0])) {
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            gotoGame(stat);
-                        }
-                    });
-                }
-            }
-        }
-    };
 
     private void gotoGame(final MatchStats stat) {
         isOppReady = true;
@@ -601,7 +602,7 @@ public class FindMatchScreen implements Screen, InputProcessor {
 
                     }
                 });
-        ServerTool.getInstance().findMatch(this.stadium, isPenalty);
+        ServerTool.getInstance().findMatch(this.stadium, gameType);
     }
 
     @Override

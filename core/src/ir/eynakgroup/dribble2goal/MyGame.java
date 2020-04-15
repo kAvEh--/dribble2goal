@@ -20,6 +20,7 @@ import io.socket.emitter.Emitter;
 import ir.eynakgroup.dribble2goal.Interfaces.PlayServices;
 import ir.eynakgroup.dribble2goal.Server.ServerTool;
 import ir.eynakgroup.dribble2goal.Util.SelectGameScrollPane;
+import ir.eynakgroup.dribble2goal.Util.Util;
 import ir.eynakgroup.dribble2goal.model.Box2dBall;
 import ir.eynakgroup.dribble2goal.model.Box2dPlayer;
 import ir.eynakgroup.dribble2goal.model.IModel;
@@ -200,8 +201,8 @@ public class MyGame extends Game {
         setScreen(new LoginScreen(isLogin));
     }
 
-    public void setFindMatchScreen(int stadium, boolean isPenalty) {
-        setScreen(new FindMatchScreen(stadium, isPenalty));
+    public void setFindMatchScreen(int stadium, int type) {
+        setScreen(new FindMatchScreen(stadium, type));
     }
 
     public void setMainScreen() {
@@ -241,7 +242,7 @@ public class MyGame extends Game {
     }
 
     public void setGameSelectScreen() {
-        setScreen(new SelectGameScreen(false));
+        setScreen(new SelectGameScreen(Util.GAME_TYPE_1V1));
     }
 
     public void setHelpGameSelectScreen() {
@@ -249,7 +250,7 @@ public class MyGame extends Game {
     }
 
     public void setPenaltySelectScreen() {
-        setScreen(new SelectGameScreen(true));
+        setScreen(new SelectGameScreen(Util.GAME_TYPE_PENALTY));
     }
 
     public void setResultScreen(MatchStats stat) {

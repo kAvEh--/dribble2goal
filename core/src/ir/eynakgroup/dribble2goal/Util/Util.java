@@ -15,6 +15,9 @@ import ir.eynakgroup.dribble2goal.GamePrefs;
  */
 public class Util {
 
+    public static final int GAME_TYPE_1V1 = 1;
+    public static final int GAME_TYPE_PENALTY = 2;
+
     public Texture getShirt(int sh) {
         switch (sh) {
             case 2:

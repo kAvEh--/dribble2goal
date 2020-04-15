@@ -54,13 +54,13 @@ public class SelectGameScreen implements Screen, InputProcessor {
 
     private ProgressCircle sprite;
 
-    private boolean isPenalty;
+    private int gameType;
 
-    public SelectGameScreen(boolean isP) {
+    public SelectGameScreen(int type) {
         mTweenManager = MyGame.mTweenManager;
         mMainBatch = new SpriteBatch();
 
-        this.isPenalty = isP;
+        this.gameType = type;
 
         mSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
@@ -200,7 +200,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                 if (GamePrefs.getInstance().isEffectOn() == 1) {
                     Assets.getInstance().click.play();
                 }
-                MyGame.mainInstance.setFindMatchScreen(1, isPenalty);
+                MyGame.mainInstance.setFindMatchScreen(1, gameType);
             }
         });
         if (GamePrefs.getInstance().user.getLevel() > 1) {
@@ -209,7 +209,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
                         Assets.getInstance().click.play();
                     }
-                    MyGame.mainInstance.setFindMatchScreen(2, isPenalty);
+                    MyGame.mainInstance.setFindMatchScreen(2, gameType);
                 }
             });
         }
@@ -219,7 +219,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
                         Assets.getInstance().click.play();
                     }
-                    MyGame.mainInstance.setFindMatchScreen(3, isPenalty);
+                    MyGame.mainInstance.setFindMatchScreen(3, gameType);
                 }
             });
         }
@@ -229,8 +229,8 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
                         Assets.getInstance().click.play();
                     }
-                    MyGame.mainInstance.setFindMatchScreen(4, isPenalty);
-                    }
+                    MyGame.mainInstance.setFindMatchScreen(4, gameType);
+                }
             });
         }
         if (GamePrefs.getInstance().user.getLevel() > 7) {
@@ -239,7 +239,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
                         Assets.getInstance().click.play();
                     }
-                    MyGame.mainInstance.setFindMatchScreen(5, isPenalty);
+                    MyGame.mainInstance.setFindMatchScreen(5, gameType);
                 }
             });
 
@@ -248,7 +248,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
                         Assets.getInstance().click.play();
                     }
-                    MyGame.mainInstance.setFindMatchScreen(6, isPenalty);
+                    MyGame.mainInstance.setFindMatchScreen(6, gameType);
                 }
             });
         }
