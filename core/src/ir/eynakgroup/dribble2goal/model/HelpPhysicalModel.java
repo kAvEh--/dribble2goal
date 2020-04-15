@@ -304,7 +304,7 @@ public class HelpPhysicalModel implements IModel {
         JSONObject data = new JSONObject();
         if (matchStat.half_status != Constants.HALF_PENALTY || !matchStat.isMeFirst) {
             try {
-                data.put("playerId", GamePrefs.getInstance().playerId);
+                data.put("playerId", GamePrefs.getInstance().user.getId());
                 JSONArray pos = new JSONArray();
                 JSONObject tmp = new JSONObject();
                 if (matchStat.myShootDirection != null) {
@@ -331,7 +331,7 @@ public class HelpPhysicalModel implements IModel {
         } else {
             int tmp = matchStat.goaler_position;
             try {
-                data.put("playerId", GamePrefs.getInstance().playerId);
+                data.put("playerId", GamePrefs.getInstance().user.getId());
                 data.put("direction", tmp);
 
                 ServerTool.getInstance().socket.emit("beforeGoaler", data);
@@ -344,7 +344,7 @@ public class HelpPhysicalModel implements IModel {
     public void sendAfter() {
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             JSONArray pos = new JSONArray();
             JSONObject tmp = new JSONObject();
             JSONObject staminaData = new JSONObject();
@@ -500,7 +500,7 @@ public class HelpPhysicalModel implements IModel {
     private void sendReady() {
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             ServerTool.getInstance().socket.emit("ready", data);
         } catch (JSONException e) {

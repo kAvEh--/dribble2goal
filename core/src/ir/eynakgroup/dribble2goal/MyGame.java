@@ -116,35 +116,35 @@ public class MyGame extends Game {
             public void onFinish(ir.eynakgroup.dribble2goal.Purchase purchase) {
                 if (purchase.sku.equals(Constants.SKU_SHIRT_PERS)) {
                     shopholder.setSelectedShare(20);
-                    GamePrefs.getInstance().shirt = 20;
+                    GamePrefs.getInstance().user.setShirt(20);
                     ServerTool.getInstance().sendShop(0, 21, purchase.token, purchase.developerPayload);
                 } else if (purchase.sku.equals(Constants.SKU_SHIRT_EST)) {
                     shopholder.setSelectedShare(21);
-                    GamePrefs.getInstance().shirt = 21;
+                    GamePrefs.getInstance().user.setShirt(21);
                     ServerTool.getInstance().sendShop(0, 22, purchase.token, purchase.developerPayload);
                 } else if (purchase.sku.equals(Constants.SKU_SHIRT_BARCA)) {
                     shopholder.setSelectedShare(22);
-                    GamePrefs.getInstance().shirt = 22;
+                    GamePrefs.getInstance().user.setShirt(22);
                     ServerTool.getInstance().sendShop(0, 23, purchase.token, purchase.developerPayload);
                 } else if (purchase.sku.equals(Constants.SKU_SHIRT_REAL)) {
                     shopholder.setSelectedShare(23);
-                    GamePrefs.getInstance().shirt = 23;
+                    GamePrefs.getInstance().user.setShirt(23);
                     ServerTool.getInstance().sendShop(0, 24, purchase.token, purchase.developerPayload);
                 } else if (purchase.sku.equals(Constants.SKU_500_COINS)) {
                     ServerTool.getInstance().sendShop(1, 0, purchase.token, purchase.developerPayload);
-                    GamePrefs.getInstance().coins_num += 500;
+                    GamePrefs.getInstance().user.setCoins_num(GamePrefs.getInstance().user.getCoins_num() + 500);
                     purchaseFlow.ConsumePurchase("test", consumeHandler);
                 } else if (purchase.sku.equals(Constants.SKU_1500_COINS)) {
                     ServerTool.getInstance().sendShop(2, 0, purchase.token, purchase.developerPayload);
-                    GamePrefs.getInstance().coins_num += 1500;
+                    GamePrefs.getInstance().user.setCoins_num(GamePrefs.getInstance().user.getCoins_num() + 1500);
                     purchaseFlow.ConsumePurchase("test", consumeHandler);
                 } else if (purchase.sku.equals(Constants.SKU_4000_COINS)) {
                     ServerTool.getInstance().sendShop(3, 0, purchase.token, purchase.developerPayload);
-                    GamePrefs.getInstance().coins_num += 4000;
+                    GamePrefs.getInstance().user.setCoins_num(GamePrefs.getInstance().user.getCoins_num() + 4000);
                     purchaseFlow.ConsumePurchase("test", consumeHandler);
                 } else if (purchase.sku.equals(Constants.SKU_10000_COINS)) {
                     ServerTool.getInstance().sendShop(4, 0, purchase.token, purchase.developerPayload);
-                    GamePrefs.getInstance().coins_num += 10000;
+                    GamePrefs.getInstance().user.setCoins_num(GamePrefs.getInstance().user.getCoins_num() + 10000);
                     purchaseFlow.ConsumePurchase("test", consumeHandler);
                 }
                 ServerTool.getInstance().getCoin();

@@ -364,14 +364,14 @@ public class Util {
     }
 
     public String coinsStyle() {
-        int coins = GamePrefs.getInstance().coins_num;
+        int coins = GamePrefs.getInstance().user.getCoins_num();
         String ret;
         if (coins >= 1000000000) {
-            ret = String.valueOf(coins / 1000000000) + "B";
+            ret = coins / 1000000000 + "B";
         } else if (coins >= 1000000) {
-            ret = String.valueOf(coins / 1000000) + "M";
+            ret = coins / 1000000 + "M";
         } else if (coins >= 1000) {
-            ret = String.valueOf(coins / 1000) + "k";
+            ret = coins / 1000 + "k";
         } else {
             ret = String.valueOf(coins);
         }
@@ -383,62 +383,62 @@ public class Util {
         try {
             GamePrefs.getInstance().isDailyAvailable = data.getBoolean("dailyCoin");
             JSONObject player = data.getJSONObject("player");
-            GamePrefs.getInstance().game_won = player.getInt("winCount");
-            GamePrefs.getInstance().game_played = player.getInt("gameCount");
-            GamePrefs.getInstance().winRate = player.getInt("winRate");
-            GamePrefs.getInstance().cleanSheet = player.getInt("cleanSheet");
-            GamePrefs.getInstance().shirt = player.getInt("shirt") - 1;
-            GamePrefs.getInstance().name = player.getString("nickname");
-            GamePrefs.getInstance().avatar = player.getInt("avatarId");
+            GamePrefs.getInstance().user.setGame_won(player.getInt("winCount"));
+            GamePrefs.getInstance().user.setGame_played(player.getInt("gameCount"));
+            GamePrefs.getInstance().user.setWinRate(player.getInt("winRate"));
+            GamePrefs.getInstance().user.setCleanSheet(player.getInt("cleanSheet"));
+            GamePrefs.getInstance().user.setShirt(player.getInt("shirt") - 1);
+            GamePrefs.getInstance().user.setName(player.getString("nickname"));
+            GamePrefs.getInstance().user.setAvatar(player.getInt("avatarId"));
             GamePrefs.getInstance().setUserName(player.getString("username"));
-            GamePrefs.getInstance().playerId = player.getString("id");
-            GamePrefs.getInstance().goals = player.getInt("goals");
-            GamePrefs.getInstance().winInaRaw = player.getInt("winInaRow");
-            GamePrefs.getInstance().coins_num = player.getInt("coin");
+            GamePrefs.getInstance().user.setId(player.getString("id"));
+            GamePrefs.getInstance().user.setGoals(player.getInt("goals"));
+            GamePrefs.getInstance().user.setWinInaRaw(player.getInt("winInaRow"));
+            GamePrefs.getInstance().user.setCoins_num(player.getInt("coin"));
             JSONObject level = player.getJSONObject("level");
-            GamePrefs.getInstance().level = level.getInt("lvl");
-            GamePrefs.getInstance().xp = level.getInt("xp");
+            GamePrefs.getInstance().user.setLevel(level.getInt("lvl"));
+            GamePrefs.getInstance().user.setXp(level.getInt("xp"));
             JSONObject achs = player.getJSONObject("achievements");
-            GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
-            GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-            GamePrefs.getInstance().achieve_win = achs.getInt("win");
-            GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
+            GamePrefs.getInstance().user.setAchieve_goal(achs.getInt("goal"));
+            GamePrefs.getInstance().user.setAchieve_cleanSheet(achs.getInt("cleanSheet"));
+            GamePrefs.getInstance().user.setAchieve_win(achs.getInt("win"));
+            GamePrefs.getInstance().user.setAchieve_winInaRow(achs.getInt("winInaRow"));
 //            //First Player Data
             JSONArray tmpPlayer = player.getJSONArray("players");
-            GamePrefs.getInstance().players[0][0] = tmpPlayer.getJSONObject(0).getInt("stamina");
-            GamePrefs.getInstance().players[0][1] = tmpPlayer.getJSONObject(0).getInt("size");
-            GamePrefs.getInstance().players[0][2] = tmpPlayer.getJSONObject(0).getInt("speed");
+            GamePrefs.getInstance().user.players[0][0] = tmpPlayer.getJSONObject(0).getInt("stamina");
+            GamePrefs.getInstance().user.players[0][1] = tmpPlayer.getJSONObject(0).getInt("size");
+            GamePrefs.getInstance().user.players[0][2] = tmpPlayer.getJSONObject(0).getInt("speed");
 //            //Second Player Data
-            GamePrefs.getInstance().players[1][0] = tmpPlayer.getJSONObject(1).getInt("stamina");
-            GamePrefs.getInstance().players[1][1] = tmpPlayer.getJSONObject(1).getInt("size");
-            GamePrefs.getInstance().players[1][2] = tmpPlayer.getJSONObject(1).getInt("speed");
+            GamePrefs.getInstance().user.players[1][0] = tmpPlayer.getJSONObject(1).getInt("stamina");
+            GamePrefs.getInstance().user.players[1][1] = tmpPlayer.getJSONObject(1).getInt("size");
+            GamePrefs.getInstance().user.players[1][2] = tmpPlayer.getJSONObject(1).getInt("speed");
 //            //Third Player Data
-            GamePrefs.getInstance().players[2][0] = tmpPlayer.getJSONObject(2).getInt("stamina");
-            GamePrefs.getInstance().players[2][1] = tmpPlayer.getJSONObject(2).getInt("size");
-            GamePrefs.getInstance().players[2][2] = tmpPlayer.getJSONObject(2).getInt("speed");
+            GamePrefs.getInstance().user.players[2][0] = tmpPlayer.getJSONObject(2).getInt("stamina");
+            GamePrefs.getInstance().user.players[2][1] = tmpPlayer.getJSONObject(2).getInt("size");
+            GamePrefs.getInstance().user.players[2][2] = tmpPlayer.getJSONObject(2).getInt("speed");
 //            //Fourth Player Data
-            GamePrefs.getInstance().players[3][0] = tmpPlayer.getJSONObject(3).getInt("stamina");
-            GamePrefs.getInstance().players[3][1] = tmpPlayer.getJSONObject(3).getInt("size");
-            GamePrefs.getInstance().players[3][2] = tmpPlayer.getJSONObject(3).getInt("speed");
+            GamePrefs.getInstance().user.players[3][0] = tmpPlayer.getJSONObject(3).getInt("stamina");
+            GamePrefs.getInstance().user.players[3][1] = tmpPlayer.getJSONObject(3).getInt("size");
+            GamePrefs.getInstance().user.players[3][2] = tmpPlayer.getJSONObject(3).getInt("speed");
 //            //Fifth Player Data
-            GamePrefs.getInstance().players[4][0] = tmpPlayer.getJSONObject(4).getInt("stamina");
-            GamePrefs.getInstance().players[4][1] = tmpPlayer.getJSONObject(4).getInt("size");
-            GamePrefs.getInstance().players[4][2] = tmpPlayer.getJSONObject(4).getInt("speed");
+            GamePrefs.getInstance().user.players[4][0] = tmpPlayer.getJSONObject(4).getInt("stamina");
+            GamePrefs.getInstance().user.players[4][1] = tmpPlayer.getJSONObject(4).getInt("size");
+            GamePrefs.getInstance().user.players[4][2] = tmpPlayer.getJSONObject(4).getInt("speed");
             //Lineup
             String tmpLineUp = player.getString("lineup");
             if (tmpLineUp.equals("A")) {
-                GamePrefs.getInstance().lineup = new int[]{0, 1, 2, 3, 4};
+                GamePrefs.getInstance().user.lineup = new int[]{0, 1, 2, 3, 4};
             } else if (tmpLineUp.equals("B")) {
-                GamePrefs.getInstance().lineup = new int[]{0, 1, 3, 2, 4};
+                GamePrefs.getInstance().user.lineup = new int[]{0, 1, 3, 2, 4};
             } else {
-                GamePrefs.getInstance().lineup = new int[]{0, 1, 4, 2, 3};
+                GamePrefs.getInstance().user.lineup = new int[]{0, 1, 4, 2, 3};
             }
             //Shirts
             JSONArray tmpShirt = player.getJSONArray("shirts");
             for (int i = 0; i < tmpShirt.length(); i++) {
-                GamePrefs.getInstance().shirts[tmpShirt.getJSONObject(i).getInt("shirt_id")] = tmpShirt.getJSONObject(i).getBoolean("has_shirt") ? 1 : 0;
+                GamePrefs.getInstance().user.shirts[tmpShirt.getJSONObject(i).getInt("shirt_id")] = tmpShirt.getJSONObject(i).getBoolean("has_shirt") ? 1 : 0;
             }
-            GamePrefs.getInstance().shirts[GamePrefs.getInstance().shirt] = 2;
+            GamePrefs.getInstance().user.shirts[GamePrefs.getInstance().user.getShirt()] = 2;
 
             return true;
         } catch (Exception e) {

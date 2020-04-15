@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 import ir.eynakgroup.dribble2goal.Server.ServerTool;
+import ir.eynakgroup.dribble2goal.model.User;
 
 /**
  * Created by kAvEh on 2/19/2016.
  */
 public class GamePrefs {
 
-    private static final String PREFS_NAME = "ir.eynakgroup.dribble2goal";
+    private static final String PREFS_NAME = "com.kaveh.dribble2goal";
 
     private final String key_music = "setting_music";
     private final String key_effect = "setting_effect";
@@ -23,33 +24,8 @@ public class GamePrefs {
 
     private static GamePrefs sInstance;
     private Preferences mPreferences;
-    public String name = "---";
-    public String playerId = "";
-    public int position = 1;
-    public int position_num = 3;
-    public int shirt = 1;
-    public int avatar = 1;
-    public int coins_num = 500;
-    public int level = 1;
-    public int xp = 105;
-    public int game_played = 0;
-    public int game_won = 0;
-    public int goals = 0;
-    public int winInaRaw = 0;
-    public boolean isLevelUp = false;
-    public int win_percent = 100;
-    public int last5 = 100;
-    //    public boolean[] achievements = new boolean[26];
-    public int achieve_goal = 0;
-    public int achieve_cleanSheet = 0;
-    public int achieve_win = 0;
-    public int achieve_winInaRow = 0;
+    public User user = new User();
     public boolean isDailyAvailable = false;
-    public int winRate = 0;
-    public int cleanSheet = 0;
-    public int[][] players = new int[5][3];
-    public int[] lineup = new int[5];
-    public int[] shirts = new int[24];
 
     private GamePrefs() {
     }

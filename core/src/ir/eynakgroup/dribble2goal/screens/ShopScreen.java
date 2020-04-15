@@ -446,7 +446,7 @@ public class ShopScreen implements Screen, InputProcessor {
 
         coins_txt.setColor(1f, 1f, 1f, 1f);
         Tween.to(coins_txt, 1, 1.1f)
-                .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                 .start(mTweenManager).delay(0.0F)
                 .setCallback(new TweenCallback() {
                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
@@ -468,10 +468,10 @@ public class ShopScreen implements Screen, InputProcessor {
                     @Override
                     public void run() {
                         try {
-                            GamePrefs.getInstance().coins_num = response.getInt("coin");
+                            GamePrefs.getInstance().user.setCoins_num(response.getInt("coin"));
                             coins_txt.setText(0 + "");
                             Tween.to(coins_txt, 1, .7f)
-                                    .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                                    .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                                     .start(mTweenManager).delay(0.0F)
                                     .setCallback(new TweenCallback() {
                                         public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {

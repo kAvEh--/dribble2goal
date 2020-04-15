@@ -657,26 +657,25 @@ public class HelpGameScreen implements Screen, IModelListener {
         matchStat.roomNum = 1;
         matchStat.isPenaltymode = false;
         matchStat.matchLevel = 1;
-        matchStat.turn = GamePrefs.getInstance().playerId;
+        matchStat.turn = GamePrefs.getInstance().user.getId();
         matchStat.isMeFirst = true;
-        matchStat.myName = GamePrefs.getInstance().name;
-//        matchStat.myName = "kavehکاوه";
+        matchStat.myName = GamePrefs.getInstance().user.getName();
         matchStat.oppName = "--";
         matchStat.myWinRate = 100;
         matchStat.oppWinRate = 100;
         matchStat.myShirt = 1;
         matchStat.oppShirt = 2;
-        matchStat.myLevel = GamePrefs.getInstance().level;
-        matchStat.myXp = GamePrefs.getInstance().xp;
-        matchStat.oppLevel = GamePrefs.getInstance().level;
-        matchStat.oppXp = GamePrefs.getInstance().xp;
-        matchStat.myFormation = GamePrefs.getInstance().position;
-        matchStat.oppFormation = GamePrefs.getInstance().position;
-        matchStat.myAvatar = GamePrefs.getInstance().avatar;
-        matchStat.oppAvatar = GamePrefs.getInstance().avatar;
-        matchStat.myLineup = GamePrefs.getInstance().lineup;
-        matchStat.myPlayers = GamePrefs.getInstance().players;
-        matchStat.oppPlayers = GamePrefs.getInstance().players;
+        matchStat.myLevel = GamePrefs.getInstance().user.getLevel();
+        matchStat.myXp = GamePrefs.getInstance().user.getXp();
+        matchStat.oppLevel = GamePrefs.getInstance().user.getLevel();
+        matchStat.oppXp = GamePrefs.getInstance().user.getXp();
+        matchStat.myFormation = GamePrefs.getInstance().user.getPosition();
+        matchStat.oppFormation = GamePrefs.getInstance().user.getPosition();
+        matchStat.myAvatar = GamePrefs.getInstance().user.getAvatar();
+        matchStat.oppAvatar = GamePrefs.getInstance().user.getAvatar();
+        matchStat.myLineup = GamePrefs.getInstance().user.lineup;
+        matchStat.myPlayers = GamePrefs.getInstance().user.players;
+        matchStat.oppPlayers = GamePrefs.getInstance().user.players;
     }
 
     private void initiateListeners() {
@@ -808,7 +807,7 @@ public class HelpGameScreen implements Screen, IModelListener {
         prev_icon.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 if (matchStat.myFormation == 1) {
-                    matchStat.myFormation = GamePrefs.getInstance().position_num;
+                    matchStat.myFormation = GamePrefs.getInstance().user.getPosition_num();
                 } else {
                     matchStat.myFormation = matchStat.myFormation - 1;
                 }
@@ -867,7 +866,7 @@ public class HelpGameScreen implements Screen, IModelListener {
 
         next_icon.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (matchStat.myFormation == GamePrefs.getInstance().position_num) {
+                if (matchStat.myFormation == GamePrefs.getInstance().user.getPosition_num()) {
                     matchStat.myFormation = 1;
                 } else {
                     matchStat.myFormation = matchStat.myFormation + 1;
@@ -1372,7 +1371,7 @@ public class HelpGameScreen implements Screen, IModelListener {
         mtr.set(attr2);
         attr1.opacity = .5f;
         attr2.opacity = .5f;
-        if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+        if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
             instances.add(inst1);
         } else {
             instances.add(inst2);
@@ -1432,10 +1431,10 @@ public class HelpGameScreen implements Screen, IModelListener {
                 return;
             }
             if (matchStat.isMeFirst) {
-                if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+                if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
                     matchStat.turn = "";
                 } else {
-                    matchStat.turn = GamePrefs.getInstance().playerId;
+                    matchStat.turn = GamePrefs.getInstance().user.getId();
                 }
                 goaler_up_1.setVisible(true);
                 goaler_up_2.setVisible(true);
@@ -1548,7 +1547,7 @@ public class HelpGameScreen implements Screen, IModelListener {
                 matchStat.oppGoals += 1;
             }
         } else {
-            if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+            if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
                 matchStat.myGoals += 1;
                 Tween.to(left_score, 6, .5f)
                         .target(200).ease(TweenEquations.easeInOutBounce)

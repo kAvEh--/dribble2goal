@@ -92,7 +92,7 @@ public class FindMatchScreen implements Screen, InputProcessor {
         main_image = new Image(Assets.getInstance().findmatch_main);
         main_image.setSize(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
 
-        my_avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().avatar));
+        my_avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().user.getAvatar()));
         my_avatar.setSize(Constants.HUD_SCREEN_WIDTH * .245f, Constants.HUD_SCREEN_HEIGHT * .454f);
         my_avatar.setPosition(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_HEIGHT * .266f);
 
@@ -411,7 +411,7 @@ public class FindMatchScreen implements Screen, InputProcessor {
             }
             stat.matchLevel = data.getInt("roomNum");
             stat.turn = data.getString("turn");
-            if (data.getString("playerId1").matches(GamePrefs.getInstance().playerId)) {
+            if (data.getString("playerId1").matches(GamePrefs.getInstance().user.getId())) {
                 stat.isMeFirst = true;
                 stat.myName = data.getString("username1");
                 stat.oppName = data.getString("username2");

@@ -19,7 +19,7 @@ public class ServerTool {
 
     public static ServerTool getInstance() {
         if (instance == null) {
-            System.out.println("<>>>>>>>>>!! inka");
+            System.out.println("<>>>>>>>>>!! inja");
             instance = new ServerTool();
             connectSocket2();
         }
@@ -43,7 +43,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("coin", data);
         } catch (JSONException e) {
@@ -59,7 +59,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("profile", data);
         } catch (JSONException e) {
@@ -75,7 +75,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             data.put("nickname", newName);
 
             socket.emit("new-nickname", data);
@@ -92,7 +92,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("freeCoin", data);
         } catch (JSONException e) {
@@ -108,7 +108,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             data.put("roomNum", stadium);
 
             socket.emit("back", data);
@@ -125,7 +125,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("sign-out", data);
         } catch (JSONException e) {
@@ -136,14 +136,12 @@ public class ServerTool {
     public void login(String username, String pass) {
         if (!socket.connected()) {
             socket.connect();
-            System.out.println(">>>>>>>>>>>>>>>>>>>> socket connecting"+ socket.connected());
         }
         JSONObject data = new JSONObject();
         try {
             data.put("username", username);
             data.put("password", pass);
 
-            System.out.println("------->>>> login emitted" + data);
             socket.emit("sign-in", data);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -184,7 +182,7 @@ public class ServerTool {
         }
     }
 
-    public void findMatch(int level, boolean ispenalty) {
+    public void findMatch(int level, boolean isPenalty) {
         if (!socket.connected()) {
             socket.connect();
             MyGame.mainInstance.setEntranceScreen();
@@ -192,10 +190,10 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         int tmp = 0;
-        if (ispenalty)
+        if (isPenalty)
             tmp = 6;
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             data.put("roomNum", level + tmp);
 
             socket.emit("find-match", data);
@@ -212,7 +210,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("matchDone", data);
         } catch (JSONException e) {
@@ -228,7 +226,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("rc", data);
         } catch (JSONException e) {
@@ -244,7 +242,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             socket.emit("resign", data);
         } catch (JSONException e) {
@@ -261,7 +259,7 @@ public class ServerTool {
         System.out.println("avatar ------>>>>" + avatar);
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             data.put("avatarId", avatar);
 
             socket.emit("edit-avatar", data);
@@ -278,7 +276,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             data.put("playerNum", num);
             data.put("attrName", attr);
             data.put("attrVal", value);
@@ -297,7 +295,7 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             data.put("formation", position);
             JSONObject tmp = new JSONObject();
             for (int i = 0; i < lineup.length; i++) {
@@ -323,7 +321,7 @@ public class ServerTool {
 //        }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
             data.put("coinPackage", coinPackage);
             data.put("shirtId", shirtId);
             data.put("token", token);

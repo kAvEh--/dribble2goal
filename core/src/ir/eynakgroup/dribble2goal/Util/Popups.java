@@ -25,7 +25,6 @@ import ir.eynakgroup.dribble2goal.screens.SettingScreen;
 
 /**
  * Created by Eynak_PC2 on 7/11/2016.
- *
  */
 public class Popups extends Table {
 
@@ -114,8 +113,8 @@ public class Popups extends Table {
                 } else {
                     shopPane.setSelectedShare(shirtNum - 1);
                     ServerTool.getInstance().sendShop(price, shirtNum, "", "");
-                    GamePrefs.getInstance().coins_num -= price;
-                    GamePrefs.getInstance().shirt = shirtNum;
+                    GamePrefs.getInstance().user.setCoins_num(GamePrefs.getInstance().user.getCoins_num() - price);
+                    GamePrefs.getInstance().user.setShirt(shirtNum);
                     ServerTool.getInstance().getCoin();
                 }
                 for (Actor actor : mStage.getActors()) {
@@ -259,8 +258,8 @@ public class Popups extends Table {
 
         confirm.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                GamePrefs.getInstance().game_played += 1;
-                GamePrefs.getInstance().win_percent = GamePrefs.getInstance().game_won / GamePrefs.getInstance().game_played;
+                GamePrefs.getInstance().user.setGame_played(GamePrefs.getInstance().user.getGame_played() + 1);
+                GamePrefs.getInstance().user.setWin_percent(GamePrefs.getInstance().user.getGame_won() / GamePrefs.getInstance().user.getGame_played());
                 ServerTool.getInstance().resignMatch();
                 Assets.getInstance().stadium.stop();
                 MyGame.mainInstance.setMainScreen();
@@ -308,7 +307,7 @@ public class Popups extends Table {
         style.font = mSkin.getFont("default-font");
         style.fontColor = Color.WHITE;
 
-        final TextField userName_txt = new TextField(GamePrefs.getInstance().name, mSkin);
+        final TextField userName_txt = new TextField(GamePrefs.getInstance().user.getName(), mSkin);
         userName_txt.setSize(Constants.HUD_SCREEN_WIDTH * .5f, Constants.HUD_SCREEN_HEIGHT * .1f);
         userName_txt.setPosition(width * .42f, height * .42f);
         userName_txt.setAlignment(Align.left);
@@ -335,7 +334,7 @@ public class Popups extends Table {
 
         confirm.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                GamePrefs.getInstance().name = userName_txt.getText();
+                GamePrefs.getInstance().user.setName(userName_txt.getText());
                 ServerTool.getInstance().setNickName(userName_txt.getText());
                 mStage.unfocusAll();
                 Gdx.input.setOnscreenKeyboardVisible(false);
@@ -426,18 +425,18 @@ public class Popups extends Table {
         final int finalPrice = price;
         confirm.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (finalPrice <= GamePrefs.getInstance().coins_num) {
+                if (finalPrice <= GamePrefs.getInstance().user.getCoins_num()) {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
                         Assets.getInstance().upgrade.setVolume(.7f);
                         Assets.getInstance().upgrade.play();
                     }
                     ServerTool.getInstance().sendUpgrade(selected_item, type, upgradeTo);
                     if (type.equals("stamina"))
-                        GamePrefs.getInstance().players[selected_item - 1][0] = upgradeTo;
+                        GamePrefs.getInstance().user.players[selected_item - 1][0] = upgradeTo;
                     else if (type.equals("size"))
-                        GamePrefs.getInstance().players[selected_item - 1][1] = upgradeTo;
+                        GamePrefs.getInstance().user.players[selected_item - 1][1] = upgradeTo;
                     else if (type.equals("speed"))
-                        GamePrefs.getInstance().players[selected_item - 1][2] = upgradeTo;
+                        GamePrefs.getInstance().user.players[selected_item - 1][2] = upgradeTo;
                 }
                 screen.removePopups(true);
             }

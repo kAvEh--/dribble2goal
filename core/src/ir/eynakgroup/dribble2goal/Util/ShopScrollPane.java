@@ -106,9 +106,9 @@ public class ShopScrollPane extends Table {
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 6; i++) {
                 items[j * 6 + i] = new Table();
-                if (GamePrefs.getInstance().shirts[j * 6 + i] == 2) {
+                if (GamePrefs.getInstance().user.shirts[j * 6 + i] == 2) {
                     tmpBg = new Image(Assets.getInstance().shop_shirt_selected);
-                } else if (GamePrefs.getInstance().shirts[j * 6 + i] == 1) {
+                } else if (GamePrefs.getInstance().user.shirts[j * 6 + i] == 1) {
                     tmpBg = new Image(Assets.getInstance().shop_shirt_select);
                 } else {
                     tmpBg = new Image(Assets.getInstance().shop_shirts_bg[j * 6 + i]);
@@ -187,15 +187,15 @@ public class ShopScrollPane extends Table {
     }
 
     private void selectShirt(int finalI) {
-        if (GamePrefs.getInstance().shirts[finalI] == 2) {
+        if (GamePrefs.getInstance().user.shirts[finalI] == 2) {
             //TODO keep calm, this shirt is mine
-        } else if (GamePrefs.getInstance().shirts[finalI] == 1) {
+        } else if (GamePrefs.getInstance().user.shirts[finalI] == 1) {
             setSelectedShare(finalI);
         } else {
             if (shirt_coins[finalI] == 1) {
                 popup = new Popups(this, Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f,
                         -1, finalI + 1, mStage, bg);
-            } else if (shirt_coins[finalI] < GamePrefs.getInstance().coins_num) {
+            } else if (shirt_coins[finalI] < GamePrefs.getInstance().user.getCoins_num()) {
                 popup = new Popups(this, Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f,
                         shirt_coins[finalI], finalI + 1, mStage, bg);
             } else {
@@ -227,7 +227,7 @@ public class ShopScrollPane extends Table {
         items[finalI].addActor(tmpBg);
         items[finalI].addActor(tmpShirt);
         for (int i = 0; i < 24; i++) {
-            if (GamePrefs.getInstance().shirts[i] == 2) {
+            if (GamePrefs.getInstance().user.shirts[i] == 2) {
                 for (int j = 0; j < 2; j++) {
                     items[i].removeActor(items[i].getChildren().first());
                 }
@@ -238,16 +238,16 @@ public class ShopScrollPane extends Table {
                 tmpShirt.setSize(Constants.HUD_SCREEN_WIDTH * .253f, Constants.HUD_SCREEN_HEIGHT * .238f);
                 items[i].addActor(tmpBg);
                 items[i].addActor(tmpShirt);
-                GamePrefs.getInstance().shirts[i] = 1;
+                GamePrefs.getInstance().user.shirts[i] = 1;
                 break;
             }
         }
-        GamePrefs.getInstance().shirts[finalI] = 2;
-        GamePrefs.getInstance().shirt = finalI;
+        GamePrefs.getInstance().user.shirts[finalI] = 2;
+        GamePrefs.getInstance().user.setShirt(finalI);
         ServerTool.getInstance().sendShop(0, finalI + 1, "", "");
     }
 
-    public void step(boolean endFlag) {
+    private void step(boolean endFlag) {
         float scroll = this.mainScroll.getScrollX();
         int pivot = page * _width;
         int tmp = page;
@@ -309,7 +309,7 @@ public class ShopScrollPane extends Table {
         }
     }
 
-    public void init() {
+    private void init() {
         Timer.schedule(new Timer.Task() {
             public void run() {
 //                ShopScrollPane.this.setItemSizeByScrollValue();

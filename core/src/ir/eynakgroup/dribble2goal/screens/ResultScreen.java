@@ -244,7 +244,7 @@ public class ResultScreen implements Screen, InputProcessor {
         public void call(Object... args) {
             JSONObject response = (JSONObject) args[0];
             try {
-                GamePrefs.getInstance().coins_num = response.getInt("coin");
+                GamePrefs.getInstance().user.setCoins_num(response.getInt("coin"));
             } catch (Exception e) {
                 e.printStackTrace();
             }

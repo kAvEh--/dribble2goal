@@ -105,8 +105,8 @@ public class ProfileScreen implements Screen, InputProcessor {
         sprite.setSize(Constants.HUD_SCREEN_WIDTH * .191f, Constants.HUD_SCREEN_HEIGHT * .34f);
         sprite.setPosition(Constants.HUD_SCREEN_WIDTH * .405f, Constants.HUD_SCREEN_HEIGHT * .63f);
 
-        tmp_avatar = GamePrefs.getInstance().avatar;
-        avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().avatar));
+        tmp_avatar = GamePrefs.getInstance().user.getAvatar();
+        avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().user.getAvatar()));
         avatar.setSize(Constants.HUD_SCREEN_WIDTH * .191f, Constants.HUD_SCREEN_HEIGHT * .34f);
         avatar.setPosition(Constants.HUD_SCREEN_WIDTH * .405f, Constants.HUD_SCREEN_HEIGHT * .63f);
 
@@ -133,13 +133,13 @@ public class ProfileScreen implements Screen, InputProcessor {
         coins_txt = new Label(new Util().coinsStyle() + "", style);
         coins_txt.setPosition(Constants.HUD_SCREEN_WIDTH * .578f, Constants.HUD_SCREEN_HEIGHT * .738f);
 
-        level_txt = new Label(GamePrefs.getInstance().level + "", style);
+        level_txt = new Label(GamePrefs.getInstance().user.getLevel() + "", style);
         level_txt.setPosition(Constants.HUD_SCREEN_WIDTH * .395f, Constants.HUD_SCREEN_HEIGHT * .738f);
 
         style = new Label.LabelStyle();
         style.font = mSkin.getFont("default-font");
         style.fontColor = Color.WHITE;
-        name = new Label(GamePrefs.getInstance().name + "", style);
+        name = new Label(GamePrefs.getInstance().user.getName() + "", style);
         name.setColor(Color.WHITE);
         name.setPosition(Constants.HUD_SCREEN_WIDTH * .5f - (name.getWidth() / 2), Constants.HUD_SCREEN_HEIGHT * .59f);
 
@@ -177,7 +177,7 @@ public class ProfileScreen implements Screen, InputProcessor {
         stat_coins = new Image(Assets.getInstance().profile_last5);
         stat_coins.setSize(Constants.HUD_SCREEN_WIDTH * .66f, Constants.HUD_SCREEN_HEIGHT * .127f);
         table4.addActor(stat_coins);
-        Label t4 = new Label(GamePrefs.getInstance().coins_num + "", style);
+        Label t4 = new Label(GamePrefs.getInstance().user.getCoins_num() + "", style);
         t4.setPosition(Constants.HUD_SCREEN_WIDTH * .64f - t4.getWidth(),
                 (Constants.HUD_SCREEN_HEIGHT * .127f - t4.getHeight()) / 2 - Constants.HUD_SCREEN_HEIGHT * .001f);
         table4.addActor(t4);
@@ -189,7 +189,7 @@ public class ProfileScreen implements Screen, InputProcessor {
         stat_gp = new Image(Assets.getInstance().profile_gp);
         stat_gp.setSize(Constants.HUD_SCREEN_WIDTH * .66f, Constants.HUD_SCREEN_HEIGHT * .127f);
         table1.addActor(stat_gp);
-        Label t1 = new Label(GamePrefs.getInstance().game_played + "", style);
+        Label t1 = new Label(GamePrefs.getInstance().user.getGame_played() + "", style);
         t1.setPosition(Constants.HUD_SCREEN_WIDTH * .64f - t1.getWidth(),
                 (Constants.HUD_SCREEN_HEIGHT * .127f - t1.getHeight()) / 2 - Constants.HUD_SCREEN_HEIGHT * .001f);
         table1.addActor(t1);
@@ -201,7 +201,7 @@ public class ProfileScreen implements Screen, InputProcessor {
         stat_gw = new Image(Assets.getInstance().profile_gw);
         stat_gw.setSize(Constants.HUD_SCREEN_WIDTH * .66f, Constants.HUD_SCREEN_HEIGHT * .127f);
         table2.addActor(stat_gw);
-        Label t2 = new Label(GamePrefs.getInstance().game_won + "", style);
+        Label t2 = new Label(GamePrefs.getInstance().user.getGame_won() + "", style);
         t2.setPosition(Constants.HUD_SCREEN_WIDTH * .64f - t2.getWidth(),
                 (Constants.HUD_SCREEN_HEIGHT * .127f - t2.getHeight()) / 2 - Constants.HUD_SCREEN_HEIGHT * .001f);
         table2.addActor(t2);
@@ -213,7 +213,7 @@ public class ProfileScreen implements Screen, InputProcessor {
         stat_wp = new Image(Assets.getInstance().profile_wp);
         stat_wp.setSize(Constants.HUD_SCREEN_WIDTH * .66f, Constants.HUD_SCREEN_HEIGHT * .127f);
         table3.addActor(stat_wp);
-        Label t3 = new Label(GamePrefs.getInstance().winRate + "%", style);
+        Label t3 = new Label(GamePrefs.getInstance().user.getWinRate() + "%", style);
         t3.setPosition(Constants.HUD_SCREEN_WIDTH * .64f - t3.getWidth(),
                 (Constants.HUD_SCREEN_HEIGHT * .127f - t3.getHeight()) / 2 - Constants.HUD_SCREEN_HEIGHT * .001f);
         table3.addActor(t3);
@@ -231,30 +231,30 @@ public class ProfileScreen implements Screen, InputProcessor {
 
         achs_container.setPosition(Constants.HUD_SCREEN_WIDTH * 1.17f, Constants.HUD_SCREEN_HEIGHT * .01f);
 
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_a1, GamePrefs.getInstance().achieve_win > 0, false);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_a2, GamePrefs.getInstance().achieve_win > 1, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_a3, GamePrefs.getInstance().achieve_win > 2, false);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_a4, GamePrefs.getInstance().achieve_win > 3, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_a5, GamePrefs.getInstance().achieve_win > 4, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_a1, GamePrefs.getInstance().user.getAchieve_win() > 0, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_a2, GamePrefs.getInstance().user.getAchieve_win() > 1, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_a3, GamePrefs.getInstance().user.getAchieve_win() > 2, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_a4, GamePrefs.getInstance().user.getAchieve_win() > 3, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_a5, GamePrefs.getInstance().user.getAchieve_win() > 4, false);
 
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_b1, GamePrefs.getInstance().achieve_goal > 0, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_b2, GamePrefs.getInstance().achieve_goal > 1, false);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_b3, GamePrefs.getInstance().achieve_goal > 2, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_b4, GamePrefs.getInstance().achieve_goal > 3, false);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_b5, GamePrefs.getInstance().achieve_goal > 4, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_b6, GamePrefs.getInstance().achieve_goal > 5, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_b1, GamePrefs.getInstance().user.getAchieve_goal() > 0, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_b2, GamePrefs.getInstance().user.getAchieve_goal() > 1, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_b3, GamePrefs.getInstance().user.getAchieve_goal() > 2, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_b4, GamePrefs.getInstance().user.getAchieve_goal() > 3, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_b5, GamePrefs.getInstance().user.getAchieve_goal() > 4, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_b6, GamePrefs.getInstance().user.getAchieve_goal() > 5, false);
 
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_c1, GamePrefs.getInstance().achieve_cleanSheet > 0, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_c2, GamePrefs.getInstance().achieve_cleanSheet > 1, false);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_c3, GamePrefs.getInstance().achieve_cleanSheet > 2, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_c4, GamePrefs.getInstance().achieve_cleanSheet > 3, false);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_c5, GamePrefs.getInstance().achieve_cleanSheet > 4, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_c6, GamePrefs.getInstance().achieve_cleanSheet > 5, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_c1, GamePrefs.getInstance().user.getAchieve_cleanSheet() > 0, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_c2, GamePrefs.getInstance().user.getAchieve_cleanSheet() > 1, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_c3, GamePrefs.getInstance().user.getAchieve_cleanSheet() > 2, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_c4, GamePrefs.getInstance().user.getAchieve_cleanSheet() > 3, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_c5, GamePrefs.getInstance().user.getAchieve_cleanSheet() > 4, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_c6, GamePrefs.getInstance().user.getAchieve_cleanSheet() > 5, false);
 
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_d1, GamePrefs.getInstance().achieve_winInaRow > 0, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_d2, GamePrefs.getInstance().achieve_winInaRow > 1, false);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_d3, GamePrefs.getInstance().achieve_winInaRow > 2, true);
-        achievementGenerator(profile_achs, Assets.getInstance().achiev_d4, GamePrefs.getInstance().achieve_winInaRow > 3, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_d1, GamePrefs.getInstance().user.getAchieve_winInaRow() > 0, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_d2, GamePrefs.getInstance().user.getAchieve_winInaRow() > 1, false);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_d3, GamePrefs.getInstance().user.getAchieve_winInaRow() > 2, true);
+        achievementGenerator(profile_achs, Assets.getInstance().achiev_d4, GamePrefs.getInstance().user.getAchieve_winInaRow() > 3, false);
 
         back = new Image(Assets.getInstance().icon_back);
         back.setSize(Constants.HUD_SCREEN_WIDTH * .133f, Constants.HUD_SCREEN_HEIGHT * .186f);
@@ -279,9 +279,9 @@ public class ProfileScreen implements Screen, InputProcessor {
 
         back.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (tmp_avatar != GamePrefs.getInstance().avatar) {
+                if (tmp_avatar != GamePrefs.getInstance().user.getAvatar()) {
                     ServerTool.getInstance().editAvatar(tmp_avatar);
-                    GamePrefs.getInstance().avatar = tmp_avatar;
+                    GamePrefs.getInstance().user.setAvatar(tmp_avatar);
                 }
                 MyGame.mainInstance.setMainScreen();
             }
@@ -457,7 +457,7 @@ public class ProfileScreen implements Screen, InputProcessor {
                     }
                 });
 
-        int percent = (int) ((float) GamePrefs.getInstance().xp / ((float) GamePrefs.getInstance().level * 1000f) * 100f);
+        int percent = (int) ((float) GamePrefs.getInstance().user.getXp() / ((float) GamePrefs.getInstance().user.getLevel() * 1000f) * 100f);
         Tween.to(sprite, 1, .8f)
                 .target(percent).ease(TweenEquations.easeInExpo)
                 .start(mTweenManager).delay(0.3F)
@@ -553,9 +553,9 @@ public class ProfileScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
-            if (tmp_avatar != GamePrefs.getInstance().avatar) {
+            if (tmp_avatar != GamePrefs.getInstance().user.getAvatar()) {
                 ServerTool.getInstance().editAvatar(tmp_avatar);
-                GamePrefs.getInstance().avatar = tmp_avatar;
+                GamePrefs.getInstance().user.setAvatar(tmp_avatar);
             }
             MyGame.mainInstance.setMainScreen();
         }

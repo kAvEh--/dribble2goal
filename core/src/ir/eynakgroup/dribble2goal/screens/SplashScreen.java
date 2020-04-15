@@ -93,6 +93,8 @@ public class SplashScreen implements Screen {
 
     private void checkSavedData() {
         System.out.println(GamePrefs.getInstance().getUserName() + "^^^@##@^^^" + GamePrefs.getInstance().getPassword());
+        if (!ServerTool.getInstance().socket.connected())
+            ServerTool.getInstance().socket.connect();
         if (GamePrefs.getInstance().getUserName() != null &&
                 GamePrefs.getInstance().getUserName().length() > 0) {
             ServerTool.getInstance().login(GamePrefs.getInstance().getUserName(), GamePrefs.getInstance().getPassword());
@@ -163,7 +165,7 @@ public class SplashScreen implements Screen {
                 } else {
                     MyGame.mainInstance.setMainScreen();
                 }
-            } else if (login_flag == 1) {
+            } else {
                 MyGame.mainInstance.setEntranceScreen();
             }
         }

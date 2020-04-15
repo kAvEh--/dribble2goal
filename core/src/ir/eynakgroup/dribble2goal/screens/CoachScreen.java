@@ -137,12 +137,12 @@ public class CoachScreen implements Screen, InputProcessor {
         position_right.setSize(Constants.HUD_SCREEN_WIDTH * .085f, Constants.HUD_SCREEN_HEIGHT * .119f);
         position_right.setPosition(Constants.HUD_SCREEN_WIDTH * .355f, Constants.HUD_SCREEN_HEIGHT * .465f);
 
-        new_position = GamePrefs.getInstance().position;
+        new_position = GamePrefs.getInstance().user.getPosition();
 
         position_left.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 if (new_position == 1) {
-                    new_position = GamePrefs.getInstance().position_num;
+                    new_position = GamePrefs.getInstance().user.getPosition_num();
                 } else {
                     new_position -= 1;
                 }
@@ -163,7 +163,7 @@ public class CoachScreen implements Screen, InputProcessor {
 
         position_right.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (new_position == GamePrefs.getInstance().position_num) {
+                if (new_position == GamePrefs.getInstance().user.getPosition_num()) {
                     new_position = 1;
                 } else {
                     new_position += 1;
@@ -184,11 +184,11 @@ public class CoachScreen implements Screen, InputProcessor {
         });
 
         players = new Image[5];
-        players[0] = new Image(new Util().getShirt(GamePrefs.getInstance().shirt + 1));
-        players[1] = new Image(new Util().getShirt(GamePrefs.getInstance().shirt + 1));
-        players[2] = new Image(new Util().getShirt(GamePrefs.getInstance().shirt + 1));
-        players[3] = new Image(new Util().getShirt(GamePrefs.getInstance().shirt + 1));
-        players[4] = new Image(new Util().getShirt(GamePrefs.getInstance().shirt + 1));
+        players[0] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt() + 1));
+        players[1] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt() + 1));
+        players[2] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt() + 1));
+        players[3] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt() + 1));
+        players[4] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt() + 1));
 
         players_bg = new Image[5];
         for (int i = 0; i < 5; i++) {
@@ -198,8 +198,8 @@ public class CoachScreen implements Screen, InputProcessor {
         selected = new Image(Assets.getInstance().selected_player);
         selected.setSize(Constants.HUD_SCREEN_WIDTH * .06f * 1.3f, Constants.HUD_SCREEN_HEIGHT * .107f * 1.3f);
 
-        position = new Util().getSettingPosition(GamePrefs.getInstance().position);
-        lineup = GamePrefs.getInstance().lineup.clone();
+        position = new Util().getSettingPosition(GamePrefs.getInstance().user.getPosition());
+        lineup = GamePrefs.getInstance().user.lineup.clone();
         setPosition(position);
 
         setSubsListeners();
@@ -291,7 +291,7 @@ public class CoachScreen implements Screen, InputProcessor {
         stamina_shop.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 popup = new Popups(Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f,
-                        screen, selected_item + 1, "stamina", GamePrefs.getInstance().players[selected_item][0] + 1);
+                        screen, selected_item + 1, "stamina", GamePrefs.getInstance().user.players[selected_item][0] + 1);
                 popup.setSize(Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f);
                 popup.setPosition(Constants.HUD_SCREEN_WIDTH * .195f, Constants.HUD_SCREEN_HEIGHT * .1f);
                 popup.setName(popup_string);
@@ -344,7 +344,7 @@ public class CoachScreen implements Screen, InputProcessor {
         size_shop.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 popup = new Popups(Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f,
-                        screen, selected_item + 1, "size", GamePrefs.getInstance().players[selected_item][1] + 1);
+                        screen, selected_item + 1, "size", GamePrefs.getInstance().user.players[selected_item][1] + 1);
                 popup.setSize(Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f);
                 popup.setPosition(Constants.HUD_SCREEN_WIDTH * .195f, Constants.HUD_SCREEN_HEIGHT * .1f);
                 popup.setName(popup_string);
@@ -397,7 +397,7 @@ public class CoachScreen implements Screen, InputProcessor {
         speed_shop.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 popup = new Popups(Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f,
-                        screen, selected_item + 1, "speed", GamePrefs.getInstance().players[selected_item][2] + 1);
+                        screen, selected_item + 1, "speed", GamePrefs.getInstance().user.players[selected_item][2] + 1);
                 popup.setSize(Constants.HUD_SCREEN_WIDTH * .61f, Constants.HUD_SCREEN_HEIGHT * .8f);
                 popup.setPosition(Constants.HUD_SCREEN_WIDTH * .195f, Constants.HUD_SCREEN_HEIGHT * .1f);
                 popup.setName(popup_string);
@@ -489,10 +489,10 @@ public class CoachScreen implements Screen, InputProcessor {
 
         confirm.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (!Arrays.equals(GamePrefs.getInstance().lineup, lineup) || new_position != GamePrefs.getInstance().position) {
-                    GamePrefs.getInstance().lineup = lineup;
-                    GamePrefs.getInstance().position = new_position;
-                    ServerTool.getInstance().sendLineUp(GamePrefs.getInstance().position, GamePrefs.getInstance().lineup);
+                if (!Arrays.equals(GamePrefs.getInstance().user.lineup, lineup) || new_position != GamePrefs.getInstance().user.getPosition()) {
+                    GamePrefs.getInstance().user.lineup = lineup;
+                    GamePrefs.getInstance().user.setPosition(new_position);
+                    ServerTool.getInstance().sendLineUp(GamePrefs.getInstance().user.getPosition(), GamePrefs.getInstance().user.lineup);
                 }
 
                 MyGame.mainInstance.setMainScreen();
@@ -558,8 +558,8 @@ public class CoachScreen implements Screen, InputProcessor {
                 System.out.println(response + "^^^^^^^^^^^^^^^^");
                 try {
                     response.getString("err");
-                    setAttrs(GamePrefs.getInstance().players[selected_item][0], GamePrefs.getInstance().players[selected_item][1], GamePrefs.getInstance().players[selected_item][2]);
-                    setShopButtons(GamePrefs.getInstance().players[selected_item][0], GamePrefs.getInstance().players[selected_item][1], GamePrefs.getInstance().players[selected_item][2]);
+                    setAttrs(GamePrefs.getInstance().user.players[selected_item][0], GamePrefs.getInstance().user.players[selected_item][1], GamePrefs.getInstance().user.players[selected_item][2]);
+                    setShopButtons(GamePrefs.getInstance().user.players[selected_item][0], GamePrefs.getInstance().user.players[selected_item][1], GamePrefs.getInstance().user.players[selected_item][2]);
 
                 } catch (Exception ignored) {
 
@@ -596,12 +596,12 @@ public class CoachScreen implements Screen, InputProcessor {
                         public void run() {
 //                        MyGame.mainInstance.setMainScreen();
                             try {
-                                GamePrefs.getInstance().coins_num = response.getInt("coin");
+                                GamePrefs.getInstance().user.setCoins_num(response.getInt("coin"));
                                 if (coinFlag) {
                                     coinFlag = false;
                                     coins_txt.setText(0 + "");
                                     Tween.to(coins_txt, 1, .7f)
-                                            .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                                            .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                                             .start(mTweenManager).delay(0.0F)
                                             .setCallback(new TweenCallback() {
                                                 public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
@@ -645,24 +645,24 @@ public class CoachScreen implements Screen, InputProcessor {
         }
         switch (selected_item) {
             case 0:
-                setAttrs(GamePrefs.getInstance().players[0][0], GamePrefs.getInstance().players[0][1], GamePrefs.getInstance().players[0][2]);
-                setShopButtons(GamePrefs.getInstance().players[0][0], GamePrefs.getInstance().players[0][1], GamePrefs.getInstance().players[0][2]);
+                setAttrs(GamePrefs.getInstance().user.players[0][0], GamePrefs.getInstance().user.players[0][1], GamePrefs.getInstance().user.players[0][2]);
+                setShopButtons(GamePrefs.getInstance().user.players[0][0], GamePrefs.getInstance().user.players[0][1], GamePrefs.getInstance().user.players[0][2]);
                 break;
             case 1:
-                setAttrs(GamePrefs.getInstance().players[1][0], GamePrefs.getInstance().players[1][1], GamePrefs.getInstance().players[1][2]);
-                setShopButtons(GamePrefs.getInstance().players[1][0], GamePrefs.getInstance().players[1][1], GamePrefs.getInstance().players[1][2]);
+                setAttrs(GamePrefs.getInstance().user.players[1][0], GamePrefs.getInstance().user.players[1][1], GamePrefs.getInstance().user.players[1][2]);
+                setShopButtons(GamePrefs.getInstance().user.players[1][0], GamePrefs.getInstance().user.players[1][1], GamePrefs.getInstance().user.players[1][2]);
                 break;
             case 2:
-                setAttrs(GamePrefs.getInstance().players[2][0], GamePrefs.getInstance().players[2][1], GamePrefs.getInstance().players[2][2]);
-                setShopButtons(GamePrefs.getInstance().players[2][0], GamePrefs.getInstance().players[2][1], GamePrefs.getInstance().players[2][2]);
+                setAttrs(GamePrefs.getInstance().user.players[2][0], GamePrefs.getInstance().user.players[2][1], GamePrefs.getInstance().user.players[2][2]);
+                setShopButtons(GamePrefs.getInstance().user.players[2][0], GamePrefs.getInstance().user.players[2][1], GamePrefs.getInstance().user.players[2][2]);
                 break;
             case 3:
-                setAttrs(GamePrefs.getInstance().players[3][0], GamePrefs.getInstance().players[3][1], GamePrefs.getInstance().players[3][2]);
-                setShopButtons(GamePrefs.getInstance().players[3][0], GamePrefs.getInstance().players[3][1], GamePrefs.getInstance().players[3][2]);
+                setAttrs(GamePrefs.getInstance().user.players[3][0], GamePrefs.getInstance().user.players[3][1], GamePrefs.getInstance().user.players[3][2]);
+                setShopButtons(GamePrefs.getInstance().user.players[3][0], GamePrefs.getInstance().user.players[3][1], GamePrefs.getInstance().user.players[3][2]);
                 break;
             case 4:
-                setAttrs(GamePrefs.getInstance().players[4][0], GamePrefs.getInstance().players[4][1], GamePrefs.getInstance().players[4][2]);
-                setShopButtons(GamePrefs.getInstance().players[4][0], GamePrefs.getInstance().players[4][1], GamePrefs.getInstance().players[4][2]);
+                setAttrs(GamePrefs.getInstance().user.players[4][0], GamePrefs.getInstance().user.players[4][1], GamePrefs.getInstance().user.players[4][2]);
+                setShopButtons(GamePrefs.getInstance().user.players[4][0], GamePrefs.getInstance().user.players[4][1], GamePrefs.getInstance().user.players[4][2]);
                 break;
         }
     }
@@ -1031,7 +1031,7 @@ public class CoachScreen implements Screen, InputProcessor {
 
         coins_txt.setText("0");
         Tween.to(coins_txt, 1, .7f)
-                .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                 .start(mTweenManager).delay(0.0F)
                 .setCallback(new TweenCallback() {
                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {

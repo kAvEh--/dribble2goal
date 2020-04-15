@@ -45,7 +45,6 @@ import ir.eynakgroup.dribble2goal.render.textures.ProgressCircle;
 
 /**
  * Created by kAvEh on 3/4/2016.
- *
  */
 public class MainMenuScreen implements Screen, InputProcessor {
 
@@ -66,7 +65,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
     Skin mSkin;
     private TextField coins_txt;
 
-    private String[] help_texts = new String[]{"به دریبل تو گل خوش اومدی.","بیا روش بازی کردن رو باهم مرور کنیم.","هر بازی دو تا نیمه داره که توی یه نیمه باید دفاع کنی تو یه نیمه حمله.","اگه آخر بازی تعداد گل\u200Cهای تو با حریفت مساوی باشه، بازی به پنالتی کشیده می\u200Cشه.","موقع پنالتی\u200Cها هم هر کسی که بیشتر پنالتی\u200Cهاشو گل کنه، برنده می\u200Cشه.","راستی یادت نره که می\u200Cتونی علاوه بر بازی معمولی، پنالتی رو هم امتحان کنی.","بیا بریم تا یه ورزشگاه رو انتخاب کنیم."};
+    private String[] help_texts = new String[]{"به دریبل تو گل خوش اومدی.", "بیا روش بازی کردن رو باهم مرور کنیم.", "هر بازی دو تا نیمه داره که توی یه نیمه باید دفاع کنی تو یه نیمه حمله.", "اگه آخر بازی تعداد گل\u200Cهای تو با حریفت مساوی باشه، بازی به پنالتی کشیده می\u200Cشه.", "موقع پنالتی\u200Cها هم هر کسی که بیشتر پنالتی\u200Cهاشو گل کنه، برنده می\u200Cشه.", "راستی یادت نره که می\u200Cتونی علاوه بر بازی معمولی، پنالتی رو هم امتحان کنی.", "بیا بریم تا یه ورزشگاه رو انتخاب کنیم."};
     private int help_state = 0;
 
     private PersianDecoder persian = new PersianDecoder();
@@ -166,7 +165,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
         sprite.setPosition(Constants.HUD_SCREEN_WIDTH * .03f,
                 Constants.HUD_SCREEN_HEIGHT * .97f - Constants.HUD_SCREEN_WIDTH * .158f);
 
-        Image avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().avatar));
+        Image avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().user.getAvatar()));
         avatar.setSize(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_WIDTH * .158f);
         avatar.setPosition(Constants.HUD_SCREEN_WIDTH * .03f,
                 Constants.HUD_SCREEN_HEIGHT * .97f - Constants.HUD_SCREEN_WIDTH * .158f);
@@ -235,7 +234,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
                 Constants.HUD_SCREEN_WIDTH * .1f, Constants.HUD_SCREEN_WIDTH * .1f);
 
         style.font = mSkin.getFont("default-font");
-        Label level = new Label(GamePrefs.getInstance().level + "", style);
+        Label level = new Label(GamePrefs.getInstance().user.getLevel() + "", style);
         level.setWrap(true);
         level.setAlignment(Align.left);
         level.setBounds(Constants.HUD_SCREEN_WIDTH * .125f, Constants.HUD_SCREEN_HEIGHT * .597f,
@@ -406,10 +405,10 @@ public class MainMenuScreen implements Screen, InputProcessor {
             public void call(Object... args) {
                 JSONObject response = (JSONObject) args[0];
                 try {
-                    GamePrefs.getInstance().coins_num = response.getInt("coin");
+                    GamePrefs.getInstance().user.setCoins_num(response.getInt("coin"));
                     coins_txt.setText("0");
                     Tween.to(coins_txt, 1, 1.1f)
-                            .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                            .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                             .start(mTweenManager).delay(0.0F)
                             .setCallback(new TweenCallback() {
                                 public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
@@ -445,7 +444,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
                 .target(1f).ease(TweenEquations.easeOutQuad)
                 .start(mTweenManager).delay(0.0F);
 
-        int percent = (int) ((float) GamePrefs.getInstance().xp / ((float) GamePrefs.getInstance().level * 1000f) * 100f);
+        int percent = (int) ((float) GamePrefs.getInstance().user.getXp() / ((float) GamePrefs.getInstance().user.getLevel() * 1000f) * 100f);
         Tween.to(sprite, 1, .8f)
                 .target(percent).ease(TweenEquations.easeInExpo)
                 .start(mTweenManager).delay(0.2F);
@@ -462,7 +461,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
                         coins_txt.setColor(1f, 1f, 1f, 1f);
                         Tween.to(coins_txt, 1, 1.1f)
-                                .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                                .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                                 .start(mTweenManager).delay(0.0F)
                                 .setCallback(new TweenCallback() {
                                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {

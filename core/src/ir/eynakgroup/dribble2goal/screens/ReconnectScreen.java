@@ -145,7 +145,7 @@ public class ReconnectScreen implements Screen {
         try {
             stat = new MatchStats();
             stat.roomNum = data.getInt("roomNum");
-            if (data.getString("playerId1") == GamePrefs.getInstance().playerId) {
+            if (data.getString("playerId1").equals(GamePrefs.getInstance().user.getId())) {
                 stat.reset();
                 stat.myName = data.getString("username1");
                 stat.oppName = data.getString("username2");

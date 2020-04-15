@@ -92,7 +92,7 @@ public class HelpSelectGameScreen implements Screen, InputProcessor {
         sprite.setPosition(Constants.HUD_SCREEN_WIDTH * .83f,
                 Constants.HUD_SCREEN_HEIGHT * .97f - Constants.HUD_SCREEN_WIDTH * .158f);
 
-        Image avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().avatar));
+        Image avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().user.getAvatar()));
         avatar.setSize(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_WIDTH * .158f);
         avatar.setPosition(Constants.HUD_SCREEN_WIDTH * .83f,
                 Constants.HUD_SCREEN_HEIGHT * .97f - Constants.HUD_SCREEN_WIDTH * .158f);
@@ -312,7 +312,7 @@ public class HelpSelectGameScreen implements Screen, InputProcessor {
                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
                         coins_txt.setColor(1f, 1f, 1f, 1f);
                         Tween.to(coins_txt, 1, 1.1f)
-                                .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                                .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                                 .start(mTweenManager).delay(0.0F)
                                 .setCallback(new TweenCallback() {
                                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
@@ -322,7 +322,7 @@ public class HelpSelectGameScreen implements Screen, InputProcessor {
                     }
                 });
 
-        int percent = (int) ((float) GamePrefs.getInstance().xp / ((float) GamePrefs.getInstance().level * 1000f) * 100f);
+        int percent = (int) ((float) GamePrefs.getInstance().user.getXp() / ((float) GamePrefs.getInstance().user.getLevel() * 1000f) * 100f);
         Tween.to(sprite, 1, .8f)
                 .target(percent).ease(TweenEquations.easeInExpo)
                 .start(mTweenManager).delay(0.2F);

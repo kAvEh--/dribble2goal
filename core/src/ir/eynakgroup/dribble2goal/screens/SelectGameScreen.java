@@ -104,7 +104,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
         sprite.setPosition(Constants.HUD_SCREEN_WIDTH * .83f,
                 Constants.HUD_SCREEN_HEIGHT * .97f - Constants.HUD_SCREEN_WIDTH * .158f);
 
-        Image avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().avatar));
+        Image avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().user.getAvatar()));
         avatar.setSize(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_WIDTH * .158f);
         avatar.setPosition(Constants.HUD_SCREEN_WIDTH * .83f,
                 Constants.HUD_SCREEN_HEIGHT * .97f - Constants.HUD_SCREEN_WIDTH * .158f);
@@ -164,31 +164,31 @@ public class SelectGameScreen implements Screen, InputProcessor {
         Image[] scrollImg = new Image[6];
         scrollImg[0] = new Image(Assets.getInstance().stadium_button_1);
         scrollImg[0].setSize(Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f);
-        if (GamePrefs.getInstance().level > 1) {
+        if (GamePrefs.getInstance().user.getLevel() > 1) {
             scrollImg[1] = new Image(Assets.getInstance().stadium_button_2);
         } else {
             scrollImg[1] = new Image(Assets.getInstance().stadium_button_2_lock);
         }
         scrollImg[1].setSize(Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f);
-        if (GamePrefs.getInstance().level > 3) {
+        if (GamePrefs.getInstance().user.getLevel() > 3) {
             scrollImg[2] = new Image(Assets.getInstance().stadium_button_3);
         } else {
             scrollImg[2] = new Image(Assets.getInstance().stadium_button_3_lock);
         }
         scrollImg[2].setSize(Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f);
-        if (GamePrefs.getInstance().level > 5) {
+        if (GamePrefs.getInstance().user.getLevel() > 5) {
             scrollImg[3] = new Image(Assets.getInstance().stadium_button_4);
         } else {
             scrollImg[3] = new Image(Assets.getInstance().stadium_button_4_lock);
         }
         scrollImg[3].setSize(Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f);
-        if (GamePrefs.getInstance().level > 7) {
+        if (GamePrefs.getInstance().user.getLevel() > 7) {
             scrollImg[4] = new Image(Assets.getInstance().stadium_button_5);
         } else {
             scrollImg[4] = new Image(Assets.getInstance().stadium_button_5_lock);
         }
         scrollImg[4].setSize(Constants.HUD_SCREEN_WIDTH * .3125f, Constants.HUD_SCREEN_HEIGHT * .18f);
-        if (GamePrefs.getInstance().level > 7) {
+        if (GamePrefs.getInstance().user.getLevel() > 7) {
             scrollImg[5] = new Image(Assets.getInstance().stadium_button_6);
         } else {
             scrollImg[5] = new Image(Assets.getInstance().stadium_button_6_lock);
@@ -203,7 +203,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                 MyGame.mainInstance.setFindMatchScreen(1, isPenalty);
             }
         });
-        if (GamePrefs.getInstance().level > 1) {
+        if (GamePrefs.getInstance().user.getLevel() > 1) {
             scrollImg[1].addListener(new ActorGestureListener() {
                 public void tap(InputEvent event, float x, float y, int count, int button) {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
@@ -213,7 +213,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                 }
             });
         }
-        if (GamePrefs.getInstance().level > 3) {
+        if (GamePrefs.getInstance().user.getLevel() > 3) {
             scrollImg[2].addListener(new ActorGestureListener() {
                 public void tap(InputEvent event, float x, float y, int count, int button) {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
@@ -223,7 +223,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                 }
             });
         }
-        if (GamePrefs.getInstance().level > 5) {
+        if (GamePrefs.getInstance().user.getLevel() > 5) {
             scrollImg[3].addListener(new ActorGestureListener() {
                 public void tap(InputEvent event, float x, float y, int count, int button) {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
@@ -233,7 +233,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     }
             });
         }
-        if (GamePrefs.getInstance().level > 7) {
+        if (GamePrefs.getInstance().user.getLevel() > 7) {
             scrollImg[4].addListener(new ActorGestureListener() {
                 public void tap(InputEvent event, float x, float y, int count, int button) {
                     if (GamePrefs.getInstance().isEffectOn() == 1) {
@@ -316,7 +316,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
                         coins_txt.setColor(1f, 1f, 1f, 1f);
                         Tween.to(coins_txt, 1, 1.1f)
-                                .target(Math.min(GamePrefs.getInstance().coins_num, 1000)).ease(TweenEquations.easeOutQuad)
+                                .target(Math.min(GamePrefs.getInstance().user.getCoins_num(), 1000)).ease(TweenEquations.easeOutQuad)
                                 .start(mTweenManager).delay(0.0F)
                                 .setCallback(new TweenCallback() {
                                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
@@ -326,7 +326,7 @@ public class SelectGameScreen implements Screen, InputProcessor {
                     }
                 });
 
-        int percent = (int) ((float) GamePrefs.getInstance().xp / ((float) GamePrefs.getInstance().level * 1000f) * 100f);
+        int percent = (int) ((float) GamePrefs.getInstance().user.getXp() / ((float) GamePrefs.getInstance().user.getLevel() * 1000f) * 100f);
         Tween.to(sprite, 1, .8f)
                 .target(percent).ease(TweenEquations.easeInExpo)
                 .start(mTweenManager).delay(0.2F);

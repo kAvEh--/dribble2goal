@@ -569,7 +569,7 @@ public class GameScreen implements Screen, IModelListener {
         prev_icon.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 if (matchStat.myFormation == 1) {
-                    matchStat.myFormation = GamePrefs.getInstance().position_num;
+                    matchStat.myFormation = GamePrefs.getInstance().user.getPosition_num();
                 } else {
                     matchStat.myFormation = matchStat.myFormation - 1;
                 }
@@ -656,7 +656,7 @@ public class GameScreen implements Screen, IModelListener {
 
         next_icon.addListener(new ActorGestureListener() {
             public void tap(InputEvent event, float x, float y, int count, int button) {
-                if (matchStat.myFormation == GamePrefs.getInstance().position_num) {
+                if (matchStat.myFormation == GamePrefs.getInstance().user.getPosition_num()) {
                     matchStat.myFormation = 1;
                 } else {
                     matchStat.myFormation = matchStat.myFormation + 1;
@@ -1030,56 +1030,58 @@ public class GameScreen implements Screen, IModelListener {
             ServerTool.getInstance().socket.off("after");
             ServerTool.getInstance().socket.off("finalResult");
             try {
-                if (response.getString("playerId1").matches(GamePrefs.getInstance().playerId)) {
+                if (response.getString("playerId1").matches(GamePrefs.getInstance().user.getId())) {
                     JSONObject achs = response.getJSONObject("achievements1");
                     JSONObject level = response.getJSONObject("level1");
-                    GamePrefs.getInstance().xp = level.getInt("xp");
-                    if (level.getInt("lvl") > GamePrefs.getInstance().level) {
-                        GamePrefs.getInstance().isLevelUp = true;
+                    GamePrefs.getInstance().user.setXp(level.getInt("xp"));
+                    if (level.getInt("lvl") > GamePrefs.getInstance().user.getLevel()) {
+                        GamePrefs.getInstance().user.setLevelUp(true);
                     }
-                    GamePrefs.getInstance().level = level.getInt("lvl");
-                    if (GamePrefs.getInstance().achieve_winInaRow < achs.getInt("winInaRow")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("winInaRow") + 17);
-                    }
-                    if (GamePrefs.getInstance().achieve_win < achs.getInt("win")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("win"));
-                    }
-                    if (GamePrefs.getInstance().achieve_cleanSheet < achs.getInt("cleanSheet")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("cleanSheet") + 11);
-                    }
-                    if (GamePrefs.getInstance().achieve_goal < achs.getInt("goal")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("goal") + 5);
-                    }
-                    GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
-                    GamePrefs.getInstance().achieve_win = achs.getInt("win");
-                    GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-                    GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
+                    GamePrefs.getInstance().user.setLevel(level.getInt("lvl"));
+                    //TODO set achievements
+//                    if (GamePrefs.getInstance().achieve_winInaRow < achs.getInt("winInaRow")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("winInaRow") + 17);
+//                    }
+//                    if (GamePrefs.getInstance().achieve_win < achs.getInt("win")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("win"));
+//                    }
+//                    if (GamePrefs.getInstance().achieve_cleanSheet < achs.getInt("cleanSheet")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("cleanSheet") + 11);
+//                    }
+//                    if (GamePrefs.getInstance().achieve_goal < achs.getInt("goal")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("goal") + 5);
+//                    }
+//                    GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
+//                    GamePrefs.getInstance().achieve_win = achs.getInt("win");
+//                    GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
+//                    GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
                     matchStat.myGoals = response.getInt("result1");
                     matchStat.oppGoals = response.getInt("result2");
                 } else {
                     JSONObject achs = response.getJSONObject("achievements2");
                     JSONObject level = response.getJSONObject("level2");
-                    GamePrefs.getInstance().xp = level.getInt("xp");
-                    if (level.getInt("lvl") > GamePrefs.getInstance().level) {
-                        GamePrefs.getInstance().isLevelUp = true;
+                    GamePrefs.getInstance().user.setXp(level.getInt("xp"));
+                    if (level.getInt("lvl") > GamePrefs.getInstance().user.getLevel()) {
+                        GamePrefs.getInstance().user.setLevelUp(true);
                     }
-                    GamePrefs.getInstance().level = level.getInt("lvl");
-                    if (GamePrefs.getInstance().achieve_winInaRow < achs.getInt("winInaRow")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("winInaRow") + 17);
-                    }
-                    if (GamePrefs.getInstance().achieve_win < achs.getInt("win")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("win"));
-                    }
-                    if (GamePrefs.getInstance().achieve_cleanSheet < achs.getInt("cleanSheet")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("cleanSheet") + 11);
-                    }
-                    if (GamePrefs.getInstance().achieve_goal < achs.getInt("goal")) {
-                        MyGame.mPlayServices.unlockAchievement(achs.getInt("goal") + 5);
-                    }
-                    GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
-                    GamePrefs.getInstance().achieve_win = achs.getInt("win");
-                    GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-                    GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
+                    GamePrefs.getInstance().user.setLevel(level.getInt("lvl"));
+                    //TODO set achievements
+//                    if (GamePrefs.getInstance().achieve_winInaRow < achs.getInt("winInaRow")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("winInaRow") + 17);
+//                    }
+//                    if (GamePrefs.getInstance().achieve_win < achs.getInt("win")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("win"));
+//                    }
+//                    if (GamePrefs.getInstance().achieve_cleanSheet < achs.getInt("cleanSheet")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("cleanSheet") + 11);
+//                    }
+//                    if (GamePrefs.getInstance().achieve_goal < achs.getInt("goal")) {
+//                        MyGame.mPlayServices.unlockAchievement(achs.getInt("goal") + 5);
+//                    }
+//                    GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
+//                    GamePrefs.getInstance().achieve_win = achs.getInt("win");
+//                    GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
+//                    GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
                     matchStat.myGoals = response.getInt("result2");
                     matchStat.oppGoals = response.getInt("result1");
                 }
@@ -1108,7 +1110,7 @@ public class GameScreen implements Screen, IModelListener {
             JSONObject tmp;
             JSONArray array;
             try {
-                if (!response.getString("playerId").equals(GamePrefs.getInstance().playerId)) {
+                if (!response.getString("playerId").equals(GamePrefs.getInstance().user.getId())) {
                     tmp = response.getJSONObject("direction");
                     matchStat.oppPlayerShooting = tmp.getInt("player");
                     array = tmp.getJSONArray("arrow");
@@ -1133,7 +1135,7 @@ public class GameScreen implements Screen, IModelListener {
         public void call(Object... args) {
             JSONObject response = (JSONObject) args[0];
             try {
-                if (!response.getString("playerId").equals(GamePrefs.getInstance().playerId)) {
+                if (!response.getString("playerId").equals(GamePrefs.getInstance().user.getId())) {
                     matchStat.goaler_position = response.getInt("direction");
                     matchStat.isOppReady = true;
                 }
@@ -1152,7 +1154,7 @@ public class GameScreen implements Screen, IModelListener {
                 JSONObject response = (JSONObject) args[0];
                 try {
                     String playerId = response.getString("playerId");
-                    if (!playerId.equals(GamePrefs.getInstance().playerId)) {
+                    if (!playerId.equals(GamePrefs.getInstance().user.getId())) {
                         JSONArray keeper = response.getJSONArray("keeperPosition");
                         JSONArray ball = response.getJSONArray("ballPosition");
                         JSONObject players = response.getJSONObject("playersPosition");
@@ -1179,56 +1181,56 @@ public class GameScreen implements Screen, IModelListener {
             JSONObject response = (JSONObject) args[0];
 
             try {
-                if (response.getString("playerId1").matches(GamePrefs.getInstance().playerId)) {
+                if (response.getString("playerId1").matches(GamePrefs.getInstance().user.getId())) {
                     JSONObject achs = response.getJSONObject("achievements1");
                     JSONObject level = response.getJSONObject("level1");
-                    GamePrefs.getInstance().xp = level.getInt("xp");
-                    if (level.getInt("lvl") > GamePrefs.getInstance().level) {
-                        GamePrefs.getInstance().isLevelUp = true;
+                    GamePrefs.getInstance().user.setXp(level.getInt("xp"));
+                    if (level.getInt("lvl") > GamePrefs.getInstance().user.getLevel()) {
+                        GamePrefs.getInstance().user.setLevelUp(true);
                     }
-                    GamePrefs.getInstance().level = level.getInt("lvl");
-                    if (GamePrefs.getInstance().achieve_winInaRow < achs.getInt("winInaRow")) {
+                    GamePrefs.getInstance().user.setLevel(level.getInt("lvl"));
+                    if (GamePrefs.getInstance().user.getAchieve_winInaRow() < achs.getInt("winInaRow")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("winInaRow") + 17);
                     }
-                    if (GamePrefs.getInstance().achieve_win < achs.getInt("win")) {
+                    if (GamePrefs.getInstance().user.getAchieve_win() < achs.getInt("win")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("win"));
                     }
-                    if (GamePrefs.getInstance().achieve_cleanSheet < achs.getInt("cleanSheet")) {
+                    if (GamePrefs.getInstance().user.getAchieve_cleanSheet() < achs.getInt("cleanSheet")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("cleanSheet") + 11);
                     }
-                    if (GamePrefs.getInstance().achieve_goal < achs.getInt("goal")) {
+                    if (GamePrefs.getInstance().user.getAchieve_goal() < achs.getInt("goal")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("goal") + 5);
                     }
-                    GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
-                    GamePrefs.getInstance().achieve_win = achs.getInt("win");
-                    GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-                    GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
+                    GamePrefs.getInstance().user.setAchieve_winInaRow(achs.getInt("winInaRow"));
+                    GamePrefs.getInstance().user.setAchieve_win(achs.getInt("win"));
+                    GamePrefs.getInstance().user.setAchieve_cleanSheet(achs.getInt("cleanSheet"));
+                    GamePrefs.getInstance().user.setAchieve_goal(achs.getInt("goal"));
                     matchStat.myGoals = response.getInt("result1");
                     matchStat.oppGoals = response.getInt("result2");
                 } else {
                     JSONObject achs = response.getJSONObject("achievements2");
                     JSONObject level = response.getJSONObject("level2");
-                    GamePrefs.getInstance().xp = level.getInt("xp");
-                    if (level.getInt("lvl") > GamePrefs.getInstance().level) {
-                        GamePrefs.getInstance().isLevelUp = true;
+                    GamePrefs.getInstance().user.setXp(level.getInt("xp"));
+                    if (level.getInt("lvl") > GamePrefs.getInstance().user.getLevel()) {
+                        GamePrefs.getInstance().user.setLevelUp(true);
                     }
-                    GamePrefs.getInstance().level = level.getInt("lvl");
-                    if (GamePrefs.getInstance().achieve_winInaRow < achs.getInt("winInaRow")) {
+                    GamePrefs.getInstance().user.setLevel(level.getInt("lvl"));
+                    if (GamePrefs.getInstance().user.getAchieve_winInaRow() < achs.getInt("winInaRow")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("winInaRow") + 17);
                     }
-                    if (GamePrefs.getInstance().achieve_win < achs.getInt("win")) {
+                    if (GamePrefs.getInstance().user.getAchieve_win() < achs.getInt("win")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("win"));
                     }
-                    if (GamePrefs.getInstance().achieve_cleanSheet < achs.getInt("cleanSheet")) {
+                    if (GamePrefs.getInstance().user.getAchieve_cleanSheet() < achs.getInt("cleanSheet")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("cleanSheet") + 11);
                     }
-                    if (GamePrefs.getInstance().achieve_goal < achs.getInt("goal")) {
+                    if (GamePrefs.getInstance().user.getAchieve_goal() < achs.getInt("goal")) {
                         MyGame.mPlayServices.unlockAchievement(achs.getInt("goal") + 5);
                     }
-                    GamePrefs.getInstance().achieve_winInaRow = achs.getInt("winInaRow");
-                    GamePrefs.getInstance().achieve_win = achs.getInt("win");
-                    GamePrefs.getInstance().achieve_cleanSheet = achs.getInt("cleanSheet");
-                    GamePrefs.getInstance().achieve_goal = achs.getInt("goal");
+                    GamePrefs.getInstance().user.setAchieve_winInaRow(achs.getInt("winInaRow"));
+                    GamePrefs.getInstance().user.setAchieve_win(achs.getInt("win"));
+                    GamePrefs.getInstance().user.setAchieve_cleanSheet(achs.getInt("cleanSheet"));
+                    GamePrefs.getInstance().user.setAchieve_goal(achs.getInt("goal"));
                     matchStat.myGoals = response.getInt("result2");
                     matchStat.oppGoals = response.getInt("result1");
                 }
@@ -1392,7 +1394,7 @@ public class GameScreen implements Screen, IModelListener {
         mtr.set(attr2);
         attr1.opacity = .5f;
         attr2.opacity = .5f;
-        if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+        if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
             instances.add(inst1);
         } else {
             instances.add(inst2);
@@ -1455,10 +1457,10 @@ public class GameScreen implements Screen, IModelListener {
                 endGame();
             } else {
                 instances.clear();
-                if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+                if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
                     matchStat.turn = "";
                 } else {
-                    matchStat.turn = GamePrefs.getInstance().playerId;
+                    matchStat.turn = GamePrefs.getInstance().user.getId();
                 }
                 matchStat.half_status = Constants.HALF_PENALTY;
                 if (matchStat.isPenaltymode) {
@@ -1471,12 +1473,12 @@ public class GameScreen implements Screen, IModelListener {
         } else if (matchStat.roundNum == 11) {
             matchStat.half_status = Constants.HALF_SECOND;
             matchStat.GAME_STATE = Constants.GAME_2ND_HALF;
-            if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+            if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
                 matchStat.turn = "";
                 instances.clear();
                 instances.add(inst2);
             } else {
-                matchStat.turn = GamePrefs.getInstance().playerId;
+                matchStat.turn = GamePrefs.getInstance().user.getId();
                 instances.clear();
                 instances.add(inst1);
             }
@@ -1517,10 +1519,10 @@ public class GameScreen implements Screen, IModelListener {
         }
         if (matchStat.half_status == Constants.HALF_PENALTY) {
             if (matchStat.isMeFirst) {
-                if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+                if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
                     matchStat.turn = "";
                 } else {
-                    matchStat.turn = GamePrefs.getInstance().playerId;
+                    matchStat.turn = GamePrefs.getInstance().user.getId();
                 }
                 goaler_up_1.setVisible(true);
                 goaler_up_2.setVisible(true);
@@ -1604,15 +1606,15 @@ public class GameScreen implements Screen, IModelListener {
 
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().playerId);
+            data.put("playerId", GamePrefs.getInstance().user.getId());
 
             ServerTool.getInstance().socket.emit("matchEnd", data);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        GamePrefs.getInstance().game_played += 1;
-        GamePrefs.getInstance().goals += matchStat.myGoals;
+        GamePrefs.getInstance().user.setGame_played(GamePrefs.getInstance().user.getGame_played() + 1);
+        GamePrefs.getInstance().user.setGoals(GamePrefs.getInstance().user.getGoals() + matchStat.myGoals);
 
         if (GamePrefs.getInstance().isMusicOn() == 1) {
             Assets.getInstance().main_theme.play();
@@ -1624,14 +1626,14 @@ public class GameScreen implements Screen, IModelListener {
 
         if (matchStat.isWinner) {
             matchStat.GAME_STATE = Constants.GAME_WINNER;
-            GamePrefs.getInstance().game_won += 1;
+            GamePrefs.getInstance().user.setGame_won(GamePrefs.getInstance().user.getGame_won() + 1);
             if (GamePrefs.getInstance().isVibrateOn() == 1) {
                 Gdx.input.vibrate(new long[]{0, 500, 110, 500, 110, 450}, -1);
             }
         } else {
             matchStat.GAME_STATE = Constants.GAME_LOSER;
         }
-        GamePrefs.getInstance().win_percent = GamePrefs.getInstance().game_won / GamePrefs.getInstance().game_played;
+        GamePrefs.getInstance().user.setWin_percent(GamePrefs.getInstance().user.getGame_won() / GamePrefs.getInstance().user.getGame_played());
     }
 
     public void goalScored() {
@@ -1650,7 +1652,7 @@ public class GameScreen implements Screen, IModelListener {
                         });
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("playerId", GamePrefs.getInstance().playerId);
+                    data.put("playerId", GamePrefs.getInstance().user.getId());
 
                     ServerTool.getInstance().socket.emit("goal", data);
                 } catch (JSONException e) {
@@ -1670,7 +1672,7 @@ public class GameScreen implements Screen, IModelListener {
                 matchStat.oppGoals += 1;
             }
         } else {
-            if (matchStat.turn.matches(GamePrefs.getInstance().playerId)) {
+            if (matchStat.turn.matches(GamePrefs.getInstance().user.getId())) {
                 matchStat.myGoals += 1;
                 Tween.to(left_score, 6, .5f)
                         .target(200).ease(TweenEquations.easeInOutBounce)
@@ -1684,7 +1686,7 @@ public class GameScreen implements Screen, IModelListener {
                         });
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("playerId", GamePrefs.getInstance().playerId);
+                    data.put("playerId", GamePrefs.getInstance().user.getId());
 
                     ServerTool.getInstance().socket.emit("goal", data);
                 } catch (JSONException e) {
