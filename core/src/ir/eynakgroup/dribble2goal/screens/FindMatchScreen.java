@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import aurelienribon.tweenengine.BaseTween;
@@ -234,18 +235,23 @@ public class FindMatchScreen implements Screen, InputProcessor {
             @Override
             public void call(Object... args) {
                 System.out.println(args[0]);
-                JSONObject response = (JSONObject) args[0];
+                JSONObject response;
                 try {
-                    String s = response.getString("err");
-                } catch (Exception e) {
-                    if (setData((JSONObject) args[0])) {
-                        Gdx.app.postRunnable(new Runnable() {
-                            @Override
-                            public void run() {
-                                gotoGame(stat);
-                            }
-                        });
+                    response = new JSONObject((String) args[0]);
+                    try {
+                        String s = response.getString("err");
+                    } catch (Exception e) {
+                        if (setData(response)) {
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gotoGame(stat);
+                                }
+                            });
+                        }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -314,7 +320,7 @@ public class FindMatchScreen implements Screen, InputProcessor {
                         opp_avatar.setDrawable(new SpriteDrawable(new Sprite(new Util().getAvatar(stat.oppAvatar))));
                     }
                 });
-        my_name.setText(stat.myName);
+        my_name.setText(GamePrefs.getInstance().user.getName());
         opp_name.setText(stat.oppName);
         Tween.to(my_name, 5, 2f)
                 .target(1f).ease(TweenEquations.easeInBack)
@@ -327,7 +333,7 @@ public class FindMatchScreen implements Screen, InputProcessor {
                 .start(mTweenManager).delay(.05F)
                 .setCallback(new TweenCallback() {
                     public void onEvent(int type, BaseTween<?> paramAnonymousBaseTween) {
-                        my_level.setText(stat.myLevel + "");
+                        my_level.setText(GamePrefs.getInstance().user.getLevel() + "");
                         my_level.setColor(1, 1, 1, 1);
                     }
                 });
@@ -403,109 +409,94 @@ public class FindMatchScreen implements Screen, InputProcessor {
         try {
             stat = new MatchStats();
             stat.reset();
-            stat.roomNum = data.getInt("roomNum");
-            if (stat.roomNum > 6) {
-                stat.roomNum -= 6;
-                stat.isPenaltymode = true;
-            } else {
-                stat.isPenaltymode = false;
-            }
-            stat.matchLevel = data.getInt("roomNum");
+//            stat.roomNum = data.getInt("room_num");
+//            if (stat.roomNum > 6) {
+//                stat.roomNum -= 6;
+//                stat.isPenaltymode = true;
+//            } else {
+//            }
+            stat.isPenaltymode = false;
+            stat.matchLevel = data.getInt("room_num");
             stat.turn = data.getString("turn");
-            if (data.getString("playerId1").matches(GamePrefs.getInstance().user.getId())) {
+            if (data.getString("p1ID").matches(GamePrefs.getInstance().user.getId())) {
                 stat.isMeFirst = true;
-                stat.myName = data.getString("username1");
-                stat.oppName = data.getString("username2");
-                stat.myWinRate = data.getDouble("winrate1");
-                stat.oppWinRate = data.getDouble("winrate2");
-                stat.myShirt = data.getInt("shirt1");
-                stat.oppShirt = data.getInt("shirt2");
-                tmp = data.getJSONObject("level1");
-                stat.myLevel = tmp.getInt("lvl");
-                stat.myXp = tmp.getInt("xp");
-                tmp = data.getJSONObject("level2");
-                stat.oppLevel = tmp.getInt("lvl");
-                stat.oppXp = tmp.getInt("xp");
-                stat.myFormation = data.getInt("formation1");
-                stat.oppFormation = data.getInt("formation2");
-                stat.myAvatar = data.getInt("avatarId1");
-                stat.oppAvatar = data.getInt("avatarId2");
+                stat.oppName = data.getString("p2_name");
+                stat.oppWinRate = data.getDouble("p2_win_rate");
+                stat.oppShirt = data.getInt("p2_shirt");
+                stat.oppLevel = data.getInt("p2_level");
+                stat.oppXp = data.getInt("p2_xp");
+                stat.oppFormation = data.getInt("p2_formation");
+                stat.oppAvatar = data.getInt("p2_avatar");
 
-                tmp = data.getJSONObject("lineup1");
-                boolean flag = true;
-                for (int i = 1; i < 6; i++) {
-                    if (tmp.getInt(i + "") == -1) {
-                        if (flag) {
-                            stat.myLineup[3] = (i - 1);
-                            flag = false;
-                        } else {
-                            stat.myLineup[4] = (i - 1);
-                        }
-                    } else {
-                        stat.myLineup[tmp.getInt(i + "") - 1] = (i - 1);
-                    }
-                }
+//                tmp = data.getJSONObject("lineup1");
+//                boolean flag = true;
+//                for (int i = 1; i < 6; i++) {
+//                    if (tmp.getInt(i + "") == -1) {
+//                        if (flag) {
+//                            stat.myLineup[3] = (i - 1);
+//                            flag = false;
+//                        } else {
+//                            stat.myLineup[4] = (i - 1);
+//                        }
+//                    } else {
+//                        stat.myLineup[tmp.getInt(i + "") - 1] = (i - 1);
+//                    }
+//                }
 
-                tmp = data.getJSONObject("players1");
-                JSONObject t1 = tmp.getJSONObject("1");
-                stat.myPlayers[0][0] = t1.getInt("stamina");
-                stat.myPlayers[0][1] = t1.getInt("size");
-                stat.myPlayers[0][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("2");
-                stat.myPlayers[1][0] = t1.getInt("stamina");
-                stat.myPlayers[1][1] = t1.getInt("size");
-                stat.myPlayers[1][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("3");
-                stat.myPlayers[2][0] = t1.getInt("stamina");
-                stat.myPlayers[2][1] = t1.getInt("size");
-                stat.myPlayers[2][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("4");
-                stat.myPlayers[3][0] = t1.getInt("stamina");
-                stat.myPlayers[3][1] = t1.getInt("size");
-                stat.myPlayers[3][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("5");
-                stat.myPlayers[4][0] = t1.getInt("stamina");
-                stat.myPlayers[4][1] = t1.getInt("size");
-                stat.myPlayers[4][2] = t1.getInt("speed");
-                tmp = data.getJSONObject("players2");
-                t1 = tmp.getJSONObject("1");
-                stat.oppPlayers[0][0] = t1.getInt("stamina");
-                stat.oppPlayers[0][1] = t1.getInt("size");
-                stat.oppPlayers[0][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("2");
-                stat.oppPlayers[1][0] = t1.getInt("stamina");
-                stat.oppPlayers[1][1] = t1.getInt("size");
-                stat.oppPlayers[1][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("3");
-                stat.oppPlayers[2][0] = t1.getInt("stamina");
-                stat.oppPlayers[2][1] = t1.getInt("size");
-                stat.oppPlayers[2][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("4");
-                stat.oppPlayers[3][0] = t1.getInt("stamina");
-                stat.oppPlayers[3][1] = t1.getInt("size");
-                stat.oppPlayers[3][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("5");
-                stat.oppPlayers[4][0] = t1.getInt("stamina");
-                stat.oppPlayers[4][1] = t1.getInt("size");
-                stat.oppPlayers[4][2] = t1.getInt("speed");
+//                tmp = data.getJSONObject("players1");
+//                JSONObject t1 = tmp.getJSONObject("1");
+//                stat.myPlayers[0][0] = t1.getInt("stamina");
+//                stat.myPlayers[0][1] = t1.getInt("size");
+//                stat.myPlayers[0][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("2");
+//                stat.myPlayers[1][0] = t1.getInt("stamina");
+//                stat.myPlayers[1][1] = t1.getInt("size");
+//                stat.myPlayers[1][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("3");
+//                stat.myPlayers[2][0] = t1.getInt("stamina");
+//                stat.myPlayers[2][1] = t1.getInt("size");
+//                stat.myPlayers[2][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("4");
+//                stat.myPlayers[3][0] = t1.getInt("stamina");
+//                stat.myPlayers[3][1] = t1.getInt("size");
+//                stat.myPlayers[3][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("5");
+//                stat.myPlayers[4][0] = t1.getInt("stamina");
+//                stat.myPlayers[4][1] = t1.getInt("size");
+//                stat.myPlayers[4][2] = t1.getInt("speed");
+//                tmp = data.getJSONObject("players2");
+//                t1 = tmp.getJSONObject("1");
+//                stat.oppPlayers[0][0] = t1.getInt("stamina");
+//                stat.oppPlayers[0][1] = t1.getInt("size");
+//                stat.oppPlayers[0][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("2");
+//                stat.oppPlayers[1][0] = t1.getInt("stamina");
+//                stat.oppPlayers[1][1] = t1.getInt("size");
+//                stat.oppPlayers[1][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("3");
+//                stat.oppPlayers[2][0] = t1.getInt("stamina");
+//                stat.oppPlayers[2][1] = t1.getInt("size");
+//                stat.oppPlayers[2][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("4");
+//                stat.oppPlayers[3][0] = t1.getInt("stamina");
+//                stat.oppPlayers[3][1] = t1.getInt("size");
+//                stat.oppPlayers[3][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("5");
+//                stat.oppPlayers[4][0] = t1.getInt("stamina");
+//                stat.oppPlayers[4][1] = t1.getInt("size");
+//                stat.oppPlayers[4][2] = t1.getInt("speed");
             } else {
                 stat.isMeFirst = false;
-                stat.myName = data.getString("username2");
                 stat.oppName = data.getString("username1");
-                stat.myWinRate = data.getDouble("winrate2");
                 stat.oppWinRate = data.getDouble("winrate1");
-                stat.myShirt = data.getInt("shirt2");
                 stat.oppShirt = data.getInt("shirt1");
                 tmp = data.getJSONObject("level2");
-                stat.myLevel = tmp.getInt("lvl");
-                stat.myXp = tmp.getInt("xp");
                 tmp = data.getJSONObject("level1");
                 stat.oppLevel = tmp.getInt("lvl");
                 stat.oppXp = tmp.getInt("xp");
                 stat.myFormation = data.getInt("formation2");
                 stat.oppFormation = data.getInt("formation1");
                 stat.oppAvatar = data.getInt("avatarId1");
-                stat.myAvatar = data.getInt("avatarId2");
 
                 tmp = data.getJSONObject("lineup2");
                 boolean flag = true;
@@ -569,15 +560,15 @@ public class FindMatchScreen implements Screen, InputProcessor {
 //                stat.roundNum = 22;
 //                stat.GAME_STATE = Constants.GAME_PRE_PENALTY;
 //            }
-            if (stat.myShirt == stat.oppShirt) {
-                if (stat.myShirt == 1) {
-                    stat.oppShirt = 2;
-                } else if (stat.myShirt == 2) {
-                    stat.oppShirt = 1;
-                } else {
-                    stat.oppShirt = 2;
-                }
-            }
+//            if (stat.myShirt == stat.oppShirt) {
+//                if (stat.myShirt == 1) {
+//                    stat.oppShirt = 2;
+//                } else if (stat.myShirt == 2) {
+//                    stat.oppShirt = 1;
+//                } else {
+//                    stat.oppShirt = 2;
+//                }
+//            }
 
             return true;
         } catch (Exception e) {

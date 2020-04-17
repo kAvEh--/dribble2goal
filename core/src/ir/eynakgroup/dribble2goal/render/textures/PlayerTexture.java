@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import ir.eynakgroup.dribble2goal.Assets;
 import ir.eynakgroup.dribble2goal.Constants;
+import ir.eynakgroup.dribble2goal.GamePrefs;
 import ir.eynakgroup.dribble2goal.MatchStats;
 import ir.eynakgroup.dribble2goal.Util.Util;
 import ir.eynakgroup.dribble2goal.template.Player;
@@ -41,7 +42,7 @@ public class PlayerTexture implements ITexture<Player> {
 
         Util util = new Util();
         keeperStable = util.getKeeperPiece(stat.matchLevel);
-        p1Sprite = new Sprite(util.getShirt(stat.myShirt));
+        p1Sprite = new Sprite(util.getShirt(GamePrefs.getInstance().user.getShirt()));
         p2Sprite = new Sprite(util.getShirt(stat.oppShirt));
         goalerSprite = new Sprite(util.getKeeperShirt(stat.matchLevel));
 

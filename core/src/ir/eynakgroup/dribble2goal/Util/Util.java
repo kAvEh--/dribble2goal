@@ -385,6 +385,7 @@ public class Util {
     public boolean setData(JSONObject data) {
         try {
             GamePrefs.getInstance().isDailyAvailable = data.getBoolean("dailyCoin");
+            GamePrefs.getInstance().user.setId(data.getString("id"));
             JSONObject player = data.getJSONObject("player");
             GamePrefs.getInstance().user.setGame_won(player.getInt("winCount"));
             GamePrefs.getInstance().user.setGame_played(player.getInt("gameCount"));
@@ -394,7 +395,6 @@ public class Util {
             GamePrefs.getInstance().user.setName(player.getString("nickname"));
             GamePrefs.getInstance().user.setAvatar(player.getInt("avatarId"));
             GamePrefs.getInstance().setUserName(player.getString("username"));
-            GamePrefs.getInstance().user.setId(player.getString("id"));
             GamePrefs.getInstance().user.setGoals(player.getInt("goals"));
             GamePrefs.getInstance().user.setWinInaRaw(player.getInt("winInaRow"));
             GamePrefs.getInstance().user.setCoins_num(player.getInt("coin"));

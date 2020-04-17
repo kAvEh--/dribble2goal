@@ -295,7 +295,7 @@ public class GameScreen implements Screen, IModelListener {
         t_speed = new Label(matchStat.myPlayers[selected_player][2] + "", style);
         t_speed.setPosition(Constants.HUD_SCREEN_WIDTH * .17f, Constants.HUD_SCREEN_HEIGHT * .397f);
 
-        Label left_name = new Label(util.displayName(matchStat.myName), style);
+        Label left_name = new Label(util.displayName(GamePrefs.getInstance().user.getName()), style);
         left_name.setSize(board.getWidth() * .27f, Constants.HUD_SCREEN_HEIGHT * .1f);
         left_name.setPosition(board.getWidth() * .23f, Constants.HUD_SCREEN_HEIGHT * .07f);
         left_name.setAlignment(Align.left);
@@ -326,7 +326,7 @@ public class GameScreen implements Screen, IModelListener {
         oppPlayers = new Image[5];
         oppPlayersStable = new Image[5];
         for (int i = 0; i < 5; i++) {
-            myPlayers[i] = new Image(util.getShirt(stat.myShirt));
+            myPlayers[i] = new Image(util.getShirt(GamePrefs.getInstance().user.getShirt()));
             myPlayers[i].setSize(Constants.HUD_SCREEN_WIDTH * .06f, Constants.HUD_SCREEN_WIDTH * .06f);
             myPlayersStable[i] = new Image(Assets.getInstance().player_stable[i]);
             myPlayersStable[i].setSize(Constants.HUD_SCREEN_WIDTH * .06f, Constants.HUD_SCREEN_WIDTH * .06f);
@@ -356,11 +356,11 @@ public class GameScreen implements Screen, IModelListener {
         progress_half.setPosition(Constants.HUD_SCREEN_WIDTH * .069f, 0f);
         progress_half.setPercentage(1);
 
-        players[0] = new Image(new Util().getShirt(stat.myShirt));
-        players[1] = new Image(new Util().getShirt(stat.myShirt));
-        players[2] = new Image(new Util().getShirt(stat.myShirt));
-        players[3] = new Image(new Util().getShirt(stat.myShirt));
-        players[4] = new Image(new Util().getShirt(stat.myShirt));
+        players[0] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[1] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[2] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[3] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[4] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
 
         players_bg = new Image[5];
         for (int i = 0; i < 5; i++) {

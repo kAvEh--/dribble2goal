@@ -107,9 +107,9 @@ public class ServerTool {
         }
         JSONObject data = new JSONObject();
         try {
-            data.put("playerId", GamePrefs.getInstance().user.getId());
-            data.put("level", level);
-            data.put("type", matchType);
+            data.put("playerId", GamePrefs.getInstance().user.getId()+"");
+            data.put("level", level +"");
+            data.put("type", matchType+"");
 
             socket.emit("find-match", data);
         } catch (JSONException e) {

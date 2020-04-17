@@ -292,7 +292,7 @@ public class HelpGameScreen implements Screen, IModelListener {
         t_speed = new Label(matchStat.myPlayers[selected_player][2] + "", style);
         t_speed.setPosition(Constants.HUD_SCREEN_WIDTH * .17f, Constants.HUD_SCREEN_HEIGHT * .397f);
 
-        Label left_name = new Label(util.displayName(matchStat.myName), style3);
+        Label left_name = new Label(util.displayName(GamePrefs.getInstance().user.getName()), style3);
         left_name.setSize(board.getWidth() * .27f, Constants.HUD_SCREEN_HEIGHT * .1f);
         left_name.setPosition(board.getWidth() * .23f, Constants.HUD_SCREEN_HEIGHT * .07f);
         left_name.setAlignment(Align.left);
@@ -323,7 +323,7 @@ public class HelpGameScreen implements Screen, IModelListener {
         oppPlayers = new Image[5];
         oppPlayersStable = new Image[5];
         for (int i = 0; i < 5; i++) {
-            myPlayers[i] = new Image(util.getShirt(matchStat.myShirt));
+            myPlayers[i] = new Image(util.getShirt(GamePrefs.getInstance().user.getShirt()));
             myPlayers[i].setSize(Constants.HUD_SCREEN_WIDTH * .06f, Constants.HUD_SCREEN_WIDTH * .06f);
             myPlayersStable[i] = new Image(Assets.getInstance().player_stable[i]);
             myPlayersStable[i].setSize(Constants.HUD_SCREEN_WIDTH * .06f, Constants.HUD_SCREEN_WIDTH * .06f);
@@ -353,11 +353,11 @@ public class HelpGameScreen implements Screen, IModelListener {
         progress_half.setPosition(Constants.HUD_SCREEN_WIDTH * .069f, 0f);
         progress_half.setPercentage(1);
 
-        players[0] = new Image(new Util().getShirt(matchStat.myShirt));
-        players[1] = new Image(new Util().getShirt(matchStat.myShirt));
-        players[2] = new Image(new Util().getShirt(matchStat.myShirt));
-        players[3] = new Image(new Util().getShirt(matchStat.myShirt));
-        players[4] = new Image(new Util().getShirt(matchStat.myShirt));
+        players[0] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[1] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[2] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[3] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
+        players[4] = new Image(new Util().getShirt(GamePrefs.getInstance().user.getShirt()));
 
         players_bg = new Image[5];
         for (int i = 0; i < 5; i++) {
@@ -659,19 +659,13 @@ public class HelpGameScreen implements Screen, IModelListener {
         matchStat.matchLevel = 1;
         matchStat.turn = GamePrefs.getInstance().user.getId();
         matchStat.isMeFirst = true;
-        matchStat.myName = GamePrefs.getInstance().user.getName();
         matchStat.oppName = "--";
-        matchStat.myWinRate = 100;
         matchStat.oppWinRate = 100;
-        matchStat.myShirt = 1;
         matchStat.oppShirt = 2;
-        matchStat.myLevel = GamePrefs.getInstance().user.getLevel();
-        matchStat.myXp = GamePrefs.getInstance().user.getXp();
         matchStat.oppLevel = GamePrefs.getInstance().user.getLevel();
         matchStat.oppXp = GamePrefs.getInstance().user.getXp();
         matchStat.myFormation = GamePrefs.getInstance().user.getPosition();
         matchStat.oppFormation = GamePrefs.getInstance().user.getPosition();
-        matchStat.myAvatar = GamePrefs.getInstance().user.getAvatar();
         matchStat.oppAvatar = GamePrefs.getInstance().user.getAvatar();
         matchStat.myLineup = GamePrefs.getInstance().user.lineup;
         matchStat.myPlayers = GamePrefs.getInstance().user.players;

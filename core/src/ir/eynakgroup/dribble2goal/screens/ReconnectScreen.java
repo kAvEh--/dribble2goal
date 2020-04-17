@@ -142,176 +142,176 @@ public class ReconnectScreen implements Screen {
 
     public boolean setData(JSONObject data) {
         JSONObject tmp;
-        try {
-            stat = new MatchStats();
-            stat.roomNum = data.getInt("roomNum");
-            if (data.getString("playerId1").equals(GamePrefs.getInstance().user.getId())) {
-                stat.reset();
-                stat.myName = data.getString("username1");
-                stat.oppName = data.getString("username2");
-                stat.myWinRate = data.getDouble("winrate1");
-                stat.oppWinRate = data.getDouble("winrate2");
-                stat.myShirt = data.getInt("shirt1");
-                stat.oppShirt = data.getInt("shirt2");
-                tmp = data.getJSONObject("level1");
-                stat.myLevel = tmp.getInt("lvl");
-                stat.myXp = tmp.getInt("xp");
-                tmp = data.getJSONObject("level2");
-                stat.oppLevel = tmp.getInt("lvl");
-                stat.oppXp = tmp.getInt("xp");
-                stat.myFormation = data.getInt("formation1");
-                stat.oppFormation = data.getInt("formation2");
-                stat.myAvatar = data.getInt("avatarId1");
-                stat.oppAvatar = data.getInt("avatarId2");
-
-                tmp = data.getJSONObject("lineup1");
-                boolean flag = true;
-                for (int i = 1; i < 6; i++) {
-                    if (tmp.getInt(i + "") == -1) {
-                        if (flag) {
-                            stat.myLineup[3] = (i - 1);
-                            flag = false;
-                        } else {
-                            stat.myLineup[4] = (i - 1);
-                        }
-                    } else {
-                        stat.myLineup[tmp.getInt(i + "") - 1] = (i - 1);
-                    }
-                }
-
-                tmp = data.getJSONObject("players1");
-                JSONObject t1 = tmp.getJSONObject("1");
-                stat.myPlayers[0][0] = t1.getInt("stamina");
-                stat.myPlayers[0][1] = t1.getInt("size");
-                stat.myPlayers[0][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("2");
-                stat.myPlayers[1][0] = t1.getInt("stamina");
-                stat.myPlayers[1][1] = t1.getInt("size");
-                stat.myPlayers[1][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("3");
-                stat.myPlayers[2][0] = t1.getInt("stamina");
-                stat.myPlayers[2][1] = t1.getInt("size");
-                stat.myPlayers[2][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("4");
-                stat.myPlayers[3][0] = t1.getInt("stamina");
-                stat.myPlayers[3][1] = t1.getInt("size");
-                stat.myPlayers[3][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("5");
-                stat.myPlayers[4][0] = t1.getInt("stamina");
-                stat.myPlayers[4][1] = t1.getInt("size");
-                stat.myPlayers[4][2] = t1.getInt("speed");
-                tmp = data.getJSONObject("players2");
-                t1 = tmp.getJSONObject("1");
-                stat.oppPlayers[0][0] = t1.getInt("stamina");
-                stat.oppPlayers[0][1] = t1.getInt("size");
-                stat.oppPlayers[0][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("2");
-                stat.oppPlayers[1][0] = t1.getInt("stamina");
-                stat.oppPlayers[1][1] = t1.getInt("size");
-                stat.oppPlayers[1][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("3");
-                stat.oppPlayers[2][0] = t1.getInt("stamina");
-                stat.oppPlayers[2][1] = t1.getInt("size");
-                stat.oppPlayers[2][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("4");
-                stat.oppPlayers[3][0] = t1.getInt("stamina");
-                stat.oppPlayers[3][1] = t1.getInt("size");
-                stat.oppPlayers[3][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("5");
-                stat.oppPlayers[4][0] = t1.getInt("stamina");
-                stat.oppPlayers[4][1] = t1.getInt("size");
-                stat.oppPlayers[4][2] = t1.getInt("speed");
-            } else {
-                stat.reset();
-                stat.myName = data.getString("username2");
-                stat.oppName = data.getString("username1");
-                stat.myWinRate = data.getDouble("winrate2");
-                stat.oppWinRate = data.getDouble("winrate1");
-                stat.myShirt = data.getInt("shirt2");
-                stat.oppShirt = data.getInt("shirt1");
-                tmp = data.getJSONObject("level2");
-                stat.myLevel = tmp.getInt("lvl");
-                stat.myXp = tmp.getInt("xp");
-                tmp = data.getJSONObject("level1");
-                stat.oppLevel = tmp.getInt("lvl");
-                stat.oppXp = tmp.getInt("xp");
-                stat.myFormation = data.getInt("formation2");
-                stat.oppFormation = data.getInt("formation1");
-                stat.oppAvatar = data.getInt("avatarId1");
-                stat.myAvatar = data.getInt("avatarId2");
-
-                tmp = data.getJSONObject("lineup2");
-                boolean flag = true;
-                for (int i = 1; i < 6; i++) {
-                    if (tmp.getInt(i + "") == -1) {
-                        if (flag) {
-                            stat.myLineup[3] = (i - 1);
-                            flag = false;
-                        } else {
-                            stat.myLineup[4] = (i - 1);
-                        }
-                    } else {
-                        stat.myLineup[tmp.getInt(i + "") - 1] = (i - 1);
-                    }
-                }
-
-                tmp = data.getJSONObject("players2");
-                JSONObject t1 = tmp.getJSONObject("1");
-                stat.myPlayers[0][0] = t1.getInt("stamina");
-                stat.myPlayers[0][1] = t1.getInt("size");
-                stat.myPlayers[0][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("2");
-                stat.myPlayers[1][0] = t1.getInt("stamina");
-                stat.myPlayers[1][1] = t1.getInt("size");
-                stat.myPlayers[1][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("3");
-                stat.myPlayers[2][0] = t1.getInt("stamina");
-                stat.myPlayers[2][1] = t1.getInt("size");
-                stat.myPlayers[2][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("4");
-                stat.myPlayers[3][0] = t1.getInt("stamina");
-                stat.myPlayers[3][1] = t1.getInt("size");
-                stat.myPlayers[3][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("5");
-                stat.myPlayers[4][0] = t1.getInt("stamina");
-                stat.myPlayers[4][1] = t1.getInt("size");
-                stat.myPlayers[4][2] = t1.getInt("speed");
-                tmp = data.getJSONObject("players1");
-                t1 = tmp.getJSONObject("1");
-                stat.oppPlayers[0][0] = t1.getInt("stamina");
-                stat.oppPlayers[0][1] = t1.getInt("size");
-                stat.oppPlayers[0][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("2");
-                stat.oppPlayers[1][0] = t1.getInt("stamina");
-                stat.oppPlayers[1][1] = t1.getInt("size");
-                stat.oppPlayers[1][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("3");
-                stat.oppPlayers[2][0] = t1.getInt("stamina");
-                stat.oppPlayers[2][1] = t1.getInt("size");
-                stat.oppPlayers[2][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("4");
-                stat.oppPlayers[3][0] = t1.getInt("stamina");
-                stat.oppPlayers[3][1] = t1.getInt("size");
-                stat.oppPlayers[3][2] = t1.getInt("speed");
-                t1 = tmp.getJSONObject("5");
-                stat.oppPlayers[4][0] = t1.getInt("stamina");
-                stat.oppPlayers[4][1] = t1.getInt("size");
-                stat.oppPlayers[4][2] = t1.getInt("speed");
-            }
-            if (stat.myShirt == stat.oppShirt) {
-                if (stat.myShirt == 1) {
-                    stat.oppShirt = 2;
-                } else if (stat.myShirt == 2) {
-                    stat.oppShirt = 1;
-                } else {
-                    stat.oppShirt = 2;
-                }
-            }
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            stat = new MatchStats();
+//            stat.roomNum = data.getInt("roomNum");
+//            if (data.getString("playerId1").equals(GamePrefs.getInstance().user.getId())) {
+//                stat.reset();
+//                stat.myName = data.getString("username1");
+//                stat.oppName = data.getString("username2");
+//                stat.myWinRate = data.getDouble("winrate1");
+//                stat.oppWinRate = data.getDouble("winrate2");
+//                stat.myShirt = data.getInt("shirt1");
+//                stat.oppShirt = data.getInt("shirt2");
+//                tmp = data.getJSONObject("level1");
+//                stat.myLevel = tmp.getInt("lvl");
+//                stat.myXp = tmp.getInt("xp");
+//                tmp = data.getJSONObject("level2");
+//                stat.oppLevel = tmp.getInt("lvl");
+//                stat.oppXp = tmp.getInt("xp");
+//                stat.myFormation = data.getInt("formation1");
+//                stat.oppFormation = data.getInt("formation2");
+//                stat.myAvatar = data.getInt("avatarId1");
+//                stat.oppAvatar = data.getInt("avatarId2");
+//
+//                tmp = data.getJSONObject("lineup1");
+//                boolean flag = true;
+//                for (int i = 1; i < 6; i++) {
+//                    if (tmp.getInt(i + "") == -1) {
+//                        if (flag) {
+//                            stat.myLineup[3] = (i - 1);
+//                            flag = false;
+//                        } else {
+//                            stat.myLineup[4] = (i - 1);
+//                        }
+//                    } else {
+//                        stat.myLineup[tmp.getInt(i + "") - 1] = (i - 1);
+//                    }
+//                }
+//
+//                tmp = data.getJSONObject("players1");
+//                JSONObject t1 = tmp.getJSONObject("1");
+//                stat.myPlayers[0][0] = t1.getInt("stamina");
+//                stat.myPlayers[0][1] = t1.getInt("size");
+//                stat.myPlayers[0][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("2");
+//                stat.myPlayers[1][0] = t1.getInt("stamina");
+//                stat.myPlayers[1][1] = t1.getInt("size");
+//                stat.myPlayers[1][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("3");
+//                stat.myPlayers[2][0] = t1.getInt("stamina");
+//                stat.myPlayers[2][1] = t1.getInt("size");
+//                stat.myPlayers[2][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("4");
+//                stat.myPlayers[3][0] = t1.getInt("stamina");
+//                stat.myPlayers[3][1] = t1.getInt("size");
+//                stat.myPlayers[3][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("5");
+//                stat.myPlayers[4][0] = t1.getInt("stamina");
+//                stat.myPlayers[4][1] = t1.getInt("size");
+//                stat.myPlayers[4][2] = t1.getInt("speed");
+//                tmp = data.getJSONObject("players2");
+//                t1 = tmp.getJSONObject("1");
+//                stat.oppPlayers[0][0] = t1.getInt("stamina");
+//                stat.oppPlayers[0][1] = t1.getInt("size");
+//                stat.oppPlayers[0][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("2");
+//                stat.oppPlayers[1][0] = t1.getInt("stamina");
+//                stat.oppPlayers[1][1] = t1.getInt("size");
+//                stat.oppPlayers[1][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("3");
+//                stat.oppPlayers[2][0] = t1.getInt("stamina");
+//                stat.oppPlayers[2][1] = t1.getInt("size");
+//                stat.oppPlayers[2][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("4");
+//                stat.oppPlayers[3][0] = t1.getInt("stamina");
+//                stat.oppPlayers[3][1] = t1.getInt("size");
+//                stat.oppPlayers[3][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("5");
+//                stat.oppPlayers[4][0] = t1.getInt("stamina");
+//                stat.oppPlayers[4][1] = t1.getInt("size");
+//                stat.oppPlayers[4][2] = t1.getInt("speed");
+//            } else {
+//                stat.reset();
+//                stat.myName = data.getString("username2");
+//                stat.oppName = data.getString("username1");
+//                stat.myWinRate = data.getDouble("winrate2");
+//                stat.oppWinRate = data.getDouble("winrate1");
+//                stat.myShirt = data.getInt("shirt2");
+//                stat.oppShirt = data.getInt("shirt1");
+//                tmp = data.getJSONObject("level2");
+//                stat.myLevel = tmp.getInt("lvl");
+//                stat.myXp = tmp.getInt("xp");
+//                tmp = data.getJSONObject("level1");
+//                stat.oppLevel = tmp.getInt("lvl");
+//                stat.oppXp = tmp.getInt("xp");
+//                stat.myFormation = data.getInt("formation2");
+//                stat.oppFormation = data.getInt("formation1");
+//                stat.oppAvatar = data.getInt("avatarId1");
+//                stat.myAvatar = data.getInt("avatarId2");
+//
+//                tmp = data.getJSONObject("lineup2");
+//                boolean flag = true;
+//                for (int i = 1; i < 6; i++) {
+//                    if (tmp.getInt(i + "") == -1) {
+//                        if (flag) {
+//                            stat.myLineup[3] = (i - 1);
+//                            flag = false;
+//                        } else {
+//                            stat.myLineup[4] = (i - 1);
+//                        }
+//                    } else {
+//                        stat.myLineup[tmp.getInt(i + "") - 1] = (i - 1);
+//                    }
+//                }
+//
+//                tmp = data.getJSONObject("players2");
+//                JSONObject t1 = tmp.getJSONObject("1");
+//                stat.myPlayers[0][0] = t1.getInt("stamina");
+//                stat.myPlayers[0][1] = t1.getInt("size");
+//                stat.myPlayers[0][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("2");
+//                stat.myPlayers[1][0] = t1.getInt("stamina");
+//                stat.myPlayers[1][1] = t1.getInt("size");
+//                stat.myPlayers[1][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("3");
+//                stat.myPlayers[2][0] = t1.getInt("stamina");
+//                stat.myPlayers[2][1] = t1.getInt("size");
+//                stat.myPlayers[2][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("4");
+//                stat.myPlayers[3][0] = t1.getInt("stamina");
+//                stat.myPlayers[3][1] = t1.getInt("size");
+//                stat.myPlayers[3][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("5");
+//                stat.myPlayers[4][0] = t1.getInt("stamina");
+//                stat.myPlayers[4][1] = t1.getInt("size");
+//                stat.myPlayers[4][2] = t1.getInt("speed");
+//                tmp = data.getJSONObject("players1");
+//                t1 = tmp.getJSONObject("1");
+//                stat.oppPlayers[0][0] = t1.getInt("stamina");
+//                stat.oppPlayers[0][1] = t1.getInt("size");
+//                stat.oppPlayers[0][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("2");
+//                stat.oppPlayers[1][0] = t1.getInt("stamina");
+//                stat.oppPlayers[1][1] = t1.getInt("size");
+//                stat.oppPlayers[1][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("3");
+//                stat.oppPlayers[2][0] = t1.getInt("stamina");
+//                stat.oppPlayers[2][1] = t1.getInt("size");
+//                stat.oppPlayers[2][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("4");
+//                stat.oppPlayers[3][0] = t1.getInt("stamina");
+//                stat.oppPlayers[3][1] = t1.getInt("size");
+//                stat.oppPlayers[3][2] = t1.getInt("speed");
+//                t1 = tmp.getJSONObject("5");
+//                stat.oppPlayers[4][0] = t1.getInt("stamina");
+//                stat.oppPlayers[4][1] = t1.getInt("size");
+//                stat.oppPlayers[4][2] = t1.getInt("speed");
+//            }
+//            if (stat.myShirt == stat.oppShirt) {
+//                if (stat.myShirt == 1) {
+//                    stat.oppShirt = 2;
+//                } else if (stat.myShirt == 2) {
+//                    stat.oppShirt = 1;
+//                } else {
+//                    stat.oppShirt = 2;
+//                }
+//            }
+//
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return false;
     }
 

@@ -84,7 +84,7 @@ public class ResultScreen implements Screen, InputProcessor {
         main_image = new Image(Assets.getInstance().result_main);
         main_image.setSize(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
 
-        my_avatar = new Image(new Util().getAvatar(stat.myAvatar));
+        my_avatar = new Image(new Util().getAvatar(GamePrefs.getInstance().user.getAvatar()));
         my_avatar.setSize(Constants.HUD_SCREEN_WIDTH * .245f, Constants.HUD_SCREEN_HEIGHT * .454f);
         my_avatar.setPosition(Constants.HUD_SCREEN_WIDTH * .158f, Constants.HUD_SCREEN_HEIGHT * .266f);
 
@@ -115,7 +115,7 @@ public class ResultScreen implements Screen, InputProcessor {
         style.font = mSkin.getFont("default-font");
         style.fontColor = Color.WHITE;
 
-        my_name = new Label(stat.myName, style);
+        my_name = new Label(GamePrefs.getInstance().user.getName(), style);
         my_name.setWrap(true);
         my_name.setAlignment(Align.center);
         my_name.setBounds(Constants.HUD_SCREEN_WIDTH * .01f, Constants.HUD_SCREEN_HEIGHT * .4f,
@@ -131,7 +131,7 @@ public class ResultScreen implements Screen, InputProcessor {
         style2.font = mSkin.getFont("default-font");
         style2.fontColor = Color.DARK_GRAY;
 
-        my_level = new Label(stat.myLevel + "", style2);
+        my_level = new Label(GamePrefs.getInstance().user.getLevel() + "", style2);
         my_level.setWrap(true);
         my_level.setAlignment(Align.center);
         my_level.setBounds(Constants.HUD_SCREEN_WIDTH * .306f, Constants.HUD_SCREEN_HEIGHT * .361f,
