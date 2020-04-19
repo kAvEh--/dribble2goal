@@ -425,9 +425,11 @@ public class FindMatchScreen implements Screen, InputProcessor {
                 stat.oppShirt = data.getInt("p2_shirt");
                 stat.oppLevel = data.getInt("p2_level");
                 stat.oppXp = data.getInt("p2_xp");
+                stat.myFormation = data.getInt("p1_formation");
                 stat.oppFormation = data.getInt("p2_formation");
                 stat.oppAvatar = data.getInt("p2_avatar");
 
+                stat.myLineup = GamePrefs.getInstance().user.lineup;
 //                tmp = data.getJSONObject("lineup1");
 //                boolean flag = true;
 //                for (int i = 1; i < 6; i++) {
@@ -556,6 +558,7 @@ public class FindMatchScreen implements Screen, InputProcessor {
                 stat.oppPlayers[4][1] = t1.getInt("size");
                 stat.oppPlayers[4][2] = t1.getInt("speed");
             }
+            stat.myLineup = GamePrefs.getInstance().user.lineup;
 //            if (isPenalty) {
 //                stat.roundNum = 22;
 //                stat.GAME_STATE = Constants.GAME_PRE_PENALTY;

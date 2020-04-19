@@ -245,6 +245,7 @@ public class Util {
 
     public Vector2[] getInGameSettingPosition(int pos) {
         Vector2[] ret = new Vector2[5];
+        System.out.println("-----"+pos);
         switch (pos) {
             case 1:
                 ret[0] = new Vector2(Constants.HUD_SCREEN_WIDTH * .214f, Constants.HUD_SCREEN_HEIGHT * .35f);
